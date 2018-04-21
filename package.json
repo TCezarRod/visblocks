@@ -4,15 +4,21 @@
   "private": true,
   "dependencies": {
     "material-ui": "^0.20.0",
+    "node-sass-chokidar": "^1.2.2",
+    "npm-run-all": "^4.1.2",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-scripts": "1.1.4",
     "victory": "^0.25.7"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "npm-run-all -p sass:watch js:start",
+    "build": "npm-run-all sass:build js:build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "js:start": "react-scripts start",
+    "js:build": "react-scripts build",
+    "sass:watch": "npm run sass:build && node-sass-chokidar --watch --recursive --skip-initial ./src/assets/styles/scss -o ./src/assets/styles/css --include-path ./node_modules --include-path ./src",
+    "sass:build": "node-sass-chokidar ./src/assets/styles/scss -o ./src/assets/styles/css --include-path ./node_modules --include-path ./src"
   }
 }
