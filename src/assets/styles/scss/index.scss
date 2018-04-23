@@ -3,3 +3,13 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.container {
+  border: solid 1px #ddd;
+  height: inherit;
+  width: inherit;
+}
+
+.handle {
+  cursor: grab;
+}

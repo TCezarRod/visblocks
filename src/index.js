@@ -1,9 +1,10 @@
 import React from 'react';
 import { render } from 'react-dom'
 import 'assets/styles/css/index.css';
-import App from './App';
+
+import BuildingPage from 'Layout/BuildingPage';
 
 render(
-    <App />, 
+    <BuildingPage/>,
     document.getElementById('root')
 );

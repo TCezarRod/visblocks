@@ -3,11 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "material-ui": "^0.20.0",
+    "d3-array": "^1.2.1",
+    "material-ui": "^1.0.0-beta.43",
+    "minified-headless": "^0.1.0",
     "node-sass-chokidar": "^1.2.2",
     "npm-run-all": "^4.1.2",
+    "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "react-draggable": "^3.0.5",
+    "react-file-reader": "^1.1.4",
+    "react-rnd": "^7.4.0",
     "react-scripts": "1.1.4",
     "victory": "^0.25.7"
   },
