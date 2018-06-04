@@ -5,9 +5,39 @@ import ScatterPlot from 'Blocks/ScatterPlot';
 import LineChart from 'Blocks/LineChart';
 import Histogram from 'Blocks/Histogram';
 
-import IconButton from 'material-ui/IconButton';
-import Icon from 'material-ui/Icon';
-import ReactFileReader from 'react-file-reader';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import { withStyles } from '@material-ui/core/styles';
+
+const drawerWidth = 80;
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    zIndex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    display: 'flex',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  drawerPaper: {
+    position: 'relative',
+    width: drawerWidth,
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit,
+    minWidth: 0, // So the Typography noWrap works
+  },
+  toolbar: theme.mixins.toolbar,
+});
+
 
 class BuildingPage extends React.Component {
   state = {
@@ -149,7 +179,7 @@ class BuildingPage extends React.Component {
       case 'ScatterPlot':
         return <ScatterPlot 
           id={block.id}
-          data={this.state.dataMap[block.input]} 
+          data={this.getData(block.input)} 
           xDimension={block.props.xDimension}
           yDimension={block.props.yDimension} 
           onSelection={this.updateData}
@@ -191,20 +221,47 @@ class BuildingPage extends React.Component {
     console.log('read');
   }
 
-  render() {
+  renderAppBar() {
+    const { classes } = this.props;
     return (
-      <React.Fragment>
-        <ReactFileReader handleFiles={this.handleFiles} fileTypes={[".json"]} base64={true} multipleFiles={false}>
+    <AppBar position='absolute' color='default' className={classes.appBar}>
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="title" color="white" noWrap>
+          VisBlocks
+        </Typography>
+      </Toolbar>
+    </AppBar>)
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <div className={classes.root}>
+        {this.renderAppBar()}
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          >
+          <div className={classes.toolbar} />
+          <List>item</List>
+        </Drawer>
+        {/*<ReactFileReader handleFiles={this.handleFiles} fileTypes={[".json"]} base64={true} multipleFiles={false}>
           <IconButton className={'navButton'} color="inherit" aria-label="Menu">
             <Icon>file_upload</Icon>
           </IconButton>
-        </ReactFileReader>
+        </ReactFileReader>*/}     
+        <main className={classes.content}>
+          <div className={classes.toolbar} />  
+          <div className="workArea"> 
         {this.renderComponents()}
-      </React.Fragment>      
+          </div>
+        </main>
+      </div>      
     );
   }
 }
 
-
-
-export default BuildingPage;
+export default withStyles(styles)(BuildingPage)

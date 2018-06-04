@@ -13,3 +13,9 @@ body {
 .handle {
   cursor: grab;
 }
+
+.workArea {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
