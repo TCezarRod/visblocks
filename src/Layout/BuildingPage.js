@@ -1,9 +1,12 @@
 import React from 'react';
+import { connect } from "react-redux";
+import { addArrow } from "actions";
 
 import DataBlock from 'Blocks/DataBlock';
 import ScatterPlot from 'Blocks/ScatterPlot';
 import LineChart from 'Blocks/LineChart';
 import Histogram from 'Blocks/Histogram';
+import EdgesCanvas from 'Edges/EdgesCanvas';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -38,6 +41,11 @@ const styles = theme => ({
   toolbar: theme.mixins.toolbar,
 });
 
+const mapDispatchToProps = dispatch => {
+  return {
+    addArrow: arrow => dispatch(addArrow(arrow))
+  };
+};
 
 class BuildingPage extends React.Component {
   state = {
@@ -90,8 +98,8 @@ class BuildingPage extends React.Component {
           {"sepalLength": 4.4, "sepalWidth": 3.0, "petalLength": 1.3, "petalWidth": 0.2, "species": "setosa"}],
         props: {
           position: {
-            top: 50,
-            left: 50
+            top: 0,
+            left: 0
           },
           size: {
             height: 50,
@@ -107,7 +115,7 @@ class BuildingPage extends React.Component {
           xDimension: 'sepalLength',
           yDimension: 'sepalWidth',
           position: {
-            top: 50,
+            top:  50,
             left: 200
           },
           size: {
@@ -124,8 +132,8 @@ class BuildingPage extends React.Component {
           xDimension: 'sepalLength',
           yDimension: 'sepalWidth',
           position: {
-            top: 50,
-            left: 550
+            top: 0,
+            left: 700
           },
           size: {
             height: 200,
@@ -142,7 +150,7 @@ class BuildingPage extends React.Component {
           bins: 10,
           position: {
             top: 300,
-            left: 550
+            left: 250
           },
           size: {
             height: 200,
@@ -168,11 +176,27 @@ class BuildingPage extends React.Component {
     this.setState((prevState) => ({dataMap: Object.assign(prevState.dataMap, dataMap)}))
   }
 
+  componentDidMount() {
+    this.state.blocks.forEach(block => {
+      if (block.input) {
+        let inputBlock = this.state.blocks.find(b => b.id === block.input)
+        this.props.addArrow({
+          xi:inputBlock.props.position.left + inputBlock.props.size.width,
+          yi:inputBlock.props.position.top + inputBlock.props.size.height/2,
+          xe: block.props.position.left,
+          ye: block.props.position.top + block.props.size.height/2,
+          startBlock: inputBlock.id,
+          endBlock: block.id
+        })
+      }
+    })
+  }
+
   getData = (originId) => {
     return this.state.dataMap[originId] || this.getData(this.state.blocks.find(block => block.id === originId).input)
   }
 
-  renderBlock = (block) => {
+  renderBlock = (block) => {    
     switch(block.type) {
       case 'Data':
         return <DataBlock id={block.id} top={block.props.position.top} left={block.props.position.left} width={block.props.size.width} height={block.props.size.height} data={block.data}/>
@@ -186,7 +210,7 @@ class BuildingPage extends React.Component {
           top={block.props.position.top}
           left={block.props.position.left}
           width={block.props.size.width}
-          height={block.props.size.height}/>  
+          height={block.props.size.height}/> 
       case 'LineChart':
         return <LineChart 
           id={block.id}
@@ -196,7 +220,7 @@ class BuildingPage extends React.Component {
           top={block.props.position.top}
           left={block.props.position.left}
           width={block.props.size.width}
-          height={block.props.size.height}/>
+          height={block.props.size.height}/>          
       case 'Histogram':
         return <Histogram 
           id={block.id}
@@ -256,12 +280,13 @@ class BuildingPage extends React.Component {
         <main className={classes.content}>
           <div className={classes.toolbar} />  
           <div className="workArea"> 
-        {this.renderComponents()}
+            {this.renderComponents()}
           </div>
+          <EdgesCanvas/>
         </main>
       </div>      
     );
   }
 }
 
-export default withStyles(styles)(BuildingPage)
+export default connect(null, mapDispatchToProps)(withStyles(styles)(BuildingPage))

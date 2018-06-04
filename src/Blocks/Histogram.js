@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { moveBlock } from 'actions'
 
 import {
   VictoryChart,
@@ -9,6 +11,12 @@ import {
 } from 'victory'
 
 import Rnd from 'react-rnd';
+
+const mapDispatchToProps = dispatch => {
+  return {
+    moveBlock: (id, props) => dispatch(moveBlock(id, props))
+  };
+};
 
 class Histogram extends React.Component {
   static propTypes = {
@@ -30,6 +38,10 @@ class Histogram extends React.Component {
       width: this.props.width,
       height: this.props.height
     },
+    prevSize: {
+      width: this.props.width,
+      height: this.props.height
+    },
     data: []
   }
 
@@ -43,11 +55,47 @@ class Histogram extends React.Component {
     return {x:[minX, truMaxX], y:[0, maxY]}
   }
 
-  updateSize = (e, dir, ref, delta) => {
+  updateSize = (e, dir, ref, delta, position) => {
+    this.props.moveBlock(this.props.id, {
+      size: {
+        width: this.state.prevSize.width + delta.width,
+        height: this.state.prevSize.height + delta.height
+      },
+      position: position
+    })
     this.setState({
       size:{
-        width: this.state.size.width + delta.width,
-        height: this.state.size.height + delta.height
+        width: this.state.prevSize.width + delta.width,
+        height: this.state.prevSize.height + delta.height
+      },
+      position: {
+        top: position.y,
+        left: position.x
+      }
+    })
+  }
+
+  updatePrevSize = (e, dir, ref, delta, position) => {
+    this.setState({
+    prevSize:{
+      width: this.state.size.width,
+      height: this.state.size.height
+    }
+  })
+}
+
+  updatePosition = (e, position) => {
+    this.props.moveBlock(this.props.id, {
+      size: this.state.size,
+      position: {
+        x: position.x,
+        y: position.y
+      }
+    })
+    this.setState({
+      position: {
+        top: position.y,
+        left: position.x
       }
     })
   }
@@ -90,7 +138,10 @@ class Histogram extends React.Component {
         }}
         dragHandleClassName=".handle"
         style={this.style}
-        onResizeStop={this.updateSize}
+        onResize={this.updateSize}
+        onResizeStop={this.updatePrevSize}
+        onDrag={this.updatePosition}
+        bounds= 'parent'
       >
         <div className="container" >
           <div className="handle">✜</div>
@@ -114,4 +165,4 @@ class Histogram extends React.Component {
   }
 }
 
-export default Histogram;
+export default connect(null, mapDispatchToProps)(Histogram);

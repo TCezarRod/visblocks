@@ -1,5 +1,7 @@
 import React  from 'react';
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { moveBlock } from 'actions'
 
 import {
   VictoryChart,
@@ -9,6 +11,12 @@ import {
 } from 'victory'
 
 import Rnd from 'react-rnd';
+
+const mapDispatchToProps = dispatch => {
+  return {
+    moveBlock: (id, props) => dispatch(moveBlock(id, props))
+  };
+};
 
 class ScatterPlot extends React.Component {
   static propTypes = {
@@ -30,6 +38,10 @@ class ScatterPlot extends React.Component {
       width: this.props.width,
       height: this.props.height
     },
+    prevSize: {
+      width: this.props.width,
+      height: this.props.height
+    },
     data: []
   }
 
@@ -43,11 +55,53 @@ class ScatterPlot extends React.Component {
     return {x:[minX, maxX], y:[minY, maxY]}
   }
 
-  updateSize = (e, dir, ref, delta) => {
+  updateSize = (e, dir, ref, delta, position) => {
+    /*this.props.moveArrowStart({
+      x:position.x + this.state.prevSize.width + delta.width,
+      y:position.y + (this.state.prevSize.height + delta.height)/2})*/
+    this.props.moveBlock(this.props.id, {
+      size: {
+        width: this.state.prevSize.width + delta.width,
+        height: this.state.prevSize.height + delta.height
+      },
+      position: position
+    })
     this.setState({
       size:{
-        width: this.state.size.width + delta.width,
-        height: this.state.size.height + delta.height
+        width: this.state.prevSize.width + delta.width,
+        height: this.state.prevSize.height + delta.height
+      },
+      position: {
+        top: position.y,
+        left: position.x
+      }
+    })
+  }
+
+  updatePrevSize = (e, dir, ref, delta, position) => {
+    this.setState({
+    prevSize:{
+      width: this.state.size.width,
+      height: this.state.size.height
+    }
+  })
+}
+
+  updatePosition = (e, position) => {
+    /*this.props.moveArrowStart({
+      x:position.x + this.state.size.width,
+      y:position.y + (this.state.size.height)/2})*/
+    this.props.moveBlock(this.props.id, {
+      size: this.state.size,
+      position: {
+        x: position.x,
+        y: position.y
+      }
+    })
+    this.setState({
+      position: {
+        top: position.y,
+        left: position.x
       }
     })
   }
@@ -63,41 +117,44 @@ class ScatterPlot extends React.Component {
 
   render() {
     return (
-      <Rnd
-        default={{
-          x: this.state.position.left,
-          y: this.state.position.top,
-          width: this.state.size.width,
-          height: this.state.size.height,
-        }}
-        dragHandleClassName=".handle"
-        style={this.style}
-        onResizeStop={this.updateSize}
-      >
-        <div className="container" >
-          <div className="handle">✜</div>
-          <VictoryChart 
-            theme={VictoryTheme.material}
-            domain={this.getDomain()}
-            width={this.state.size.width}
-            height={this.state.size.height}
-            containerComponent={<VictorySelectionContainer onSelection={this.updateOutput} onSelectionCleared={this.resetOutput} selectionBlackList={["eventKey", "x", "y", "sepalLength"]}/>}
-            domainPadding={5}>
-            <VictoryScatter
-              style={{ data: { fill: (d, active) => active ? "rgb(139,195,74)" : "gray" } }}
-              size={6}
-              x={this.props.xDimension}
-              y={this.props.yDimension}
-              data={this.props.data}
-              animate={{ duration: 1000,  onLoad: { duration: 200 }}}
-            />
-          </VictoryChart>
-        </div>
-      </Rnd>
+      <React.Fragment>
+        <Rnd
+          default={{
+            x: this.state.position.left,
+            y: this.state.position.top,
+            width: this.state.size.width,
+            height: this.state.size.height,
+          }}
+          dragHandleClassName=".handle"
+          style={this.style}
+          onResize={this.updateSize}
+          onResizeStop={this.updatePrevSize}
+          onDrag={this.updatePosition}
+          bounds= 'parent'
+        >
+          <div className="container" >
+            <div className="handle">✜</div>
+            <VictoryChart 
+              theme={VictoryTheme.material}
+              domain={this.getDomain()}
+              width={this.state.size.width}
+              height={this.state.size.height}
+              containerComponent={<VictorySelectionContainer onSelection={this.updateOutput} onSelectionCleared={this.resetOutput} selectionBlackList={["eventKey", "x", "y", "sepalLength"]}/>}
+              domainPadding={5}>
+              <VictoryScatter
+                style={{ data: { fill: (d, active) => active ? "rgb(139,195,74)" : "gray" } }}
+                size={6}
+                x={this.props.xDimension}
+                y={this.props.yDimension}
+                data={this.props.data}
+                animate={{ duration: 1000,  onLoad: { duration: 200 }}}
+              />
+            </VictoryChart>
+          </div>
+        </Rnd>
+      </React.Fragment>
     );
   }
 }
 
-
-
-export default ScatterPlot;
+export default connect(null, mapDispatchToProps)(ScatterPlot);
