@@ -85,7 +85,7 @@ class DataBlock extends React.Component {
 
   render() {
     return (
-      <Rnd
+      <Rnd 
         default={{
           x: this.state.position.left,
           y: this.state.position.top,
@@ -99,7 +99,7 @@ class DataBlock extends React.Component {
         onDrag={this.updatePosition}
         bounds= 'parent'
       >
-        <div className="container" >
+        <div className="container">
           <div className="handle">✜</div>
           Data
         </div>

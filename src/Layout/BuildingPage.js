@@ -281,8 +281,8 @@ class BuildingPage extends React.Component {
           <div className={classes.toolbar} />  
           <div className="workArea"> 
             {this.renderComponents()}
+            <EdgesCanvas/>
           </div>
-          <EdgesCanvas/>
         </main>
       </div>      
     );
