@@ -13,9 +13,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import AddIcon from '@material-ui/icons/AddCircle';
 import { withStyles } from '@material-ui/core/styles';
 
-const drawerWidth = 80;
+const drawerWidth = 50;
 
 const styles = theme => ({
   root: {
@@ -160,6 +163,27 @@ class BuildingPage extends React.Component {
       }
     ]
   }
+
+  addBlock = () => {
+    this.setState({...this.state, blocks:[...this.state.blocks, {
+      id: 'vx',
+      type: 'ScatterPlot',
+      input: 'd1',
+      props: {
+        xDimension: 'sepalLength',
+        yDimension: 'sepalWidth',
+        position: {
+          top:  300,
+          left: 200
+        },
+        size: {
+          height: 200,
+          width: 300
+        }
+      }
+    }]})
+  }
+
   // TODO: check if using victory-shared-events can solve the blocks interaction in a more elegant way
   updateData = (id, data) => {
     this.setState((prevState) => ({
@@ -270,7 +294,13 @@ class BuildingPage extends React.Component {
           }}
           >
           <div className={classes.toolbar} />
-          <List>item</List>
+          <List>
+            <ListItem button disableGutters={true} onClick={this.addBlock}>
+              <ListItemIcon>
+                <AddIcon style={{fontSize: 40}} />
+              </ListItemIcon>
+            </ListItem>
+          </List>
         </Drawer>
         {/*<ReactFileReader handleFiles={this.handleFiles} fileTypes={[".json"]} base64={true} multipleFiles={false}>
           <IconButton className={'navButton'} color="inherit" aria-label="Menu">
