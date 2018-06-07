@@ -143,7 +143,7 @@ class Histogram extends React.Component {
         onDrag={this.updatePosition}
         bounds= 'parent'
       >
-        <div className="container" >
+        <div className="container-block" >
           <div className="handle">✜</div>
           <VictoryChart 
             theme={VictoryTheme.material}

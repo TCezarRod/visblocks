@@ -160,6 +160,23 @@ class BuildingPage extends React.Component {
             width: 300
           }
         }
+      },
+      {
+        id: 'v4',
+        type: 'Histogram',
+        input: 'd1',
+        props: {
+          dimension: 'sepalWidth',
+          bins: 10,
+          position: {
+            top: 300,
+            left: 250
+          },
+          size: {
+            height: 200,
+            width: 300
+          }
+        }
       }
     ]
   }
@@ -217,7 +234,9 @@ class BuildingPage extends React.Component {
   }
 
   getData = (originId) => {
-    return this.state.dataMap[originId] || this.getData(this.state.blocks.find(block => block.id === originId).input)
+    let originBlock = this.state.blocks.find(block => block.id === originId);
+    if (originBlock)
+      return this.state.dataMap[originId] || this.getData(originBlock.input)
   }
 
   renderBlock = (block) => {    
