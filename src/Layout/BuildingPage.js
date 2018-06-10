@@ -16,8 +16,11 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import AddIcon from '@material-ui/icons/AddCircle';
 import { withStyles } from '@material-ui/core/styles';
+
+import BarChartIcon from 'assets/images/bar_chart.svg'
+import ScatterPlotIcon from 'assets/images/scatter_plot.svg'
+import LineChartIcon from 'assets/images/line_chart.svg'
 
 const drawerWidth = 50;
 
@@ -185,11 +188,10 @@ class BuildingPage extends React.Component {
   addBlock = () => {
     this.setState({...this.state, blocks:[...this.state.blocks, {
       id: 'vx',
-      type: 'ScatterPlot',
-      input: 'd1',
+      type: 'Histogram',
+      input: undefined,
       props: {
-        xDimension: 'sepalLength',
-        yDimension: 'sepalWidth',
+        dimension: undefined,
         position: {
           top:  300,
           left: 200
@@ -334,7 +336,17 @@ class BuildingPage extends React.Component {
           <List>
             <ListItem button disableGutters={true} onClick={this.addBlock}>
               <ListItemIcon>
-                <AddIcon style={{fontSize: 40}} />
+                <img src={LineChartIcon} width={45} alt="LineChart"/>
+              </ListItemIcon>
+            </ListItem>
+            <ListItem button disableGutters={true} onClick={this.addBlock}>
+              <ListItemIcon>
+                <img src={BarChartIcon} width={45} alt="Histogram"/>
+              </ListItemIcon>
+            </ListItem>
+            <ListItem button disableGutters={true} onClick={this.addBlock}>
+              <ListItemIcon>
+                <img src={ScatterPlotIcon} width={45} alt="ScatterPlot"/>
               </ListItemIcon>
             </ListItem>
           </List>
