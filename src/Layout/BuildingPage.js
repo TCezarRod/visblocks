@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from "react-redux";
 import { addArrow } from "actions";
 
-import DataBlock from 'Blocks/DataBlock';
-import ScatterPlot from 'Blocks/ScatterPlot';
-import LineChart from 'Blocks/LineChart';
-import Histogram from 'Blocks/Histogram';
+//import DataBlock from 'Blocks/DataBlock';
+//import ScatterPlot from 'Blocks/ScatterPlot';
+//import LineChart from 'Blocks/LineChart';
+import Histogram from 'Visualizations/Histogram';
+import VisBlock from 'Blocks/VisBlock';
 import EdgesCanvas from 'Edges/EdgesCanvas';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -164,16 +165,16 @@ class BuildingPage extends React.Component {
       {
         id: 'v4',
         type: 'Histogram',
-        input: 'd1',
+        input: undefined,
         props: {
-          dimension: 'sepalWidth',
+          dimension: undefined,
           bins: 10,
           position: {
-            top: 300,
-            left: 250
+            top: 200,
+            left: 0
           },
           size: {
-            height: 200,
+            height: 212,
             width: 300
           }
         }
@@ -239,11 +240,11 @@ class BuildingPage extends React.Component {
       return this.state.dataMap[originId] || this.getData(originBlock.input)
   }
 
-  renderBlock = (block) => {    
-    switch(block.type) {
+  renderVisualization = (type, data, props) => {
+    switch(type) {
       case 'Data':
-        return <DataBlock id={block.id} top={block.props.position.top} left={block.props.position.left} width={block.props.size.width} height={block.props.size.height} data={block.data}/>
-      case 'ScatterPlot':
+        return(<span>Data</span>)
+      /*case 'ScatterPlot':
         return <ScatterPlot 
           id={block.id}
           data={this.getData(block.input)} 
@@ -263,9 +264,9 @@ class BuildingPage extends React.Component {
           top={block.props.position.top}
           left={block.props.position.left}
           width={block.props.size.width}
-          height={block.props.size.height}/>          
+          height={block.props.size.height}/>   */       
       case 'Histogram':
-        return <Histogram 
+        /*return <Histogram 
           id={block.id}
           dimension={block.props.dimension}
           data={this.getData(block.input)} 
@@ -273,11 +274,28 @@ class BuildingPage extends React.Component {
           left={block.props.position.left}
           width={block.props.size.width}
           height={block.props.size.height}
-          bins={block.props.bins}/>
-      
+          bins={block.props.bins}/>*/
+          return(
+              <Histogram 
+                data={data}
+                dimension={props.dimension}
+                bins={props.bins}/>)      
       default:
         return <React.Fragment/>
     }
+  }
+
+  renderBlock = (block) => { 
+    // TODO: render different if data 
+    return (<VisBlock
+      id={block.id}
+      dimension={block.props.dimension} 
+      top={block.props.position.top}
+      left={block.props.position.left}
+      width={block.props.size.width}
+      height={block.props.size.height}>
+      {this.renderVisualization(block.type, block.data || this.getData(block.input), block.props)}
+      </VisBlock>)    
   }
 
   renderComponents = () => {        

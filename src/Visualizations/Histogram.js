@@ -10,8 +10,6 @@ import {
   VictorySelectionContainer
 } from 'victory'
 
-import Rnd from 'react-rnd';
-
 const mapDispatchToProps = dispatch => {
   return {
     moveBlock: (id, props) => dispatch(moveBlock(id, props))
@@ -23,25 +21,15 @@ class Histogram extends React.Component {
     dimension: PropTypes.string,
     bins: PropTypes.number,
     data: PropTypes.arrayOf(PropTypes.object).isRequired,
-    left: PropTypes.number,
-    top: PropTypes.number,
     width: PropTypes.number,
     height: PropTypes.number
   }
 
+  static defaultProps = {
+    bins: 5
+  }
+
   state = {
-    position: {
-      top: this.props.top,
-      left: this.props.left
-    },
-    size: {
-      width: this.props.width,
-      height: this.props.height
-    },
-    prevSize: {
-      width: this.props.width,
-      height: this.props.height
-    },
     data: []
   }
 
@@ -55,52 +43,7 @@ class Histogram extends React.Component {
     return {x:[minX, truMaxX], y:[0, maxY]}
   }
 
-  updateSize = (e, dir, ref, delta, position) => {
-    this.props.moveBlock(this.props.id, {
-      size: {
-        width: this.state.prevSize.width + delta.width,
-        height: this.state.prevSize.height + delta.height
-      },
-      position: position
-    })
-    this.setState({
-      size:{
-        width: this.state.prevSize.width + delta.width,
-        height: this.state.prevSize.height + delta.height
-      },
-      position: {
-        top: position.y,
-        left: position.x
-      }
-    })
-  }
-
-  updatePrevSize = (e, dir, ref, delta, position) => {
-    this.setState({
-    prevSize:{
-      width: this.state.size.width,
-      height: this.state.size.height
-    }
-  })
-}
-
-  updatePosition = (e, position) => {
-    this.props.moveBlock(this.props.id, {
-      size: this.state.size,
-      position: {
-        x: position.x,
-        y: position.y
-      }
-    })
-    this.setState({
-      position: {
-        top: position.y,
-        left: position.x
-      }
-    })
-  }
-
-   makeDataBins = (props) => {
+  makeDataBins = (props) => {
     let binData = [];
     let bins = props.bins;
     let minX = Math.min.apply(Math, props.data.map((obj) => obj[props.dimension]))
@@ -124,7 +67,7 @@ class Histogram extends React.Component {
   }
 
   static getDerivedStateFromProps = (newProps, prevState) => {
-    if (newProps.data) {
+    if (newProps.data && newProps != prevState.data) {
       let binData = [];
       let bins = newProps.bins;
       let minX = Math.min.apply(Math, newProps.data.map((obj) => obj[newProps.dimension]))
@@ -155,8 +98,8 @@ class Histogram extends React.Component {
       return (<VictoryChart 
         theme={VictoryTheme.material}
         domain={this.getDomain()}
-        width={this.state.size.width}
-        height={this.state.size.height}
+        width={this.props.width}
+        height={this.props.height}
         containerComp1onent={<VictorySelectionContainer />}
         domainPadding={5}>
           <VictoryBar 
@@ -172,29 +115,8 @@ class Histogram extends React.Component {
   }
 
   render() {
-    return (
-      <Rnd
-        default={{
-          x: this.state.position.left,
-          y: this.state.position.top,
-          width: this.state.size.width,
-          height: this.state.size.height,
-        }}
-        dragHandleClassName=".handle"
-        style={this.style}
-        onResize={this.updateSize}
-        onResizeStop={this.updatePrevSize}
-        onDrag={this.updatePosition}
-        bounds= 'parent'
-        minWidth={150}
-        minHeight={150}
-      >
-        <div className="container-block" >
-          <div 
-          className="handle" active={true}></div>
-          {this.renderContent()}
-        </div>
-      </Rnd>
+    return (      
+      this.renderContent()        
     );
   }
 }

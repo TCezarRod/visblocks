@@ -99,8 +99,8 @@ class DataBlock extends React.Component {
         onDrag={this.updatePosition}
         bounds= 'parent'
       >
-        <div className="container">
-          <div className="handle">✜</div>
+        <div className="container-block">
+          <div className="handle"></div>
           Data
         </div>
       </Rnd>
