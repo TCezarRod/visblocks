@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { addArrow } from "actions";
 
 //import DataBlock from 'Blocks/DataBlock';
-//import ScatterPlot from 'Blocks/ScatterPlot';
-//import LineChart from 'Blocks/LineChart';
+import ScatterPlot from 'Visualizations/ScatterPlot';
+import LineChart from 'Visualizations/LineChart';
 import Histogram from 'Visualizations/Histogram';
 import VisBlock from 'Blocks/VisBlock';
 import EdgesCanvas from 'Edges/EdgesCanvas';
@@ -242,46 +242,29 @@ class BuildingPage extends React.Component {
       return this.state.dataMap[originId] || this.getData(originBlock.input)
   }
 
-  renderVisualization = (type, data, props) => {
+  renderVisualization = (id, type, data, props) => {
     switch(type) {
       case 'Data':
         return(<span>Data</span>)
-      /*case 'ScatterPlot':
+      case 'ScatterPlot':
         return <ScatterPlot 
-          id={block.id}
-          data={this.getData(block.input)} 
-          xDimension={block.props.xDimension}
-          yDimension={block.props.yDimension} 
-          onSelection={this.updateData}
-          top={block.props.position.top}
-          left={block.props.position.left}
-          width={block.props.size.width}
-          height={block.props.size.height}/> 
+          id = {id}
+          data={data} 
+          xDimension={props.xDimension}
+          yDimension={props.yDimension} 
+          onSelection={this.updateData}/> 
       case 'LineChart':
         return <LineChart 
-          id={block.id}
-          data={this.getData(block.input)} 
-          xDimension={block.props.xDimension}
-          yDimension={block.props.yDimension} 
-          top={block.props.position.top}
-          left={block.props.position.left}
-          width={block.props.size.width}
-          height={block.props.size.height}/>   */       
+          id = {id}
+          data={data} 
+          xDimension={props.xDimension}
+          yDimension={props.yDimension}/>        
       case 'Histogram':
-        /*return <Histogram 
-          id={block.id}
-          dimension={block.props.dimension}
-          data={this.getData(block.input)} 
-          top={block.props.position.top}
-          left={block.props.position.left}
-          width={block.props.size.width}
-          height={block.props.size.height}
-          bins={block.props.bins}/>*/
-          return(
-              <Histogram 
-                data={data}
-                dimension={props.dimension}
-                bins={props.bins}/>)      
+        return <Histogram 
+          id = {id}
+          data={data}
+          dimension={props.dimension}
+          bins={props.bins}/>      
       default:
         return <React.Fragment/>
     }
@@ -296,7 +279,7 @@ class BuildingPage extends React.Component {
       left={block.props.position.left}
       width={block.props.size.width}
       height={block.props.size.height}>
-      {this.renderVisualization(block.type, block.data || this.getData(block.input), block.props)}
+      {this.renderVisualization(block.id, block.type, block.data || this.getData(block.input), block.props)}
       </VisBlock>)    
   }
 

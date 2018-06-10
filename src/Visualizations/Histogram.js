@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { moveBlock } from 'actions'
 
 import {
   VictoryChart,
@@ -9,12 +7,6 @@ import {
   VictoryBar,
   VictorySelectionContainer
 } from 'victory'
-
-const mapDispatchToProps = dispatch => {
-  return {
-    moveBlock: (id, props) => dispatch(moveBlock(id, props))
-  };
-};
 
 class Histogram extends React.Component {
   static propTypes = {
@@ -67,7 +59,7 @@ class Histogram extends React.Component {
   }
 
   static getDerivedStateFromProps = (newProps, prevState) => {
-    if (newProps.data && newProps != prevState.data) {
+    if (newProps.data && newProps !== prevState.data) {
       let binData = [];
       let bins = newProps.bins;
       let minX = Math.min.apply(Math, newProps.data.map((obj) => obj[newProps.dimension]))
@@ -121,4 +113,4 @@ class Histogram extends React.Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Histogram);
+export default Histogram;
