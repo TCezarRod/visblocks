@@ -18,14 +18,6 @@ class LineChart extends React.Component {
   }
 
   state = {
-    size: {
-      width: this.props.width,
-      height: this.props.height
-    },
-    prevSize: {
-      width: this.props.width,
-      height: this.props.height
-    },
     data: []
   }
 
@@ -44,8 +36,8 @@ class LineChart extends React.Component {
       <VictoryChart 
         theme={VictoryTheme.material}
         domain={this.getDomain()}
-        width={this.state.size.width}
-        height={this.state.size.height}
+        width={this.props.width}
+        height={this.props.height}
         containerComponent={<VictorySelectionContainer />}
         domainPadding={5}>
         <VictoryLine

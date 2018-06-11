@@ -18,14 +18,6 @@ class ScatterPlot extends React.Component {
   }
 
   state = {
-    size: {
-      width: this.props.width,
-      height: this.props.height
-    },
-    prevSize: {
-      width: this.props.width,
-      height: this.props.height
-    },
     data: []
   }
 
@@ -53,8 +45,8 @@ class ScatterPlot extends React.Component {
       <VictoryChart 
         theme={VictoryTheme.material}
         domain={this.getDomain()}
-        width={this.state.size.width}
-        height={this.state.size.height}
+        width={this.props.width}
+        height={this.props.height}
         containerComponent={<VictorySelectionContainer onSelection={this.updateOutput} onSelectionCleared={this.resetOutput} selectionBlackList={["eventKey", "x", "y", "sepalLength"]}/>}
         domainPadding={5}>
         <VictoryScatter

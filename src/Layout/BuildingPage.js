@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { addArrow } from "actions";
+import { addArrow, createBlock } from "actions";
 
 //import DataBlock from 'Blocks/DataBlock';
 import ScatterPlot from 'Visualizations/ScatterPlot';
@@ -50,144 +50,23 @@ const styles = theme => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    addArrow: arrow => dispatch(addArrow(arrow))
+    addArrow: arrow => dispatch(addArrow(arrow)),
+    createBlock: block => dispatch(createBlock(block))
   };
+};
+
+const mapStateToProps = state => {
+  return {blocks: state.blocksState.blocks};
 };
 
 class BuildingPage extends React.Component {
   state = {
-    width: 300,
-    height: 200,
     dataMap: {},
-    blocks: [
-      {
-        id: 'd1',
-        type: 'Data',
-        data: [
-          {"sepalLength": 5.1, "sepalWidth": 3.5, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 4.9, "sepalWidth": 3.0, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 4.7, "sepalWidth": 3.2, "petalLength": 1.3, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 4.6, "sepalWidth": 3.1, "petalLength": 1.5, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 5.0, "sepalWidth": 3.6, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 5.4, "sepalWidth": 3.9, "petalLength": 1.7, "petalWidth": 0.4, "species": "setosa"},
-          {"sepalLength": 4.6, "sepalWidth": 3.4, "petalLength": 1.4, "petalWidth": 0.3, "species": "setosa"},
-          {"sepalLength": 5.0, "sepalWidth": 3.4, "petalLength": 1.5, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 4.4, "sepalWidth": 2.9, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 4.9, "sepalWidth": 3.1, "petalLength": 1.5, "petalWidth": 0.1, "species": "setosa"},
-          {"sepalLength": 5.4, "sepalWidth": 3.7, "petalLength": 1.5, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 4.8, "sepalWidth": 3.4, "petalLength": 1.6, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 4.8, "sepalWidth": 3.0, "petalLength": 1.4, "petalWidth": 0.1, "species": "setosa"},
-          {"sepalLength": 4.3, "sepalWidth": 3.0, "petalLength": 1.1, "petalWidth": 0.1, "species": "setosa"},
-          {"sepalLength": 5.8, "sepalWidth": 4.0, "petalLength": 1.2, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 5.7, "sepalWidth": 4.4, "petalLength": 1.5, "petalWidth": 0.4, "species": "setosa"},
-          {"sepalLength": 5.4, "sepalWidth": 3.9, "petalLength": 1.3, "petalWidth": 0.4, "species": "setosa"},
-          {"sepalLength": 5.1, "sepalWidth": 3.5, "petalLength": 1.4, "petalWidth": 0.3, "species": "setosa"},
-          {"sepalLength": 5.7, "sepalWidth": 3.8, "petalLength": 1.7, "petalWidth": 0.3, "species": "setosa"},
-          {"sepalLength": 5.1, "sepalWidth": 3.8, "petalLength": 1.5, "petalWidth": 0.3, "species": "setosa"},
-          {"sepalLength": 5.4, "sepalWidth": 3.4, "petalLength": 1.7, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 5.1, "sepalWidth": 3.7, "petalLength": 1.5, "petalWidth": 0.4, "species": "setosa"},
-          {"sepalLength": 4.6, "sepalWidth": 3.6, "petalLength": 1.0, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 5.1, "sepalWidth": 3.3, "petalLength": 1.7, "petalWidth": 0.5, "species": "setosa"},
-          {"sepalLength": 4.8, "sepalWidth": 3.4, "petalLength": 1.9, "petalWidth": 0.6, "species": "setosa"},
-          {"sepalLength": 5.0, "sepalWidth": 3.0, "petalLength": 1.6, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 5.0, "sepalWidth": 3.4, "petalLength": 1.6, "petalWidth": 0.4, "species": "setosa"},
-          {"sepalLength": 5.2, "sepalWidth": 3.5, "petalLength": 1.5, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 5.2, "sepalWidth": 3.4, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 4.7, "sepalWidth": 3.2, "petalLength": 1.6, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 4.8, "sepalWidth": 3.1, "petalLength": 1.6, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 5.4, "sepalWidth": 3.4, "petalLength": 1.5, "petalWidth": 0.4, "species": "setosa"},
-          {"sepalLength": 5.2, "sepalWidth": 4.1, "petalLength": 1.5, "petalWidth": 0.1, "species": "setosa"},
-          {"sepalLength": 5.5, "sepalWidth": 4.2, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 4.9, "sepalWidth": 3.1, "petalLength": 1.5, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 5.0, "sepalWidth": 3.2, "petalLength": 1.2, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 5.5, "sepalWidth": 3.5, "petalLength": 1.3, "petalWidth": 0.2, "species": "setosa"},
-          {"sepalLength": 4.9, "sepalWidth": 3.6, "petalLength": 1.4, "petalWidth": 0.1, "species": "setosa"},
-          {"sepalLength": 4.4, "sepalWidth": 3.0, "petalLength": 1.3, "petalWidth": 0.2, "species": "setosa"}],
-        props: {
-          position: {
-            top: 0,
-            left: 0
-          },
-          size: {
-            height: 50,
-            width: 50
-          }
-        }
-      },
-      {
-        id: 'v1',
-        type: 'ScatterPlot',
-        input: 'd1',
-        props: {
-          xDimension: 'sepalLength',
-          yDimension: 'sepalWidth',
-          position: {
-            top:  50,
-            left: 200
-          },
-          size: {
-            height: 200,
-            width: 300
-          }
-        }
-      },
-      {
-        id: 'v2',
-        type: 'LineChart',
-        input: 'v1',
-        props: {
-          xDimension: 'sepalLength',
-          yDimension: 'sepalWidth',
-          position: {
-            top: 0,
-            left: 700
-          },
-          size: {
-            height: 200,
-            width: 300
-          }
-        }
-      },
-      {
-        id: 'v3',
-        type: 'Histogram',
-        input: 'v1',
-        props: {
-          dimension: 'sepalWidth',
-          bins: 10,
-          position: {
-            top: 300,
-            left: 250
-          },
-          size: {
-            height: 200,
-            width: 300
-          }
-        }
-      },
-      {
-        id: 'v4',
-        type: 'Histogram',
-        input: undefined,
-        props: {
-          dimension: undefined,
-          bins: 10,
-          position: {
-            top: 200,
-            left: 0
-          },
-          size: {
-            height: 212,
-            width: 300
-          }
-        }
-      }
-    ]
+    blocks: []
   }
 
   addBlock = () => {
-    this.setState({...this.state, blocks:[...this.state.blocks, {
-      id: 'vx',
+    this.props.createBlock({
       type: 'Histogram',
       input: undefined,
       props: {
@@ -201,7 +80,7 @@ class BuildingPage extends React.Component {
           width: 300
         }
       }
-    }]})
+    })
   }
 
   // TODO: check if using victory-shared-events can solve the blocks interaction in a more elegant way
@@ -213,17 +92,23 @@ class BuildingPage extends React.Component {
 
   componentWillMount() {
     let dataMap = {};
-    this.state.blocks
-      .filter(block => block.type === 'Data')
-      .forEach(dataBlock => dataMap[dataBlock.id] = dataBlock.data)
+
+    for (let id in this.props.blocks) {
+      let block = this.props.blocks[id]
+      if (block.type === 'Data') {
+        dataMap[block.id] = block.data;
+      }
+    }
 
     this.setState((prevState) => ({dataMap: Object.assign(prevState.dataMap, dataMap)}))
   }
 
   componentDidMount() {
-    this.state.blocks.forEach(block => {
+    for (let id in this.props.blocks) {
+      let block = this.props.blocks[id]
+    
       if (block.input) {
-        let inputBlock = this.state.blocks.find(b => b.id === block.input)
+        let inputBlock = this.props.blocks[block.input]
         this.props.addArrow({
           xi:inputBlock.props.position.left + inputBlock.props.size.width,
           yi:inputBlock.props.position.top + inputBlock.props.size.height/2,
@@ -233,11 +118,11 @@ class BuildingPage extends React.Component {
           endBlock: block.id
         })
       }
-    })
+    }
   }
 
   getData = (originId) => {
-    let originBlock = this.state.blocks.find(block => block.id === originId);
+    let originBlock = this.props.blocks[originId];
     if (originBlock)
       return this.state.dataMap[originId] || this.getData(originBlock.input)
   }
@@ -278,13 +163,19 @@ class BuildingPage extends React.Component {
       top={block.props.position.top}
       left={block.props.position.left}
       width={block.props.size.width}
-      height={block.props.size.height}>
+      height={block.props.size.height}
+      minWidth={block.type==='Data'?50:undefined}
+      minHeight={block.type==='Data'?50:undefined}>
       {this.renderVisualization(block.id, block.type, block.data || this.getData(block.input), block.props)}
       </VisBlock>)    
   }
 
-  renderComponents = () => {        
-    return this.state.blocks.map((block) => this.renderBlock(block))
+  renderComponents = () => {
+    let blocks = []  
+    for (let id in this.props.blocks) {
+      blocks.push(this.renderBlock(this.props.blocks[id]));
+    }
+    return blocks
   }
 
   handleFiles = (files) => {
@@ -351,4 +242,4 @@ class BuildingPage extends React.Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(BuildingPage))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(BuildingPage))
