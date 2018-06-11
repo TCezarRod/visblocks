@@ -54,4 +54,9 @@ g.hover {
     top: calc(50% - 8px);
     left: -17px;
   }
+
+  &:hover {
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
 }
