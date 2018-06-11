@@ -42,4 +42,16 @@ g.hover {
   justify-content: center;
 }
 
+.port {
+  height: 15px;
+  width: 15px;
+  background: #eee;
+  position: absolute;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+
+  &-input {
+    top: calc(50% - 8px);
+    left: -17px;
+  }
 }
