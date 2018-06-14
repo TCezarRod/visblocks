@@ -1,18 +1,40 @@
 import React  from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { moveBlock } from 'actions'
+import { moveBlock, deleteBlock, startConnect, finishConnect } from 'actions'
+import ButtonBase from '@material-ui/core/ButtonBase';
+import { withStyles } from '@material-ui/core/styles';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import CloseIcon from '@material-ui/icons/Close';
 
 import Rnd from 'react-rnd';
 
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit / 2,
+  },
+  input: {
+    display: 'none',
+  },
+});
+
+
 const mapDispatchToProps = dispatch => {
   return {
-    moveBlock: (id, props) => dispatch(moveBlock(id, props))
+    moveBlock: (id, props) => dispatch(moveBlock(id, props)),
+    deleteBlock: (id) => dispatch(deleteBlock(id)),
+    startConnect: (id) => dispatch(startConnect(id)),
+    finishConnect: () => dispatch(finishConnect())
   };
+};
+
+const mapStateToProps = state => {
+  return {isConnecting: state.controlState.connecting, connectionSource: state.controlState.sourceId};
 };
 
 class VisBlock extends React.Component {
   static propTypes = {
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     left: PropTypes.number,
     top: PropTypes.number,
     width: PropTypes.number,
@@ -94,10 +116,32 @@ class VisBlock extends React.Component {
     return React.Children.map(this.props.children, child =>
       React.cloneElement(child, {data:child.props.data, width: this.state.size.width, height: this.state.size.height }));
   }
+
+  handleBlockClick = () => {
+    console.log(`click on ${this.props.id}`);
+    if (this.props.isConnecting && this.props.id !== this.props.connectionSource) {
+      this.props.onUpdate(this.props.id, this.props.connectionSource)
+      this.props.finishConnect()
+    }
+  }
+
+  handleConnectClick = () => {
+    console.log(`connect from ${this.props.id}`);
+    this.props.startConnect(this.props.id);
+  }
+
+  handleContextMenu = (event) => {
+    event.preventDefault();
+    // TODO: create context menu
+  }
+
+  handleClose = () => {
+    this.props.deleteBlock(this.props.id);
+  }
   
   render() {
     const { position, size } = this.state;
-    const { minWidth, minHeight } = this.props;
+    const { minWidth, minHeight, classes} = this.props;
     return (
     <Rnd 
       default={{
@@ -113,10 +157,18 @@ class VisBlock extends React.Component {
       bounds= 'parent'
       minWidth={minWidth}
       minHeight={minHeight}
+      style={{zIndex:'1'}}
     >
-      <div className="port port-input">.</div>
-      <div className="container-block">
-        <div className="handle"></div>
+      {/*<div className="port port-input"></div>*/}
+      <div className="container-block" onClick={this.handleBlockClick} onContextMenu={this.handleContextMenu}>
+        <div className="handle" >
+        <ButtonBase className={classes.button} aria-label="Close" onClick={this.handleClose}>
+          <CloseIcon style={{ fontSize: 15 }}/>
+        </ButtonBase>
+        <ButtonBase className={classes.button} aria-label="Arrow" onClick={this.handleConnectClick}>
+          <ArrowForwardIcon style={{ fontSize: 15 }}/>
+        </ButtonBase>
+        </div>
         <div className="block-content">
           {this.props.children ? this.renderChildrenWithProps() : this.renderNoData()}
         </div>
@@ -126,4 +178,4 @@ class VisBlock extends React.Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(VisBlock);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(VisBlock));

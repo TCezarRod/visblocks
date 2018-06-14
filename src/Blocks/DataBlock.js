@@ -14,7 +14,6 @@ const mapDispatchToProps = dispatch => {
 // TODO: make it actually control data
 class DataBlock extends React.Component {
   static propTypes = {
-    id: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.object),
     left: PropTypes.number,
     top: PropTypes.number,

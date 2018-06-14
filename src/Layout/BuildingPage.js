@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { addArrow, createBlock } from "actions";
+import { addArrow, createBlock, updateBlockInput } from "actions";
 
 //import DataBlock from 'Blocks/DataBlock';
 import ScatterPlot from 'Visualizations/ScatterPlot';
@@ -51,7 +51,8 @@ const styles = theme => ({
 const mapDispatchToProps = dispatch => {
   return {
     addArrow: arrow => dispatch(addArrow(arrow)),
-    createBlock: block => dispatch(createBlock(block))
+    createBlock: block => dispatch(createBlock(block)),
+    updateBlockInput: (id, inputId) => dispatch(updateBlockInput(id, inputId))
   };
 };
 
@@ -65,12 +66,10 @@ class BuildingPage extends React.Component {
     blocks: []
   }
 
-  addBlock = () => {
+  addBlock = (type) => {
     this.props.createBlock({
-      type: 'Histogram',
-      input: undefined,
+      type: type,
       props: {
-        dimension: undefined,
         position: {
           top:  300,
           left: 200
@@ -155,9 +154,26 @@ class BuildingPage extends React.Component {
     }
   }
 
+  addInput = (id, idInput) => {
+    console.log(`${id} receives from ${idInput}`)
+    let block = this.props.blocks[id]
+    let inputBlock = this.props.blocks[idInput]
+    this.props.updateBlockInput(id, idInput)
+
+    this.props.addArrow({
+      xi:inputBlock.props.position.left + inputBlock.props.size.width,
+      yi:inputBlock.props.position.top + inputBlock.props.size.height/2,
+      xe: block.props.position.left,
+      ye: block.props.position.top + block.props.size.height/2,
+      startBlock: inputBlock.id,
+      endBlock: block.id
+    })
+  }
+
   renderBlock = (block) => { 
     // TODO: render different if data 
     return (<VisBlock
+      key={block.id}
       id={block.id}
       dimension={block.props.dimension} 
       top={block.props.position.top}
@@ -165,7 +181,8 @@ class BuildingPage extends React.Component {
       width={block.props.size.width}
       height={block.props.size.height}
       minWidth={block.type==='Data'?50:undefined}
-      minHeight={block.type==='Data'?50:undefined}>
+      minHeight={block.type==='Data'?50:undefined}
+      onUpdate={this.addInput}>
       {this.renderVisualization(block.id, block.type, block.data || this.getData(block.input), block.props)}
       </VisBlock>)    
   }
@@ -187,7 +204,7 @@ class BuildingPage extends React.Component {
     return (
     <AppBar position='absolute' color='default' className={classes.appBar}>
       <Toolbar className={classes.toolbar}>
-        <Typography variant="title" color="white" noWrap>
+        <Typography variant="title" color="primary" noWrap>
           VisBlocks
         </Typography>
       </Toolbar>
@@ -208,17 +225,17 @@ class BuildingPage extends React.Component {
           >
           <div className={classes.toolbar} />
           <List>
-            <ListItem button disableGutters={true} onClick={this.addBlock}>
+            <ListItem button disableGutters={true} onClick={() => this.addBlock("LineChart")}>
               <ListItemIcon>
                 <img src={LineChartIcon} width={45} alt="LineChart"/>
               </ListItemIcon>
             </ListItem>
-            <ListItem button disableGutters={true} onClick={this.addBlock}>
+            <ListItem button disableGutters={true} onClick={() => this.addBlock("Histogram")}>
               <ListItemIcon>
                 <img src={BarChartIcon} width={45} alt="Histogram"/>
               </ListItemIcon>
             </ListItem>
-            <ListItem button disableGutters={true} onClick={this.addBlock}>
+            <ListItem button disableGutters={true} onClick={() => this.addBlock("ScatterPlot")}>
               <ListItemIcon>
                 <img src={ScatterPlotIcon} width={45} alt="ScatterPlot"/>
               </ListItemIcon>

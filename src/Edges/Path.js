@@ -12,6 +12,13 @@ class Path extends React.Component {
     ye: PropTypes.number
   }
 
+  static defaultProps = {
+    xi: 0,
+    yi: 0,
+    xe: 0,
+    ye: 0
+  }
+
   static getDerivedStateFromProps(newProps, prevState) {
     return {...prevState, 
       xi: newProps.xi,
@@ -78,10 +85,14 @@ class Path extends React.Component {
     this.setState({...this.state, hover:false})
   }
 
+  getClassName = () => {
+    return (this.props.className || '')+(this.state.hover?'hover':'')
+  }
+
   render () {
     const { xi, yi, dx, dy } = this.state
     return(
-      <g className={this.state.hover?'hover':''} onMouseOver={this.hoverOn} onMouseLeave={this.hoverOff} stroke='rgb(120,120,120)'>
+      <g className={this.getClassName()} onMouseOver={this.hoverOn} onMouseLeave={this.hoverOff} stroke='rgb(120,120,120)'>
         {this.renderPath(xi, yi, dx, dy)}
         {this.renderArrowHead(xi + dx, yi + dy)}
       </g>

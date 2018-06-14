@@ -7,10 +7,17 @@ import {
 import { 
     MOVE_BLOCK,
     CREATE_BLOCK,
-    DELETE_BLOCK 
+    DELETE_BLOCK,
+    UPDATE_DATA,
+    START_CONNECT,
+    FINISH_CONNECT
 } from '../constants/action-types';
 
 const initialState = {
+    controlState: {
+      connecting: false,
+      sourceId: -1
+    },
     arrowsState: {
         lastId: 0,
         arrows: {}        
@@ -19,12 +26,12 @@ const initialState = {
         data: {} // "id": {type: source/input, data: id/{data}}
     },
     blocksState: {
-        lastId: 5,
+        lastId: 1,
         blocks: {
             '0': {
-            id: 0,
-            type: 'Data',
-            data: [
+              id: 0,
+              type: 'Data',
+              data: [
               {"sepalLength": 5.1, "sepalWidth": 3.5, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
               {"sepalLength": 4.9, "sepalWidth": 3.0, "petalLength": 1.4, "petalWidth": 0.2, "species": "setosa"},
               {"sepalLength": 4.7, "sepalWidth": 3.2, "petalLength": 1.3, "petalWidth": 0.2, "species": "setosa"},
@@ -64,17 +71,17 @@ const initialState = {
               {"sepalLength": 5.5, "sepalWidth": 3.5, "petalLength": 1.3, "petalWidth": 0.2, "species": "setosa"},
               {"sepalLength": 4.9, "sepalWidth": 3.6, "petalLength": 1.4, "petalWidth": 0.1, "species": "setosa"},
               {"sepalLength": 4.4, "sepalWidth": 3.0, "petalLength": 1.3, "petalWidth": 0.2, "species": "setosa"}],
-            props: {
-              position: {
-                top: 0,
-                left: 0
-              },
-              size: {
-                height: 50,
-                width: 50
+              props: {
+                position: {
+                  top: 0,
+                  left: 0
+                },
+                size: {
+                  height: 50,
+                  width: 50
+                }
               }
-            }
-          },
+            }/*,
           '1': {
             id: 1,
             type: 'ScatterPlot',
@@ -142,7 +149,7 @@ const initialState = {
                 width: 300
               }
             }
-          }
+          }*/
         }
     }
 }
@@ -160,30 +167,53 @@ const visualizationReducer = (state = initialState, action) => {
             arrows[action.payload.id].yi = action.payload.y
             return {...state, arrowsState: {...state.arrowsState, arrows: arrows}}
         case ADD_ARROW:
+            Object.keys(arrows).forEach(arrowKey => {
+              if (arrows[arrowKey].endBlock === action.payload.arrow.endBlock) {
+                delete arrows[arrowKey]                   
+              }
+            })
             arrows[state.arrowsState.lastId] = action.payload.arrow;
             return {...state, arrowsState: {...state.arrowsState, arrows: arrows, lastId: state.arrowsState.lastId+1}}
         case DELETE_ARROW:
             delete arrows[action.payload.id]
             return {...state, arrowsState: {...state.arrowsState, arrows: arrows}}
         case MOVE_BLOCK:
+            const { position, size } = action.payload.props
+            blocks[action.payload.id].props.position = {left: position.x, top: position.y};
+            blocks[action.payload.id].props.size = size;
             Object.values(arrows).forEach(arrow => {
-                let props = action.payload.props
                 if (arrow.startBlock === action.payload.id) {
-                    arrow.xi = props.position.x + props.size.width
-                    arrow.yi = props.position.y + props.size.height/2
+                    arrow.xi = position.x + size.width
+                    arrow.yi = position.y + size.height/2
                 }
                 if (arrow.endBlock === action.payload.id) {
-                    arrow.xe = props.position.x
-                    arrow.ye = props.position.y + props.size.height/2                    
+                    arrow.xe = position.x
+                    arrow.ye = position.y + size.height/2                    
                 }
             })
-            return {...state, arrowsState: {...state.arrowsState, arrows: arrows}}
+            return {...state, arrowsState: {...state.arrowsState, arrows: arrows}, blocksState: {...state.blocksState, blocks:blocks}}
         case CREATE_BLOCK:
-            blocks[state.blocksState.lastId] = action.payload.block
+            blocks[state.blocksState.lastId] = {...action.payload.block, id: state.blocksState.lastId}
             return {...state, blocksState: {...state.blocksState, blocks: blocks, lastId: state.blocksState.lastId+1}}
         case DELETE_BLOCK:
             delete blocks[action.payload.id]
+            Object.keys(arrows).forEach(arrowKey => {
+              if (arrows[arrowKey].endBlock === action.payload.id|| arrows[arrowKey].startBlock === action.payload.id ) {
+                delete arrows[arrowKey]                   
+              }
+            })
+            return {...state, blocksState: {...state.blocksState, blocks: blocks}, arrowsState: {...state.arrowsState, arrows: arrows}}
+        case UPDATE_DATA:
+            if (action.payload.isInput) {
+              blocks[action.payload.id].input = action.payload.source
+            } else {
+              blocks[action.payload.id].data = action.payload.source
+            }
             return {...state, blocksState: {...state.blocksState, blocks: blocks}}
+        case START_CONNECT:
+            return {...state, controlState: {connecting: true, sourceId: action.payload.id}}
+        case FINISH_CONNECT:            
+            return {...state, controlState: {connecting: false, sourceId: -1}}
         default:
             return state
     }

@@ -20,6 +20,8 @@ body {
   cursor: grab;
   min-height: 20px;
   border-bottom: solid 1px #ddd;
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .workArea {
@@ -30,6 +32,7 @@ body {
 
 g.hover {
   path {
+    shape-rendering: geometricPrecision;
     stroke-width: 2;
   }
 }
