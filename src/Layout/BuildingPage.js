@@ -6,7 +6,7 @@ import { addArrow, createBlock, updateBlockInput, updateBlockData } from "action
 import ScatterPlot from 'Visualizations/ScatterPlot';
 import LineChart from 'Visualizations/LineChart';
 import Histogram from 'Visualizations/Histogram';
-import Map from 'Visualizations/Map';
+import Map from 'Visualizations/MapVis';
 import VisBlock from 'Blocks/VisBlock';
 import EdgesCanvas from 'Edges/EdgesCanvas';
 

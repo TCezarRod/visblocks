@@ -4,6 +4,11 @@ body {
   font-family: sans-serif;
 }
 
+.leaflet-container {
+  height:100%;
+  width: 100%;
+}
+
 .container-block {
   display: flex;
   flex-flow: column;

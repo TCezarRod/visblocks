@@ -1,0 +1,1236 @@
+[
+    {
+        "type": "place",
+        "id": "5844072558dae6667a3db11f",
+        "name": "carrinho de lanche",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Jardim Leonor",
+            "thoroughfare": "Avenida Albert Einstein",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.599382,
+            "lng": -46.715323999999995
+        }
+    },
+    {
+        "type": "place",
+        "id": "58e5d07658dae64d7012cf9e",
+        "name": "Mc Donalds",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 04703-000",
+            "sub_locality": "Real Parque",
+            "thoroughfare": "Avenida Morumbi, 7554",
+            "sub_thoroughfare": "",
+            "postal_code": "04703-000"
+        },
+        "store_chains": [
+            {
+                "id": "e09174bf-e76c-3908-ace9-afbc06ffae6a",
+                "name": "Mc Donalds",
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "geo_location": {
+            "lat": -23.61792755126953,
+            "lng": -46.70194244384765
+        }
+    },
+    {
+        "type": "place",
+        "id": "58a9726158dae62ca3db0373",
+        "name": "Oui Chalela",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Jardim Everest",
+            "thoroughfare": "Av Lineu de Paula Machado, ~1128",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.581798,
+            "lng": -46.699897
+        }
+    },
+    {
+        "type": "place",
+        "id": "5886d2fc58dae605c96f51d2",
+        "name": "Giro Gastronomia",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Paraisópolis",
+            "thoroughfare": "Rua Clementine Brenne, 30 em Paraisópolis",
+            "sub_thoroughfare": "",
+            "postal_code": "05659-900"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.607699999999998,
+            "lng": -46.72089
+        }
+    },
+    {
+        "type": "place",
+        "id": "58a7e3ae58dae62ca3d94582",
+        "name": "Pati Piva Doceria - Shopping Cidade Jardim",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Jardim Panorama",
+            "thoroughfare": "Avenida Magalhães de Castro",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.59966,
+            "lng": -46.697303
+        }
+    },
+    {
+        "type": "place",
+        "id": "588a6f9a58dae65b5e2c80ba",
+        "name": "ONG Finalização de Serviços Gráficos",
+        "labels": [
+            "restaurant",
+            "point_of_interest",
+            "store"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Jardim Guedala",
+            "thoroughfare": "Rua Circular do Bosque, 1589 cj 705 an 7 em Barra Funda",
+            "sub_thoroughfare": "",
+            "postal_code": "01136-000"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.586914999999998,
+            "lng": -46.705290999999995
+        }
+    },
+    {
+        "type": "place",
+        "id": "58a8a9d458dae62ca3da3fb0",
+        "name": "Delicias Do Mar",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Vila Progredior",
+            "thoroughfare": "Rua dos Três Irmãos, 563",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [
+            {
+                "id": "910d63f7-a4e5-3d3a-b86a-efc78c488e77",
+                "name": "Delicias do Mar",
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "geo_location": {
+            "lat": -23.589298,
+            "lng": -46.715796999999995
+        }
+    },
+    {
+        "type": "place",
+        "id": "58aff5de58dae60c1a9faf75",
+        "name": "Cia Da Pizza",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Vila Progredior",
+            "thoroughfare": "Rua dos Três Irmãos",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [
+            {
+                "id": "771a4967-a42a-3bc6-bf21-f20ab45713a4",
+                "name": "Cia da Pizza",
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "geo_location": {
+            "lat": -23.588172,
+            "lng": -46.716499
+        }
+    },
+    {
+        "type": "place",
+        "id": "58fdc72158dae676626edb3c",
+        "name": "Poncho Verde",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Morumbi",
+            "thoroughfare": "Avenida Prof Francisco Morato, 2718 lj 46 e 47 em Butantã",
+            "sub_thoroughfare": "",
+            "postal_code": "05512-300"
+        },
+        "store_chains": [
+            {
+                "id": "846f3b19-d6cb-3ce0-a270-8293e0880774",
+                "name": "Poncho Verde",
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "geo_location": {
+            "lat": -23.586471,
+            "lng": -46.723937
+        }
+    },
+    {
+        "type": "place",
+        "id": "58d2f2ed58dae655168e7445",
+        "name": "Santa Pizza",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 05658-010",
+            "sub_locality": "Jardim Leonor",
+            "thoroughfare": "Rua Doutor Cristiano de Sousa, 96",
+            "sub_thoroughfare": "",
+            "postal_code": "05658-010"
+        },
+        "store_chains": [
+            {
+                "id": "32d35ff3-9b97-30ad-89f3-a925e39c652f",
+                "name": "Santa Pizza",
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "geo_location": {
+            "lat": -23.602964,
+            "lng": -46.723983
+        }
+    },
+    {
+        "type": "place",
+        "id": "58a9d5fc58dae62ca3db43f1",
+        "name": "Robin Des Bois",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Morumbi",
+            "thoroughfare": "Rua Capote Valente, 86",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [
+            {
+                "id": "3e20a63d-20c0-3b2d-ab67-2d3c29af0198",
+                "name": "Robin Des Bois",
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "geo_location": {
+            "lat": -23.593698,
+            "lng": -46.716097999999995
+        }
+    },
+    {
+        "type": "place",
+        "id": "5886d2e058dae605c96f472f",
+        "name": "Le Pain Quotidien - Shopping Cidade Jardim",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Pinheiros",
+            "thoroughfare": "Avenida Magalhães de Castro, 2100 em Cidade Jardim",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.573493,
+            "lng": -46.700637
+        }
+    },
+    {
+        "type": "place",
+        "id": "58dacf2b58dae621975ae098",
+        "name": "Tutti Pizza - Brooklin",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 05650-001",
+            "sub_locality": "Morumbi",
+            "thoroughfare": "Avenida Morumbi, 5458",
+            "sub_thoroughfare": "",
+            "postal_code": "05650-001"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.612849999999998,
+            "lng": -46.713401
+        }
+    },
+    {
+        "type": "place",
+        "id": "58aa650358dae62ca3dbb99f",
+        "name": "Santo Grao Shopping Cidade Jardim",
+        "labels": [
+            "cafe",
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "State of Sao Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "Sao Paulo",
+            "sub_locality": "Cidade Jardim",
+            "thoroughfare": "Avenida das Acácias",
+            "sub_thoroughfare": "",
+            "postal_code": "05676-900"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.591168999999997,
+            "lng": -46.69519
+        }
+    },
+    {
+        "type": "place",
+        "id": "5802fecc58dae6667af76d0a",
+        "name": "Restaurante Girassol",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 05423-060",
+            "sub_locality": "Pinheiros",
+            "thoroughfare": "Rua Pero Leão, 85",
+            "sub_thoroughfare": "",
+            "postal_code": "05423-060"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.573109789943693,
+            "lng": -46.702369609680176
+        }
+    },
+    {
+        "type": "place",
+        "id": "58dfcdb058dae64d7008f7ce",
+        "name": "G F G",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "State of Sao Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "Sao Paulo",
+            "sub_locality": "Vila Progredior",
+            "thoroughfare": "Rua dos Tres Irmaos 201",
+            "sub_thoroughfare": "",
+            "postal_code": "05615-190"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.58624,
+            "lng": -46.717388
+        }
+    },
+    {
+        "type": "place",
+        "id": "57e56d2d58dae6792c515fc8",
+        "name": "The Burguest",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Vila Morumbi",
+            "thoroughfare": "Rua Américo Alves Pereira Filho, 461",
+            "sub_thoroughfare": "",
+            "postal_code": "05688-000"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.611518999999998,
+            "lng": -46.706151999999996
+        }
+    },
+    {
+        "type": "place",
+        "id": "58d9474158dae651ff3bcf99",
+        "name": "Dom Tito",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 05687-001",
+            "sub_locality": "Real Parque",
+            "thoroughfare": "Rua D. Paulo Pedrosa, 825",
+            "sub_thoroughfare": "",
+            "postal_code": "05687-001"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.611755,
+            "lng": -46.706283
+        }
+    },
+    {
+        "type": "place",
+        "id": "58d70d5758dae651ff371db8",
+        "name": "Anna'S Atelier de Sabor",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 05684-011",
+            "sub_locality": "Real Parque",
+            "thoroughfare": "Rua São Paulo Antigo, 500",
+            "sub_thoroughfare": "",
+            "postal_code": "05684-011"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.606346,
+            "lng": -46.699562
+        }
+    },
+    {
+        "type": "place",
+        "id": "58d4102758dae65516917cb7",
+        "name": "Lanchonete Astro Sol",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 05423-050",
+            "sub_locality": "Pinheiros",
+            "thoroughfare": "Rua Bento Frias, 61",
+            "sub_thoroughfare": "",
+            "postal_code": "05423-050"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.572405999999997,
+            "lng": -46.702835
+        }
+    },
+    {
+        "type": "place",
+        "id": "57dafd6c242dd2e62e6919e5",
+        "name": "Restaurante Casarao",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "State of Sao Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "Sao Paulo",
+            "sub_locality": "Jardim Leonor",
+            "thoroughfare": "Avenida Albert Einstein 494",
+            "sub_thoroughfare": "",
+            "postal_code": "05652-000"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.598066329956055,
+            "lng": -46.71515655517578
+        }
+    },
+    {
+        "type": "place",
+        "id": "57dafea9242dd2e62e6c8aaa",
+        "name": "Forneria Nucci",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "Sao Paulo",
+            "sub_locality": "Real Parque",
+            "thoroughfare": "Avenida Duquesa de Goias 44",
+            "sub_thoroughfare": "",
+            "postal_code": "05686-000"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.607969,
+            "lng": -46.704467
+        }
+    },
+    {
+        "type": "place",
+        "id": "58ca677e58dae616afd95aa8",
+        "name": "Taberna 474",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Jardim Panorama",
+            "thoroughfare": "Via Professor Simão Faiguenboim",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [
+            {
+                "id": "1f73daa1-a39e-3c9a-b202-8b14f753cb37",
+                "name": "Taberna 474",
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "geo_location": {
+            "lat": -23.608915,
+            "lng": -46.699740999999996
+        }
+    },
+    {
+        "type": "place",
+        "id": "57daf26e242dd2e62e498a7f",
+        "name": "Bienal Paes e Doces",
+        "labels": [
+            "bakery",
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "State of Sao Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "Sao Paulo",
+            "sub_locality": "Vila Morumbi",
+            "thoroughfare": "Rua Americo Alves Pereira Filho 486",
+            "sub_thoroughfare": "",
+            "postal_code": "05688-000"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.611179,
+            "lng": -46.70502
+        }
+    },
+    {
+        "type": "place",
+        "id": "57daf30c242dd2e62e4b2703",
+        "name": "Galuska",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Jardim Panorama",
+            "thoroughfare": "Shopping Cidade Jardim",
+            "sub_thoroughfare": "",
+            "postal_code": "05676-120"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.599442999999997,
+            "lng": -46.697334
+        }
+    },
+    {
+        "type": "place",
+        "id": "58a55a1e58dae62af3b25387",
+        "name": "Carrinho de Pipoca",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Morumbi",
+            "thoroughfare": "Centro Empresarial de São Paulo (CENESP)",
+            "sub_thoroughfare": "",
+            "postal_code": "05804-900"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.610201999999997,
+            "lng": -46.727019999999996
+        }
+    },
+    {
+        "type": "place",
+        "id": "57dafcf6242dd2e62e67d242",
+        "name": "Cafe & Sabor",
+        "labels": [
+            "cafe",
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "State of Sao Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "Sao Paulo",
+            "sub_locality": "Real Parque",
+            "thoroughfare": "Avenida Dqa de Goias 540",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.612312,
+            "lng": -46.703243
+        }
+    },
+    {
+        "type": "place",
+        "id": "57dafce0242dd2e62e6794f5",
+        "name": "La Gondola",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 05690-020",
+            "sub_locality": "Real Parque",
+            "thoroughfare": "Avenida Doutor Alberto de Oliveira Lima, 73",
+            "sub_thoroughfare": "",
+            "postal_code": "05690-020"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.617169,
+            "lng": -46.70231
+        }
+    },
+    {
+        "type": "place",
+        "id": "57daf284242dd2e62e49c450",
+        "name": "Scalinata Pizzeria Gourmet",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Vila Progredior",
+            "thoroughfare": "Rua Amélia Corrêa Fontes Guimarães, 590",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.589983999999998,
+            "lng": -46.721976999999995
+        }
+    },
+    {
+        "type": "place",
+        "id": "57dafe9b242dd2e62e6c615d",
+        "name": "Nany Doces",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 05513-300",
+            "sub_locality": "Butantã",
+            "thoroughfare": "Avenida Professor Francisco Morato, 2367",
+            "sub_thoroughfare": "",
+            "postal_code": "05513-300"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.585632999999998,
+            "lng": -46.721626
+        }
+    },
+    {
+        "type": "place",
+        "id": "57daff29242dd2e62e6df596",
+        "name": "Copa Gastronomia & Futebol",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Morumbi",
+            "thoroughfare": "Estádio Cícero Pompeu de Toledo",
+            "sub_thoroughfare": null,
+            "postal_code": "05651-020"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.600931,
+            "lng": -46.719153999999996
+        }
+    },
+    {
+        "type": "place",
+        "id": "57dafcdf242dd2e62e67921c",
+        "name": "Giallo Pizzaria",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 05686-000",
+            "sub_locality": "Real Parque",
+            "thoroughfare": "Avenida Dqa. de Goiás, 212",
+            "sub_thoroughfare": "",
+            "postal_code": "05686-000"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.609586999999998,
+            "lng": -46.703911999999995
+        }
+    },
+    {
+        "type": "place",
+        "id": "58d2cdd958dae655168da5e6",
+        "name": "Sabor",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 05616-011",
+            "sub_locality": "Vila Progredior",
+            "thoroughfare": "Rua D. Armando Lombardi, 556",
+            "sub_thoroughfare": "",
+            "postal_code": "05616-011"
+        },
+        "store_chains": [
+            {
+                "id": "28c1d7c0-4369-3076-88d6-5b108a947109",
+                "name": "Sabor",
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "geo_location": {
+            "lat": -23.590196,
+            "lng": -46.719223
+        }
+    },
+    {
+        "type": "place",
+        "id": "5834453458dae6667a2b768e",
+        "name": "Praça Julio Mesquita MORAIS",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Vila Progredior",
+            "thoroughfare": "Rua Amélia Corrêa Fontes Guimarães",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.589336,
+            "lng": -46.720596
+        }
+    },
+    {
+        "type": "place",
+        "id": "58a8ffad58dae62ca3daacf9",
+        "name": "Pizzaria Morumbi",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Morumbi",
+            "thoroughfare": "Av Morumbi, 1100",
+            "sub_thoroughfare": null,
+            "postal_code": null
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.584834999999998,
+            "lng": -46.705856
+        }
+    },
+    {
+        "type": "place",
+        "id": "58a20d1858dae655b9f920e5",
+        "name": "The Gourmet Tea",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "State of Sao Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "Sao Paulo",
+            "sub_locality": "Cidade Jardim",
+            "thoroughfare": "Avenida Magalhaes de Castro 12000",
+            "sub_thoroughfare": "",
+            "postal_code": "05676-900"
+        },
+        "store_chains": [
+            {
+                "id": "52149fcb-d377-34e8-86fc-12e6f20ef9be",
+                "name": "The Gourmet Tea",
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "geo_location": {
+            "lat": -23.580860137939453,
+            "lng": -46.69501876831054
+        }
+    },
+    {
+        "type": "place",
+        "id": "58a92adc58dae62ca3dac8fb",
+        "name": "Abra a Boca e Feche os Olhos",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "Jardim Panorama",
+            "locality": "São Paulo",
+            "sub_locality": "Jardim Panorama",
+            "thoroughfare": "Avenida Magalhães de Castro",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.599372,
+            "lng": -46.697486
+        }
+    },
+    {
+        "type": "place",
+        "id": "58aa0f7a58dae62ca3db70e2",
+        "name": "Sujinho",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Morumbi",
+            "thoroughfare": "Rua Fonseca Teixeira",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.585199,
+            "lng": -46.696098
+        }
+    },
+    {
+        "type": "place",
+        "id": "58a7d50d58dae62ca3d93575",
+        "name": "Tostex - Shopping Cidade Jardim",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Pinheiros",
+            "thoroughfare": "Av Magalhães de Castro, 12000",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.598497,
+            "lng": -46.69725
+        }
+    },
+    {
+        "type": "place",
+        "id": "57faf7c958dae6667aec9c5b",
+        "name": "Mercearia",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "State of Sao Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "Sao Paulo",
+            "sub_locality": "Paraisópolis",
+            "thoroughfare": "Avenida Giovanni Gronchi 3399",
+            "sub_thoroughfare": "",
+            "postal_code": "05651-002"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.611096999999997,
+            "lng": -46.727503999999996
+        }
+    },
+    {
+        "type": "place",
+        "id": "58815ad058dae602e9f05690",
+        "name": "Divino Fogão - Shopping Butantã",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Butantã",
+            "thoroughfare": "Avenida Professor Francisco Morato",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [
+            {
+                "id": "525c1202-ea85-3feb-a6d5-5fe82566b79e",
+                "name": "Divino Fogão",
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "geo_location": {
+            "lat": -23.586744,
+            "lng": -46.724933
+        }
+    },
+    {
+        "type": "place",
+        "id": "58e72a5a58dae64d70149b25",
+        "name": "Kaphes Cafeteria",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 05673-050",
+            "sub_locality": "Cidade Jardim",
+            "thoroughfare": "Avenida Engenheiro Oscar Americano, 840",
+            "sub_thoroughfare": "",
+            "postal_code": "05673-050"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.591257,
+            "lng": -46.703395
+        }
+    },
+    {
+        "type": "place",
+        "id": "57dafdcf242dd2e62e6a2c95",
+        "name": "Varanda",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "Sao Paulo",
+            "sub_locality": "Morumbi",
+            "thoroughfare": "Praca Deputado Dario de Barros 401",
+            "sub_thoroughfare": "",
+            "postal_code": "05670-090"
+        },
+        "store_chains": [
+            {
+                "id": "33fac56d-eef3-309c-a771-941058f2267b",
+                "name": "Varanda",
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "geo_location": {
+            "lat": -23.586301,
+            "lng": -46.69374
+        }
+    },
+    {
+        "type": "place",
+        "id": "58d458b958dae6551692fe5a",
+        "name": "Kilolivia",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo - SP , CEP: 05615-190",
+            "sub_locality": "Vila Progredior",
+            "thoroughfare": "Rua Dos Três Irmãos, 545",
+            "sub_thoroughfare": "",
+            "postal_code": "05615-190"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.589176,
+            "lng": -46.715927
+        }
+    },
+    {
+        "type": "place",
+        "id": "57dafe22242dd2e62e6b0ffa",
+        "name": "'Deck Paineiras",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "Sao Paulo",
+            "sub_locality": "Jardim Silvia (Zona Oeste)",
+            "thoroughfare": "Avenida Doutor Alberto Penteado 605",
+            "sub_thoroughfare": "",
+            "postal_code": "05678-000"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.599007999999998,
+            "lng": -46.704338
+        }
+    },
+    {
+        "type": "place",
+        "id": "57dafde3242dd2e62e6a6275",
+        "name": "Restaurante Caseiro Verdinho",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "Sao Paulo",
+            "sub_locality": "Vila Progredior",
+            "thoroughfare": "Rua Jose Jannarelli 547",
+            "sub_thoroughfare": "",
+            "postal_code": "05615-001"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.589295999999997,
+            "lng": -46.717048
+        }
+    },
+    {
+        "type": "place",
+        "id": "58ac592f58dae62ca3dd52e5",
+        "name": "Fraga's",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Vila Progredior",
+            "thoroughfare": "Rua José Jannarelli , 544-624",
+            "sub_thoroughfare": "",
+            "postal_code": "05615-001"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.589572,
+            "lng": -46.717082
+        }
+    },
+    {
+        "type": "place",
+        "id": "57daf2cd242dd2e62e4a7e5e",
+        "name": "Grao Expresso Cafeteria",
+        "labels": [
+            "cafe",
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "State of Sao Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "Sao Paulo",
+            "sub_locality": "Morumbi",
+            "thoroughfare": "Avenida Professor Francisco Morato 2585",
+            "sub_thoroughfare": "",
+            "postal_code": "05513-300"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.586396999999998,
+            "lng": -46.723606
+        }
+    },
+    {
+        "type": "place",
+        "id": "57db0773242dd2e62e85d927",
+        "name": "Villa Jockey",
+        "labels": [
+            "restaurant",
+            "point_of_interest"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "São Paulo",
+            "sub_admin_area": "São Paulo",
+            "locality": "São Paulo",
+            "sub_locality": "Jardim Everest",
+            "thoroughfare": "Jockey Club de São Paulo",
+            "sub_thoroughfare": "",
+            "postal_code": "05601-000"
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.583271999999997,
+            "lng": -46.698336999999995
+        }
+    },
+    {
+        "type": "place",
+        "id": "58a92af258dae62ca3dacbe2",
+        "name": "Bocadinho - Shopping Cidade Jardim",
+        "labels": [
+            "restaurant"
+        ],
+        "address": {
+            "country": "BR",
+            "admin_area": "SP",
+            "sub_admin_area": "Jardim Panorama",
+            "locality": "São Paulo",
+            "sub_locality": "Jardim Panorama",
+            "thoroughfare": "Avenida Magalhães de Castro",
+            "sub_thoroughfare": "",
+            "postal_code": ""
+        },
+        "store_chains": [],
+        "geo_location": {
+            "lat": -23.599372,
+            "lng": -46.697486
+        }
+    }
+]
