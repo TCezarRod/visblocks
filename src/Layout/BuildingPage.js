@@ -6,6 +6,7 @@ import { addArrow, createBlock, updateBlockInput, updateBlockData } from "action
 import ScatterPlot from 'Visualizations/ScatterPlot';
 import LineChart from 'Visualizations/LineChart';
 import Histogram from 'Visualizations/Histogram';
+import Map from 'Visualizations/Map';
 import VisBlock from 'Blocks/VisBlock';
 import EdgesCanvas from 'Edges/EdgesCanvas';
 
@@ -22,6 +23,7 @@ import ReactFileReader from 'react-file-reader'
 import BarChartIcon from 'assets/images/bar_chart.svg'
 import ScatterPlotIcon from 'assets/images/scatter_plot.svg'
 import LineChartIcon from 'assets/images/line_chart.svg'
+import PinIcon from 'assets/images/map_pin.svg'
 import DataIcon from 'assets/images/data.svg'
 
 const drawerWidth = 50;
@@ -152,7 +154,11 @@ class BuildingPage extends React.Component {
           id = {id}
           data={data}
           dimension={props.dimension}
-          bins={props.bins}/>      
+          bins={props.bins}/>         
+      case 'Map':
+        return <Map 
+          id = {id}
+          data={data}/>        
       default:
         return <React.Fragment/>
     }
@@ -229,7 +235,6 @@ class BuildingPage extends React.Component {
 
   render() {
     const { classes } = this.props;
-
     return (
       <div className={classes.root}>
         {this.renderAppBar()}
@@ -261,6 +266,11 @@ class BuildingPage extends React.Component {
             <ListItem button disableGutters={true} onClick={() => this.addBlock("ScatterPlot")}>
               <ListItemIcon>
                 <img src={ScatterPlotIcon} width={45} alt="ScatterPlot"/>
+              </ListItemIcon>
+            </ListItem>
+            <ListItem button disableGutters={true} onClick={() => this.addBlock("Map")}>
+              <ListItemIcon>
+                <img src={PinIcon} width={45} alt="Map"/>
               </ListItemIcon>
             </ListItem>
           </List>
