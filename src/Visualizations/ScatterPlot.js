@@ -60,11 +60,11 @@ class ScatterPlot extends React.Component {
       delete data.x;
       delete data.y;
     })
-    this.props.onSelection(this.props.id, points[0].data)
+    this.props.onSelection(this.props.id, {type: 'selection', data: points[0].data})
   }
 
   resetOutput = () => {
-    this.props.onSelection(this.props.id, this.props.data)
+    this.props.onSelection(this.props.id, {type: 'selection', data: []})
   }
 
   labelStyle = {

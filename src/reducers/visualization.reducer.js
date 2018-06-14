@@ -23,7 +23,7 @@ const initialState = {
         arrows: {}        
     },
     dataState: {
-        data: {} // "id": {type: source/input, data: id/{data}}
+        data: {} // "id": {type: source/input, data: id/{data}, selection: {data}}
     },
     blocksState: {
         lastId: 1,
@@ -34,6 +34,7 @@ const initialState = {
 const visualizationReducer = (state = initialState, action) => {
     let arrows = Object.assign({}, state.arrowsState.arrows)
     let blocks = Object.assign({}, state.blocksState.blocks)
+    let data = Object.assign({}, state.dataState.data)
     switch (action.type) {
         case MOVE_ARROW_END:
             arrows[action.payload.id].xe = action.payload.x
@@ -70,8 +71,19 @@ const visualizationReducer = (state = initialState, action) => {
             })
             return {...state, arrowsState: {...state.arrowsState, arrows: arrows}, blocksState: {...state.blocksState, blocks:blocks}}
         case CREATE_BLOCK:
-            blocks[state.blocksState.lastId] = {...action.payload.block, id: state.blocksState.lastId}
-            return {...state, blocksState: {...state.blocksState, blocks: blocks, lastId: state.blocksState.lastId+1}}
+            const newId = state.blocksState.lastId
+            blocks[newId] = {...action.payload.block, id: newId}
+            if (action.payload.data) {
+              data = {...data, [newId]: {data: action.payload.data}}
+              if (action.payload.isInput) {
+                data[newId].type = "input"
+                blocks[newId].input = action.payload.data
+              } else {
+                data[newId].type = "data"
+                blocks[newId].data = action.payload.data
+              }
+            }
+            return {...state, blocksState: {...state.blocksState, blocks: blocks, lastId: state.blocksState.lastId+1}, dataState: {...state.dataState, data: data}}
         case DELETE_BLOCK:
             delete blocks[action.payload.id]
             Object.keys(arrows).forEach(arrowKey => {
@@ -81,12 +93,20 @@ const visualizationReducer = (state = initialState, action) => {
             })
             return {...state, blocksState: {...state.blocksState, blocks: blocks}, arrowsState: {...state.arrowsState, arrows: arrows}}
         case UPDATE_DATA:
+            const id = action.payload.id;
+            data = {...data, [id]: {...data[id]}}
             if (action.payload.isInput) {
-              blocks[action.payload.id].input = action.payload.source
+              data[id].type = "input"
+              data[id].data = action.payload.source
+              blocks[id].input = action.payload.source
+            } else if (action.payload.isSelection) {
+              data[id].selection = action.payload.source
             } else {
-              blocks[action.payload.id].data = action.payload.source
+              data[id].type = "data"
+              data[id].data = action.payload.source
+              blocks[id].data = action.payload.source
             }
-            return {...state, blocksState: {...state.blocksState, blocks: blocks}}
+            return {...state, blocksState: {...state.blocksState, blocks: blocks}, dataState: {...state.dataState, data: data}}
         case START_CONNECT:
             return {...state, controlState: {connecting: true, sourceId: action.payload.id}}
         case FINISH_CONNECT:            

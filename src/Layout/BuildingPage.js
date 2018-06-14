@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { addArrow, createBlock, updateBlockInput, updateBlockData } from "actions";
+import { addArrow, createBlock, updateBlockInput, updateBlockData, updateBlockSelection } from "actions";
 
-//import DataBlock from 'Blocks/DataBlock';
 import ScatterPlot from 'Visualizations/ScatterPlot';
 import LineChart from 'Visualizations/LineChart';
 import Histogram from 'Visualizations/Histogram';
@@ -63,81 +62,66 @@ const styles = theme => ({
 const mapDispatchToProps = dispatch => {
   return {
     addArrow: arrow => dispatch(addArrow(arrow)),
-    createBlock: block => dispatch(createBlock(block)),
+    createBlock: (block, data) => dispatch(createBlock(block, data)),
     updateBlockInput: (id, inputId) => dispatch(updateBlockInput(id, inputId)),
-    updateBlockData: (id, data) => dispatch(updateBlockData(id, data))
+    updateBlockData: (id, data) => dispatch(updateBlockData(id, data)),
+    updateBlockSelection: (id, data) => dispatch(updateBlockSelection(id, data))
   };
 };
 
 const mapStateToProps = state => {
-  return {blocks: state.blocksState.blocks, nextId: state.blocksState.lastId};
+  return {blocks: state.blocksState.blocks, nextId: state.blocksState.lastId, dataMap: state.dataState.data};
 };
 
 class BuildingPage extends React.Component {
-  state = {
-    dataMap: {},
-    blocks: []
-  }
-
-  addBlock = (type, width = 300, height = 200) => {
+  addBlock = (type, width = 300, height = 200, data) => {
     this.props.createBlock({
       type: type,
       props: {
         position: {
-          top:  300,
-          left: 200
+          top:  25,
+          left: 25
         },
         size: {
           height: height,
           width: width
         }
       }
-    })
+    }, data)
   }
 
-  // TODO: check if using victory-shared-events can solve the blocks interaction in a more elegant way
   updateData = (id, data) => {
-    this.setState((prevState) => ({
-      dataMap: Object.assign(prevState.dataMap, {[id]: data})
-    }))
-  }
-
-  componentWillMount() {
-    let dataMap = {};
-
-    for (let id in this.props.blocks) {
-      let block = this.props.blocks[id]
-      if (block.type === 'Data') {
-        dataMap[block.id] = block.data;
-      }
-    }
-
-    this.setState((prevState) => ({dataMap: Object.assign(prevState.dataMap, dataMap)}))
-  }
-
-  componentDidMount() {
-    for (let id in this.props.blocks) {
-      let block = this.props.blocks[id]
-    
-      if (block.input) {
-        let inputBlock = this.props.blocks[block.input]
-        this.props.addArrow({
-          xi:inputBlock.props.position.left + inputBlock.props.size.width,
-          yi:inputBlock.props.position.top + inputBlock.props.size.height/2,
-          xe: block.props.position.left,
-          ye: block.props.position.top + block.props.size.height/2,
-          startBlock: inputBlock.id,
-          endBlock: block.id
-        })
-      }
+    switch (data.type) {
+      case 'input':
+        this.props.updateBlockInput(id, data.data)
+        break
+      case 'data':
+        this.props.updateBlockData(id, data.data)
+        break
+      case 'selection':
+        this.props.updateBlockSelection(id, data.data)
+        break
+      default:
+        return
     }
   }
 
-  // TODO replace dataMap for dataState
   getData = (originId) => {
-    let originBlock = this.props.blocks[originId];
-    if (originBlock)
-      return this.state.dataMap[originId] || this.getData(originBlock.input)
+    const originData = this.props.dataMap[originId]
+
+    if (originData) {
+      if (originData.selection && originData.selection.length > 0)
+        return originData.selection 
+
+      switch (originData.type) {
+        case 'data':
+          return originData.data
+        case 'input':
+          return this.getData(originData.data)
+        default:
+          return []
+      }
+    }
   }
 
   renderVisualization = (id, type, data, props) => {
@@ -223,10 +207,7 @@ class BuildingPage extends React.Component {
   handleLoad = (event) => {
     let content = event.target.result;
     let data = JSON.parse(content);
-    let newId = this.props.nextId;
-    this.addBlock("Data", 75, 50);
-    this.props.updateBlockData(newId, data);
-    this.setState({dataMap: {...this.state.dataMap, [newId]:data}})
+    this.addBlock("Data", 75, 50, data);
   }
 
   renderAppBar() {
