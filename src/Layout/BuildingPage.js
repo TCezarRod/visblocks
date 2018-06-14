@@ -14,6 +14,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Drawer from '@material-ui/core/Drawer';
+import Tooltip from '@material-ui/core/Tooltip';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -50,6 +51,13 @@ const styles = theme => ({
     minWidth: 0, // So the Typography noWrap works
   },
   toolbar: theme.mixins.toolbar,
+  popper: {
+    left: '30px !important',
+    top: '10px !important'
+  },
+  listIcons: {
+    margin: '0'
+  }
 });
 
 const mapDispatchToProps = dispatch => {
@@ -246,33 +254,43 @@ class BuildingPage extends React.Component {
           >
           <div className={classes.toolbar} />
           <List>
-            <ListItem button disableGutters={true}>
-              <ReactFileReader handleFiles={this.handleFiles} fileTypes={[".json"]} base64={true} multipleFiles={false}>              
-                <ListItemIcon>
-                  <img src={DataIcon} width={45} alt="Data"/>
+            <Tooltip title="Add data" placement="right" classes={{popper: classes.popper}}>
+              <ListItem button disableGutters={true}>
+                <ReactFileReader handleFiles={this.handleFiles} fileTypes={[".json"]} base64={true} multipleFiles={false}>              
+                  <ListItemIcon classes={{root: classes.listIcons}}>
+                    <img src={DataIcon} width={45} alt="Data"/>
+                  </ListItemIcon>
+                </ReactFileReader> 
+              </ListItem>
+            </Tooltip>
+            <Tooltip title="Line Chart" placement="right"  classes={{popper: classes.popper}}>
+              <ListItem button disableGutters={true} onClick={() => this.addBlock("LineChart")}>
+                <ListItemIcon classes={{root: classes.listIcons}}>
+                  <img src={LineChartIcon} width={45} alt="LineChart"/>
                 </ListItemIcon>
-              </ReactFileReader> 
-            </ListItem>
-            <ListItem button disableGutters={true} onClick={() => this.addBlock("LineChart")}>
-              <ListItemIcon>
-                <img src={LineChartIcon} width={45} alt="LineChart"/>
-              </ListItemIcon>
-            </ListItem>
-            <ListItem button disableGutters={true} onClick={() => this.addBlock("Histogram")}>
-              <ListItemIcon>
-                <img src={BarChartIcon} width={45} alt="Histogram"/>
-              </ListItemIcon>
-            </ListItem>
-            <ListItem button disableGutters={true} onClick={() => this.addBlock("ScatterPlot")}>
-              <ListItemIcon>
-                <img src={ScatterPlotIcon} width={45} alt="ScatterPlot"/>
-              </ListItemIcon>
-            </ListItem>
-            <ListItem button disableGutters={true} onClick={() => this.addBlock("Map")}>
-              <ListItemIcon>
-                <img src={PinIcon} width={45} alt="Map"/>
-              </ListItemIcon>
-            </ListItem>
+              </ListItem>
+            </Tooltip>
+            <Tooltip title="Histogram" placement="right"  classes={{popper: classes.popper}}>
+              <ListItem button disableGutters={true} onClick={() => this.addBlock("Histogram")}>
+                <ListItemIcon classes={{root: classes.listIcons}}>
+                  <img src={BarChartIcon} width={45} alt="Histogram"/>
+                </ListItemIcon>
+              </ListItem>
+            </Tooltip>
+            <Tooltip title="Scatter Plot" placement="right"  classes={{popper: classes.popper}}>
+              <ListItem button disableGutters={true} onClick={() => this.addBlock("ScatterPlot")}>
+                <ListItemIcon classes={{root: classes.listIcons}}>
+                  <img src={ScatterPlotIcon} width={45} alt="ScatterPlot"/>
+                </ListItemIcon>
+              </ListItem>
+            </Tooltip>
+            <Tooltip title="Pin Map" placement="right"  classes={{popper: classes.popper}}>
+              <ListItem button disableGutters={true} onClick={() => this.addBlock("Map")}>
+                <ListItemIcon classes={{root: classes.listIcons}}>
+                  <img src={PinIcon} width={45} alt="Map"/>
+                </ListItemIcon>
+              </ListItem>
+            </Tooltip>
           </List>
         </Drawer>  
         <main className={classes.content}>
