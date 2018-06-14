@@ -27,6 +27,13 @@ class MapVis extends React.Component {
     zoom: 2
   }
 
+  componentDidUpdate = () => {
+    if (this.refs.map) {
+      var map = this.refs.map.leafletElement;
+      map.invalidateSize();
+    }
+  }
+
   searchForLatLng = (data) => {
     if ('lat' in data && 'lng' in data) {
       return {lat: data.lat, lng: data.lng}
