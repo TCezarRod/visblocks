@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { addArrow, createBlock, updateBlockInput } from "actions";
+import { addArrow, createBlock, updateBlockInput, updateBlockData } from "actions";
 
 //import DataBlock from 'Blocks/DataBlock';
 import ScatterPlot from 'Visualizations/ScatterPlot';
@@ -17,10 +17,12 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { withStyles } from '@material-ui/core/styles';
+import ReactFileReader from 'react-file-reader'
 
 import BarChartIcon from 'assets/images/bar_chart.svg'
 import ScatterPlotIcon from 'assets/images/scatter_plot.svg'
 import LineChartIcon from 'assets/images/line_chart.svg'
+import DataIcon from 'assets/images/data.svg'
 
 const drawerWidth = 50;
 
@@ -52,12 +54,13 @@ const mapDispatchToProps = dispatch => {
   return {
     addArrow: arrow => dispatch(addArrow(arrow)),
     createBlock: block => dispatch(createBlock(block)),
-    updateBlockInput: (id, inputId) => dispatch(updateBlockInput(id, inputId))
+    updateBlockInput: (id, inputId) => dispatch(updateBlockInput(id, inputId)),
+    updateBlockData: (id, data) => dispatch(updateBlockData(id, data))
   };
 };
 
 const mapStateToProps = state => {
-  return {blocks: state.blocksState.blocks};
+  return {blocks: state.blocksState.blocks, nextId: state.blocksState.lastId};
 };
 
 class BuildingPage extends React.Component {
@@ -66,7 +69,7 @@ class BuildingPage extends React.Component {
     blocks: []
   }
 
-  addBlock = (type) => {
+  addBlock = (type, width = 300, height = 200) => {
     this.props.createBlock({
       type: type,
       props: {
@@ -75,8 +78,8 @@ class BuildingPage extends React.Component {
           left: 200
         },
         size: {
-          height: 200,
-          width: 300
+          height: height,
+          width: width
         }
       }
     })
@@ -120,6 +123,7 @@ class BuildingPage extends React.Component {
     }
   }
 
+  // TODO replace dataMap for dataState
   getData = (originId) => {
     let originBlock = this.props.blocks[originId];
     if (originBlock)
@@ -197,6 +201,18 @@ class BuildingPage extends React.Component {
 
   handleFiles = (files) => {
     console.log('read');
+    let fileReader = new FileReader();
+    fileReader.onload = this.handleLoad
+    fileReader.readAsText(files.fileList.item(0), 'UTF-8')
+  }
+
+  handleLoad = (event) => {
+    let content = event.target.result;
+    let data = JSON.parse(content);
+    let newId = this.props.nextId;
+    this.addBlock("Data", 75, 50);
+    this.props.updateBlockData(newId, data);
+    this.setState({dataMap: {...this.state.dataMap, [newId]:data}})
   }
 
   renderAppBar() {
@@ -225,6 +241,13 @@ class BuildingPage extends React.Component {
           >
           <div className={classes.toolbar} />
           <List>
+            <ListItem button disableGutters={true}>
+              <ReactFileReader handleFiles={this.handleFiles} fileTypes={[".json"]} base64={true} multipleFiles={false}>              
+                <ListItemIcon>
+                  <img src={DataIcon} width={45} alt="Data"/>
+                </ListItemIcon>
+              </ReactFileReader> 
+            </ListItem>
             <ListItem button disableGutters={true} onClick={() => this.addBlock("LineChart")}>
               <ListItemIcon>
                 <img src={LineChartIcon} width={45} alt="LineChart"/>
@@ -241,12 +264,7 @@ class BuildingPage extends React.Component {
               </ListItemIcon>
             </ListItem>
           </List>
-        </Drawer>
-        {/*<ReactFileReader handleFiles={this.handleFiles} fileTypes={[".json"]} base64={true} multipleFiles={false}>
-          <IconButton className={'navButton'} color="inherit" aria-label="Menu">
-            <Icon>file_upload</Icon>
-          </IconButton>
-        </ReactFileReader>*/}     
+        </Drawer>  
         <main className={classes.content}>
           <div className={classes.toolbar} />  
           <div className="workArea"> 
