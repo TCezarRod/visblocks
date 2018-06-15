@@ -1,7 +1,7 @@
 import React  from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { moveBlock, deleteBlock, startConnect, finishConnect } from 'actions'
+import { moveBlock, deleteBlock, startConnect, finishConnect, selectBlock } from 'actions'
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -24,12 +24,13 @@ const mapDispatchToProps = dispatch => {
     moveBlock: (id, props) => dispatch(moveBlock(id, props)),
     deleteBlock: (id) => dispatch(deleteBlock(id)),
     startConnect: (id) => dispatch(startConnect(id)),
-    finishConnect: () => dispatch(finishConnect())
+    finishConnect: () => dispatch(finishConnect()),
+    selectBlock: (id) => dispatch(selectBlock(id))
   };
 };
 
 const mapStateToProps = state => {
-  return {isConnecting: state.controlState.connecting, connectionSource: state.controlState.sourceId};
+  return {isConnecting: state.controlState.connecting, connectionSource: state.controlState.sourceId, selectedId: state.controlState.selected};
 };
 
 class VisBlock extends React.Component {
@@ -117,8 +118,12 @@ class VisBlock extends React.Component {
       React.cloneElement(child, {data:child.props.data, width: this.state.size.width, height: this.state.size.height }));
   }
 
-  handleBlockClick = () => {
-    console.log(`click on ${this.props.id}`);
+  handleBlockClick = (event) => {
+    event.stopPropagation()
+    if (!this.props.isConnecting) {
+      this.props.selectBlock(this.props.id)
+    }
+
     if (this.props.isConnecting && this.props.id !== this.props.connectionSource) {
       this.props.onUpdate(this.props.id, this.props.connectionSource)
       this.props.finishConnect()
@@ -137,6 +142,11 @@ class VisBlock extends React.Component {
 
   handleClose = () => {
     this.props.deleteBlock(this.props.id);
+  }
+
+  getClassNames = () => {
+    let className = `container-block ${this.props.selectedId === this.props.id ? 'container-selected' : ''}`
+    return className
   }
   
   render() {
@@ -158,9 +168,10 @@ class VisBlock extends React.Component {
       minWidth={minWidth}
       minHeight={minHeight}
       style={{zIndex:'1'}}
+      className={this.getClassNames()}
     >
       {/*<div className="port port-input"></div>*/}
-      <div className="container-block" onClick={this.handleBlockClick} onContextMenu={this.handleContextMenu}>
+      <div className={this.getClassNames()} onClick={this.handleBlockClick} onContextMenu={this.handleContextMenu}>
         <div className="handle" >
         <ButtonBase className={classes.button} aria-label="Close" onClick={this.handleClose}>
           <CloseIcon style={{ fontSize: 15 }}/>

@@ -21,6 +21,23 @@ body {
   width: inherit;
 }
 
+.container-selected {
+  animation-duration: 1s;
+  animation-name: glow;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+} 
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 1px 1px rgba(200, 200, 200, 0.7);
+  }
+
+  to {
+    box-shadow: 0 0 4px 4px rgba(200, 200, 200, 0.4);}
+}
+
+
 .handle {
   cursor: grab;
   min-height: 20px;

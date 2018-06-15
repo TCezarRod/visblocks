@@ -10,13 +10,15 @@ import {
     DELETE_BLOCK,
     UPDATE_DATA,
     START_CONNECT,
-    FINISH_CONNECT
+    FINISH_CONNECT,
+    SELECT_BLOCK
 } from '../constants/action-types';
 
 const initialState = {
     controlState: {
       connecting: false,
-      sourceId: -1
+      sourceId: -1,
+      selected: -1
     },
     arrowsState: {
         lastId: 0,
@@ -86,12 +88,13 @@ const visualizationReducer = (state = initialState, action) => {
             return {...state, blocksState: {...state.blocksState, blocks: blocks, lastId: state.blocksState.lastId+1}, dataState: {...state.dataState, data: data}}
         case DELETE_BLOCK:
             delete blocks[action.payload.id]
+            delete data[action.payload.id]
             Object.keys(arrows).forEach(arrowKey => {
               if (arrows[arrowKey].endBlock === action.payload.id|| arrows[arrowKey].startBlock === action.payload.id ) {
                 delete arrows[arrowKey]                   
               }
             })
-            return {...state, blocksState: {...state.blocksState, blocks: blocks}, arrowsState: {...state.arrowsState, arrows: arrows}}
+            return {...state, blocksState: {...state.blocksState, blocks: blocks}, arrowsState: {...state.arrowsState, arrows: arrows}, dataState: {...state.dataState, data: data}}
         case UPDATE_DATA:
             const id = action.payload.id;
             data = {...data, [id]: {...data[id]}}
@@ -108,9 +111,11 @@ const visualizationReducer = (state = initialState, action) => {
             }
             return {...state, blocksState: {...state.blocksState, blocks: blocks}, dataState: {...state.dataState, data: data}}
         case START_CONNECT:
-            return {...state, controlState: {connecting: true, sourceId: action.payload.id}}
+            return {...state, controlState: {...state.controlState, connecting: true, sourceId: action.payload.id, selected: action.payload.id}}
         case FINISH_CONNECT:            
-            return {...state, controlState: {connecting: false, sourceId: -1}}
+            return {...state, controlState: {...state.controlState, connecting: false, sourceId: -1}}
+        case SELECT_BLOCK:
+            return {...state, controlState: {...state.controlState, selected: action.payload.id}}
         default:
             return state
     }

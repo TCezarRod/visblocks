@@ -8,7 +8,8 @@ import {
     DELETE_BLOCK,
     UPDATE_DATA,
     START_CONNECT,
-    FINISH_CONNECT
+    FINISH_CONNECT,
+    SELECT_BLOCK
 } from "../constants/action-types";
 
 export const moveArrowEnd = (id, position) => ({ type: MOVE_ARROW_END, payload: {...position, id:id} });
@@ -25,3 +26,5 @@ export const updateBlockData = (id, data) => ({ type: UPDATE_DATA, payload: {id:
 
 export const startConnect = (sourceId) => ({ type: START_CONNECT, payload: {id: sourceId} });
 export const finishConnect = () => ({ type: FINISH_CONNECT });
+
+export const selectBlock = id => ({type: SELECT_BLOCK, payload: {id: id}})

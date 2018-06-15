@@ -10,3 +10,4 @@ export const UPDATE_DATA = "UPDATE_DATA";
 
 export const START_CONNECT = "ENABLE_CONNECT";
 export const FINISH_CONNECT = "FINISH_CONNECT";
+export const SELECT_BLOCK = "SELECT_BLOCK";
