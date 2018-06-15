@@ -124,17 +124,22 @@ class BuildingPage extends React.Component {
     const originData = this.props.dataMap[originId]
 
     if (originData) {
-      if (originData.selection && originData.selection.length > 0)
-        return originData.selection 
-
+      let data
       switch (originData.type) {
         case 'data':
-          return originData.data
+          data = originData.data
+          break
         case 'input':
-          return this.getData(originData.data)
+          data = this.getData(originData.data)
+          break
         default:
-          return []
+          data = []
+          break
       }
+      if (data && data.length && originData.selection && originData.selection.length > 0) {
+        data = originData.selection 
+      }
+      return data
     }
   }
 

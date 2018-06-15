@@ -52,11 +52,17 @@ const visualizationReducer = (state = initialState, action) => {
                 delete arrows[arrowKey]                   
               }
             })
+            if (!blocks[action.payload.arrow.startBlock].forwardId) blocks[action.payload.arrow.startBlock].forwardId = []
+            blocks[action.payload.arrow.startBlock].forwardId.push(action.payload.arrow.endBlock);
             arrows[state.arrowsState.lastId] = action.payload.arrow;
-            return {...state, arrowsState: {...state.arrowsState, arrows: arrows, lastId: state.arrowsState.lastId+1}}
+            return {...state, arrowsState: {...state.arrowsState, arrows: arrows, lastId: state.arrowsState.lastId+1}, blocksState: {...state.blocksState, blocks: blocks}}
         case DELETE_ARROW:
+            let forwardIndex = blocks[arrows[action.payload.id]].forwardId.indexOf(arrows[action.payload.id].endBlock)
+            if (forwardIndex > -1) {
+                blocks[arrows[action.payload.id]].forwardId.splice(forwardIndex, 1)
+            }            
             delete arrows[action.payload.id]
-            return {...state, arrowsState: {...state.arrowsState, arrows: arrows}}
+            return {...state, arrowsState: {...state.arrowsState, arrows: arrows}, blocksState: {...state.blocksState, blocks: blocks}}
         case MOVE_BLOCK:
             const { position, size } = action.payload.props
             blocks[action.payload.id].props.position = {left: position.x, top: position.y};
@@ -87,6 +93,12 @@ const visualizationReducer = (state = initialState, action) => {
             }
             return {...state, blocksState: {...state.blocksState, blocks: blocks, lastId: state.blocksState.lastId+1}, dataState: {...state.dataState, data: data}}
         case DELETE_BLOCK:
+            let block = blocks[action.payload.id]
+            let delData = (id) => delete data[id]
+            while (block && (block.data || block.input) && block.forwardId && block.forwardId.length > 0) {
+                block.forwardId.forEach(id => delData(id))
+                block = block[block.forwardId]
+            }            
             delete blocks[action.payload.id]
             delete data[action.payload.id]
             Object.keys(arrows).forEach(arrowKey => {
@@ -99,14 +111,12 @@ const visualizationReducer = (state = initialState, action) => {
             const id = action.payload.id;
             data = {...data, [id]: {...data[id]}}
             if (action.payload.isInput) {
-              data[id].type = "input"
-              data[id].data = action.payload.source
+              data[id] = {type: 'input', data: action.payload.source};
               blocks[id].input = action.payload.source
             } else if (action.payload.isSelection) {
               data[id].selection = action.payload.source
             } else {
-              data[id].type = "data"
-              data[id].data = action.payload.source
+              data[id] = {type: 'data', data: action.payload.source};
               blocks[id].data = action.payload.source
             }
             return {...state, blocksState: {...state.blocksState, blocks: blocks}, dataState: {...state.dataState, data: data}}
