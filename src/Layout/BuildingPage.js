@@ -8,23 +8,13 @@ import Histogram from 'Visualizations/Histogram';
 import Map from 'Visualizations/MapVis';
 import VisBlock from 'Blocks/VisBlock';
 import EdgesCanvas from 'Edges/EdgesCanvas';
+import BlocksDrawer from 'Layout/BlocksDrawer';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Drawer from '@material-ui/core/Drawer';
-import Tooltip from '@material-ui/core/Tooltip';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { withStyles } from '@material-ui/core/styles';
-import ReactFileReader from 'react-file-reader'
-
-import BarChartIcon from 'assets/images/bar_chart.svg'
-import ScatterPlotIcon from 'assets/images/scatter_plot.svg'
-import LineChartIcon from 'assets/images/line_chart.svg'
-import PinIcon from 'assets/images/map_pin.svg'
-import DataIcon from 'assets/images/data.svg'
 
 const drawerWidth = 50;
 
@@ -50,10 +40,6 @@ const styles = theme => ({
     minWidth: 0, // So the Typography noWrap works
   },
   toolbar: theme.mixins.toolbar,
-  popper: {
-    left: '30px !important',
-    top: '10px !important'
-  },
   listIcons: {
     margin: '0'
   }
@@ -81,6 +67,45 @@ class BuildingPage extends React.Component {
   handleKeyPress = (event) => {
     if (event.keyCode === 46)
       console.log("Delete")
+  }
+
+  createBlock = (type) => {
+    switch(type) {
+      case 'Data':
+        this.openFileDialog(this.handleDataFiles)
+      break
+      case 'LineChart':
+      case 'ScatterPlot':
+      case 'Histogram':
+      case 'Map':
+        this.addBlock(type)
+      break
+      default:
+      break
+    }
+  }
+
+  openFileDialog = (handleFiles) => {
+    let f=document.createElement('input');
+    f.style.display='none';
+    f.type='file';
+    f.name='file';
+    f.accept=".json, .csv"
+    f.onchange=handleFiles
+    f.click();
+    f.remove();
+  }
+
+  handleDataFiles = (event) => {
+    let fileReader = new FileReader();
+    fileReader.onload = (this.handleLoad)
+    fileReader.readAsText(event.target.files.item(0), 'UTF-8')
+  }
+
+  handleLoad = (event) => {
+    let content = event.target.result;
+    let data = JSON.parse(content);
+    this.addBlock("Data", 75, 50, data);
   }
 
   addBlock = (type, width = 300, height = 200, data) => {
@@ -241,53 +266,7 @@ class BuildingPage extends React.Component {
     return (
       <div className={classes.root}>
         {this.renderAppBar()}
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-          >
-          <div className={classes.toolbar} />
-          <List>
-            <Tooltip title="Add data" placement="right" classes={{popper: classes.popper}}>
-              <ListItem button disableGutters={true}>
-                <ReactFileReader handleFiles={this.handleFiles} fileTypes={[".json"]} base64={true} multipleFiles={false}>              
-                  <ListItemIcon classes={{root: classes.listIcons}}>
-                    <img src={DataIcon} width={45} alt="Data"/>
-                  </ListItemIcon>
-                </ReactFileReader> 
-              </ListItem>
-            </Tooltip>
-            <Tooltip title="Line Chart" placement="right"  classes={{popper: classes.popper}}>
-              <ListItem button disableGutters={true} onClick={() => this.addBlock("LineChart")}>
-                <ListItemIcon classes={{root: classes.listIcons}}>
-                  <img src={LineChartIcon} width={45} alt="LineChart"/>
-                </ListItemIcon>
-              </ListItem>
-            </Tooltip>
-            <Tooltip title="Histogram" placement="right"  classes={{popper: classes.popper}}>
-              <ListItem button disableGutters={true} onClick={() => this.addBlock("Histogram")}>
-                <ListItemIcon classes={{root: classes.listIcons}}>
-                  <img src={BarChartIcon} width={45} alt="Histogram"/>
-                </ListItemIcon>
-              </ListItem>
-            </Tooltip>
-            <Tooltip title="Scatter Plot" placement="right"  classes={{popper: classes.popper}}>
-              <ListItem button disableGutters={true} onClick={() => this.addBlock("ScatterPlot")}>
-                <ListItemIcon classes={{root: classes.listIcons}}>
-                  <img src={ScatterPlotIcon} width={45} alt="ScatterPlot"/>
-                </ListItemIcon>
-              </ListItem>
-            </Tooltip>
-            <Tooltip title="Pin Map" placement="right"  classes={{popper: classes.popper}}>
-              <ListItem button disableGutters={true} onClick={() => this.addBlock("Map")}>
-                <ListItemIcon classes={{root: classes.listIcons}}>
-                  <img src={PinIcon} width={45} alt="Map"/>
-                </ListItemIcon>
-              </ListItem>
-            </Tooltip>
-          </List>
-        </Drawer>
+        <BlocksDrawer onCreateBlock={this.createBlock}/>
         <main className={classes.content}>
           <div className={classes.toolbar} />  
           <div className="workArea"> 
@@ -295,6 +274,15 @@ class BuildingPage extends React.Component {
             <EdgesCanvas/>
           </div>
         </main>
+        <Drawer
+          anchor="right"
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          >
+          <div className={classes.toolbar} />
+        </Drawer> 
       </div>      
     );
   }
