@@ -76,11 +76,6 @@ const mapStateToProps = state => {
 class BuildingPage extends React.Component {
   componentWillMount = () => {
     document.addEventListener("keydown", this.handleKeyPress, false)
-    document.addEventListener("click", this.handleClick, false);
-  }
-
-  handleClick = (event) => {
-    console.log("click on empty")
   }
 
   handleKeyPress = (event) => {
@@ -292,7 +287,7 @@ class BuildingPage extends React.Component {
               </ListItem>
             </Tooltip>
           </List>
-        </Drawer>  
+        </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />  
           <div className="workArea"> 

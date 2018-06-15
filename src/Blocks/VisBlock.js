@@ -68,6 +68,22 @@ class VisBlock extends React.Component {
     return <span>Empty</span>;
   }
 
+  componentWillMount = () => {
+    document.addEventListener('mousedown', this.handleClick, false)
+  }
+
+  handleClick = (e) => {
+    if (!this.node.contains(e.target)) {
+      this.handleClickOutside()
+    }
+  }
+
+  handleClickOutside = () =>{
+    if (this.props.selectedId === this.props.id) {
+      this.props.selectBlock(-1)
+    }
+  }
+
   updateSize = (e, dir, ref, delta, position) => {
     this.props.moveBlock(this.props.id, {
       size: {
@@ -119,7 +135,6 @@ class VisBlock extends React.Component {
   }
 
   handleBlockClick = (event) => {
-    event.stopPropagation()
     if (!this.props.isConnecting) {
       this.props.selectBlock(this.props.id)
     }
@@ -171,7 +186,7 @@ class VisBlock extends React.Component {
       className={this.getClassNames()}
     >
       {/*<div className="port port-input"></div>*/}
-      <div className={this.getClassNames()} onClick={this.handleBlockClick} onContextMenu={this.handleContextMenu}>
+      <div className={this.getClassNames()} onClick={this.handleBlockClick} onContextMenu={this.handleContextMenu} ref={node => this.node = node}>
         <div className="handle" >
         <ButtonBase className={classes.button} aria-label="Close" onClick={this.handleClose}>
           <CloseIcon style={{ fontSize: 15 }}/>

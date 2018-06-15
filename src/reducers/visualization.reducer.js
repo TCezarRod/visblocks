@@ -115,6 +115,12 @@ const visualizationReducer = (state = initialState, action) => {
               blocks[id].input = action.payload.source
             } else if (action.payload.isSelection) {
               data[id].selection = action.payload.source
+              let block = blocks[id]
+              let updateSel = (id) => data[id].selection = []
+              while (block && block.forwardId && block.forwardId.length > 0) {
+                  block.forwardId.forEach(id => updateSel(id))
+                  block = block[block.forwardId]
+              } 
             } else {
               data[id] = {type: 'data', data: action.payload.source};
               blocks[id].data = action.payload.source

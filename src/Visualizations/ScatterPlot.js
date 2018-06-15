@@ -84,7 +84,10 @@ class ScatterPlot extends React.Component {
           domain={this.getDomain()}
           width={this.props.width}
           height={this.props.height}
-          containerComponent={<VictorySelectionContainer onSelection={this.updateOutput} onSelectionCleared={this.resetOutput}/>}
+          containerComponent={<VictorySelectionContainer 
+            onSelection={this.updateOutput} 
+            onSelectionCleared={this.resetOutput}
+            />}
           domainPadding={15}>
           <VictoryScatter
             padding={150}
