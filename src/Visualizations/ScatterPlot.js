@@ -1,5 +1,7 @@
 import React  from 'react';
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { initOptions, updateAttrValues, updateAttrSelection } from 'actions'
 
 import {
   VictoryChart,
@@ -11,43 +13,98 @@ import {
   Line
 } from 'victory'
 
+const mapDispatchToProps = dispatch => {
+  return {
+    initOptions: (id, attributes) => dispatch(initOptions(id, attributes)),
+    updateAttrValues: (id, attribute, values) => dispatch(updateAttrValues(id, attribute, values)),
+    updateAttrSelection: (id, attribute, value) => dispatch(updateAttrSelection(id, attribute, value))
+  };
+};
+
+const mapStateToProps = state => {
+  return { options: state.controlState.options };
+};
+
 class ScatterPlot extends React.Component {
   static propTypes = {
-    xDimension: PropTypes.string,
-    yDimension: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.object),
     width: PropTypes.number,
     height: PropTypes.number
   }
 
   state = {
-    data: [],
-    xDimension: this.props.xDimension,
-    yDimension: this.props.yDimension
+    data: []
+  }
+
+  componentDidMount = () => {
+    this.props.initOptions(this.props.blockid, {
+      domain: {
+        type: 'selection',
+        values: []
+      },
+      range: {
+        type: 'selection',
+        values: []
+      },
+      color: {
+        type: 'color',
+        default: 'rgba(100, 0, 40, 0.7)'
+      },
+      'selected color': {
+        type: 'color',
+        default: 'rgba(100, 200, 0, 0.7)'
+      },
+      size: {
+        type: 'number',
+        default: 6
+      }
+    })
   }
 
   static getDerivedStateFromProps = (newProps, prevState) => {
+    let options = newProps.options[newProps.blockid]
+
     if (newProps.data && newProps.data !== prevState.data) {
-      let xDimension = newProps.xDimension
-      let yDimension = newProps.yDimension
-      if (!xDimension) {
-        xDimension = Object.keys(newProps.data[0])[0]
+      Object.values(newProps.data).forEach(element => {
+        Object.keys(element).forEach(key => {
+          if (!options.domain.values.includes(key)) {
+            options.domain.values.push(key)
+          }
+          if (!options.range.values.includes(key)) {
+            options.range.values.push(key)
+          }
+        })
+      })
+      newProps.updateAttrValues(newProps.blockid, 'domain', options.domain.values)
+      newProps.updateAttrValues(newProps.blockid, 'range', options.range.values)
+      if (!options.domain.selected || !options.domain.values.includes(options.domain.selected)) {
+        options.domain.selected = options.domain.values[0]
       }
-      if (!yDimension) {
-        yDimension = Object.keys(newProps.data[0])[1]
+      if (!options.range.selected || !options.range.values.includes(options.range.selected)) {
+        options.range.selected = options.range.values[1]
       }
-      return {...prevState, xDimension: xDimension, yDimension: yDimension}
+      if (!options.color.selected) {
+        options.color.selected = options.color.default
+      }
+      if (!options['selected color'].selected) {
+        options['selected color'].selected = options['selected color'].default
+      }
+      if (!options.size.selected) {
+        options.size.selected = options.size.default
+      }
+
+      return {...prevState, data: newProps.data, color: options.color.selected, selColor: options['selected color'].selected}
     } else {
       return {...prevState}
     }
   }
 
   getDomain = () => {
-    let minX = Math.min.apply(Math, this.props.data.map((obj) => obj[this.state.xDimension]))
-    let maxX = Math.max.apply(Math, this.props.data.map((obj) => obj[this.state.xDimension]))
+    let minX = Math.min.apply(Math, this.props.data.map((obj) => obj[this.props.options[this.props.blockid].domain.selected]))
+    let maxX = Math.max.apply(Math, this.props.data.map((obj) => obj[this.props.options[this.props.blockid].domain.selected]))
 
-    let minY = Math.min.apply(Math, this.props.data.map((obj) => obj[this.state.yDimension]))
-    let maxY = Math.max.apply(Math, this.props.data.map((obj) => obj[this.state.yDimension]))
+    let minY = Math.min.apply(Math, this.props.data.map((obj) => obj[this.props.options[this.props.blockid].range.selected]))
+    let maxY = Math.max.apply(Math, this.props.data.map((obj) => obj[this.props.options[this.props.blockid].range.selected]))
 
     return {x:[minX, maxX], y:[minY, maxY]}
   }
@@ -77,6 +134,8 @@ class ScatterPlot extends React.Component {
   }
 
   render() {
+    const options = this.props.options[this.props.blockid]
+    const fillStyle = (data, active) => active ? options['selected color'].selected : options.color.selected
     if (this.props.data) {
       return (
         <VictoryChart 
@@ -84,25 +143,26 @@ class ScatterPlot extends React.Component {
           domain={this.getDomain()}
           width={this.props.width}
           height={this.props.height}
-          containerComponent={<VictorySelectionContainer 
+          containerComponent={
+            <VictorySelectionContainer 
             onSelection={this.updateOutput} 
             onSelectionCleared={this.resetOutput}
             />}
           domainPadding={15}>
           <VictoryScatter
             padding={150}
-            style={{ data: { fill: (d, active) => active ? "rgb(139,195,74)" : "gray", strokeDasharray: "5,5" } }}
-            size={6}
-            x={this.state.xDimension}
-            y={this.state.yDimension}
-            data={this.props.data}
+            style={{ data: { fill: fillStyle, strokeDasharray: "5,5" } }}
+            size={options.size.selected}
+            x={options.domain.selected}
+            y={options.range.selected}
+            data={this.state.data}
           />
           <VictoryAxis 
-            label={this.state.xDimension} 
+            label={options.domain.selected} 
             gridComponent={<Line style={{display: 'none'}}/>}
             axisLabelComponent={<VictoryLabel dy={15} style={this.labelStyle}/>}/>
           <VictoryAxis dependentAxis 
-            label={this.state.yDimension} 
+            label={options.range.selected} 
             axisLabelComponent={<VictoryLabel dy={-10} angle="90" style={this.labelStyle}/>} 
             gridComponent={<Line style={{display: 'none'}}/>} />
         </VictoryChart>
@@ -113,4 +173,4 @@ class ScatterPlot extends React.Component {
   }
 }
 
-export default ScatterPlot;
+export default connect(mapStateToProps, mapDispatchToProps)(ScatterPlot);

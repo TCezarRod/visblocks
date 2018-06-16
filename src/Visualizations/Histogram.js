@@ -136,9 +136,8 @@ class Histogram extends React.Component {
         domain={this.getDomain()}
         width={width}
         height={height}
-        containerComponent={<VictorySelectionContainer />}
+        containerComponent={<VictorySelectionContainer selectionDimension="x"/>}
         domainPadding={5}>
-            {/*<VictoryLabel text="Frequency" y={35} x={-5} style={{fontSize: 12, fill: 'rgb(69, 90, 100)'}}/>*/}
             <VictoryLabel text={options.dimension.selected} dy={50} dx={width-100} style={{fontSize: 12, fill: 'rgb(69, 90, 100)', fontWeight:'bold'}}/>
             <VictoryBar 
               barRatio={1.1}

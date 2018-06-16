@@ -113,7 +113,7 @@ class LineChart extends React.Component {
           domainPadding={5}>
           <VictoryLine
             
-            style={{ data: { stroke: /*(d, active) => active ? "rgb(139,195,74)" :*/ options.color.selected } }}
+            style={{ data: { stroke: (d, active) => active ? "rgb(139,195,74)" : options.color.selected } }}
             x={options.domain.selected}
             y={options.range.selected}
             data={this.props.data}       
