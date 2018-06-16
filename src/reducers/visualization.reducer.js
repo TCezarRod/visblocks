@@ -11,14 +11,18 @@ import {
     UPDATE_DATA,
     START_CONNECT,
     FINISH_CONNECT,
-    SELECT_BLOCK
+    SELECT_BLOCK,
+    INITIALIZE_OPTIONS,
+    UPDATE_ATTRIBUTE_SELECTION,
+    UPDATE_ATTRIBUTE_VALUES
 } from '../constants/action-types';
 
 const initialState = {
     controlState: {
       connecting: false,
       sourceId: -1,
-      selected: -1
+      selected: -1,
+      options: {} // "id": {attributes: [], ...'attribute': {type: string, values?: [], selected: string/{}}
     },
     arrowsState: {
         lastId: 0,
@@ -37,6 +41,7 @@ const visualizationReducer = (state = initialState, action) => {
     let arrows = Object.assign({}, state.arrowsState.arrows)
     let blocks = Object.assign({}, state.blocksState.blocks)
     let data = Object.assign({}, state.dataState.data)
+    let options = Object.assign({}, state.controlState.options)
     switch (action.type) {
         case MOVE_ARROW_END:
             arrows[action.payload.id].xe = action.payload.x
@@ -132,6 +137,21 @@ const visualizationReducer = (state = initialState, action) => {
             return {...state, controlState: {...state.controlState, connecting: false, sourceId: -1}}
         case SELECT_BLOCK:
             return {...state, controlState: {...state.controlState, selected: action.payload.id}}
+        case INITIALIZE_OPTIONS:
+            let blockOptions = Object.assign({attributes: []}, action.payload.attributes)
+            Object.keys(action.payload.attributes).forEach(attribute => {
+                blockOptions.attributes.push(attribute)
+                blockOptions[attribute].selected = undefined;
+            })
+            options[action.payload.id] = blockOptions
+            return {...state, controlState: {...state.controlState, options: options}}        
+        case UPDATE_ATTRIBUTE_VALUES:
+            options[action.payload.id][action.payload.attribute].values = action.payload.newValues
+            return {...state, controlState: {...state.controlState, options: options}}         
+        case UPDATE_ATTRIBUTE_SELECTION:
+            options[action.payload.id][action.payload.attribute].selected = action.payload.value
+            return {...state, controlState: {...state.controlState, options: options}}   
+
         default:
             return state
     }

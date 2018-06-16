@@ -184,7 +184,6 @@ class BuildingPage extends React.Component {
         return <Histogram 
           id = {id}
           data={data}
-          dimension={props.dimension}
           bins={props.bins}/>         
       case 'Map':
         return <Map 

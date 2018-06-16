@@ -9,7 +9,10 @@ import {
     UPDATE_DATA,
     START_CONNECT,
     FINISH_CONNECT,
-    SELECT_BLOCK
+    SELECT_BLOCK,
+    INITIALIZE_OPTIONS,
+    UPDATE_ATTRIBUTE_VALUES,
+    UPDATE_ATTRIBUTE_SELECTION
 } from "../constants/action-types";
 
 export const moveArrowEnd = (id, position) => ({ type: MOVE_ARROW_END, payload: {...position, id:id} });
@@ -28,3 +31,7 @@ export const startConnect = (sourceId) => ({ type: START_CONNECT, payload: {id: 
 export const finishConnect = () => ({ type: FINISH_CONNECT });
 
 export const selectBlock = id => ({type: SELECT_BLOCK, payload: {id: id}})
+
+export const initOptions = (id, attributes) => ({type: INITIALIZE_OPTIONS, payload: {id: id, attributes: attributes}})
+export const updateAttrValues = (id, attribute, values) => ({type: UPDATE_ATTRIBUTE_VALUES, payload: {id: id, attribute: attribute, newValues: values}})
+export const updateAttrSelection = (id, attribute, value) => ({type: UPDATE_ATTRIBUTE_SELECTION, payload: {id: id, attribute: attribute, value: value}})

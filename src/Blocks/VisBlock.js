@@ -68,12 +68,12 @@ class VisBlock extends React.Component {
     return <span>Empty</span>;
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     document.addEventListener('mousedown', this.handleClick, false)
   }
 
   handleClick = (e) => {
-    if (!this.node.contains(e.target)) {
+    if (this.node && !this.node.contains(e.target)) {
       this.handleClickOutside()
     }
   }
@@ -131,7 +131,7 @@ class VisBlock extends React.Component {
 
   renderChildrenWithProps = () => {
     return React.Children.map(this.props.children, child =>
-      React.cloneElement(child, {data:child.props.data, width: this.state.size.width, height: this.state.size.height }));
+      React.cloneElement(child, {data:child.props.data, blockid: this.props.id, width: this.state.size.width, height: this.state.size.height }));
   }
 
   handleBlockClick = (event) => {
