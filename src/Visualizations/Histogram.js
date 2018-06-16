@@ -25,6 +25,29 @@ const mapStateToProps = state => {
   return { options: state.controlState.options };
 };
 
+const getBinData = (data, options) => {
+  let binData = [];
+  let selectedDimension = options.dimension.selected  
+  let bins = options.bins.selected;
+
+  let minX = Math.min.apply(Math, data.map((obj) => obj[selectedDimension]))
+  let maxX = Math.max.apply(Math, data.map((obj) => obj[selectedDimension]))
+  let interval = (maxX - minX) / bins
+
+  let last;
+  for (let i = minX; i < maxX; i += interval) {
+    binData.push({
+      [selectedDimension]: i,
+      frequency: data.filter((data) => data[selectedDimension]>=i && data[selectedDimension]<(i+interval)).length
+    })
+    last=i;
+  }
+  if (last + interval === maxX) {
+    binData.find((bin)=>bin[selectedDimension]===last).frequency += data.filter((data) => data[selectedDimension]===maxX).length
+  }
+
+  return binData
+}
 
 class Histogram extends React.Component {
   static propTypes = {
@@ -75,49 +98,36 @@ class Histogram extends React.Component {
   static getDerivedStateFromProps = (newProps, prevState) => {
     let options = newProps.options[newProps.blockid]
 
-    if (newProps.data && newProps.data !== prevState.data) {
-      Object.values(newProps.data).forEach(element => {
-        Object.keys(element).forEach(key => {
-          if (!options.dimension.values.includes(key)) {
-            options.dimension.values.push(key)
-          }
+    if (newProps.data) {
+      if (newProps.data !== prevState.data) {
+        Object.values(newProps.data).forEach(element => {
+          Object.keys(element).forEach(key => {
+            if (!options.dimension.values.includes(key)) {
+              options.dimension.values.push(key)
+            }
+          })
         })
-      })
-      newProps.updateAttrValues(newProps.blockid, 'dimension', options.dimension.values)
-      if (!options.dimension.selected || !options.dimension.values.includes(options.dimension.selected)) {
-        options.dimension.selected = options.dimension.values[1]
-      }
-      if (!options.bins.selected) {
-        options.bins.selected = options.bins.default
-      }
-      if (!options.color.selected) {
-        options.color.selected = options.color.default
-      }
+        newProps.updateAttrValues(newProps.blockid, 'dimension', options.dimension.values)
+        if (!options.dimension.selected || !options.dimension.values.includes(options.dimension.selected)) {
+          options.dimension.selected = options.dimension.values[1]
+        }
+        if (!options.bins.selected) {
+          options.bins.selected = options.bins.default
+        }
+        if (!options.color.selected) {
+          options.color.selected = options.color.default
+        }
 
-      let selectedDimension = options.dimension.selected || prevState.options.dimension.selected
+        let binData = getBinData(newProps.data, options)
 
-      let binData = [];
-      let bins = options.bins.selected;
-      let minX = Math.min.apply(Math, newProps.data.map((obj) => obj[selectedDimension]))
-      let maxX = Math.max.apply(Math, newProps.data.map((obj) => obj[selectedDimension]))
-
-      let interval = (maxX - minX) / bins
-
-      let last;
-      for (let i = minX; i < maxX; i += interval) {
-        binData.push({
-          [selectedDimension]: i,
-          frequency: newProps.data.filter((data) => data[selectedDimension]>=i && data[selectedDimension]<(i+interval)).length
-        })
-        last=i;
-      }
-      if (last + interval === maxX) {
-        binData.find((bin)=>bin[selectedDimension]===last).frequency += newProps.data.filter((data) => data[selectedDimension]===maxX).length
-      }
-      newProps.updateAttrSelection(newProps.blockid, 'dimension', options.dimension.selected)
-      newProps.updateAttrSelection(newProps.blockid, 'color', options.color.selected)
-      newProps.updateAttrSelection(newProps.blockid, 'bins', options.bins.selected)
-      return {...prevState, binData: binData, data: newProps.data}
+        newProps.updateAttrSelection(newProps.blockid, 'dimension', options.dimension.selected)
+        newProps.updateAttrSelection(newProps.blockid, 'color', options.color.selected)
+        newProps.updateAttrSelection(newProps.blockid, 'bins', options.bins.selected)
+        return {...prevState, binData: binData, data: newProps.data}
+      } else if (options && options.dimension.selected) {
+        let binData = getBinData(newProps.data, options)
+        return {...prevState, binData: binData, data: newProps.data}
+      }       
     } else {
       return {...prevState}
     }
