@@ -52,15 +52,9 @@ const getBinData = (data, options) => {
 class Histogram extends React.Component {
   static propTypes = {
     blockid: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    dimension: PropTypes.string,
-    bins: PropTypes.number,
     data: PropTypes.arrayOf(PropTypes.object),
     width: PropTypes.number,
     height: PropTypes.number
-  }
-
-  static defaultProps = {
-    bins: 5
   }
 
   state = {
@@ -109,7 +103,7 @@ class Histogram extends React.Component {
         })
         newProps.updateAttrValues(newProps.blockid, 'dimension', options.dimension.values)
         if (!options.dimension.selected || !options.dimension.values.includes(options.dimension.selected)) {
-          options.dimension.selected = options.dimension.values[1]
+          options.dimension.selected = options.dimension.values[0]
         }
         if (!options.bins.selected) {
           options.bins.selected = options.bins.default
