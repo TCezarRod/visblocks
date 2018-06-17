@@ -40,10 +40,17 @@ body {
 
 .handle {
   cursor: grab;
+  color: #557;
   min-height: 20px;
   border-bottom: solid 1px #ddd;
   display: flex;
   flex-direction: row-reverse;
+
+  .blockTitle {
+    width: 100%;
+    overflow: hidden;
+    font-size: 1em;
+  }
 }
 
 .workArea {

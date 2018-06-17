@@ -43,6 +43,14 @@ class ControlDrawer extends React.Component {
     if (options) {
       controls = options.attributes.map(attribute => {
         switch (options[attribute].type) {
+          case 'string':
+            return (<TextField
+              key={attribute}
+              label={capitalize(attribute)}
+              value={options[attribute].selected !== undefined ? options[attribute].selected  : options[attribute].default}
+              onChange={this.handleFieldChange(attribute)}
+              margin="normal"
+            />)
           case 'selection':
             return (<TextField
               key={attribute}

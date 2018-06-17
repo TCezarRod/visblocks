@@ -39,6 +39,10 @@ class LineChart extends React.Component {
 
   componentDidMount = () => {
     this.props.initOptions(this.props.blockid, {
+      name: {
+        type: 'string',
+        default: 'Line Chart'
+      },
       domain: {
         type: 'selection',
         values: []
@@ -79,10 +83,6 @@ class LineChart extends React.Component {
       if (!options.color.selected) {
         options.color.selected = options.color.default
       }
-
-      newProps.updateAttrSelection(newProps.blockid, 'domain', options.domain.selected)
-      newProps.updateAttrSelection(newProps.blockid, 'range', options.range.selected)
-      newProps.updateAttrSelection(newProps.blockid, 'color', options.color.selected)
 
       return {...prevState, data: newProps.data}      
     } else {

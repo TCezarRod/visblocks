@@ -38,6 +38,10 @@ class ScatterPlot extends React.Component {
 
   componentDidMount = () => {
     this.props.initOptions(this.props.blockid, {
+      name: {
+        type: 'string',
+        default: 'Scatter Plot'
+      },
       domain: {
         type: 'selection',
         values: []

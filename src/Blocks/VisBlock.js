@@ -2,6 +2,8 @@ import React  from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { moveBlock, deleteBlock, startConnect, finishConnect, selectBlock } from 'actions'
+
+import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -11,11 +13,11 @@ import Rnd from 'react-rnd';
 
 const styles = theme => ({
   button: {
-    margin: theme.spacing.unit / 2,
+    margin: theme.spacing.unit / 2
   },
   input: {
-    display: 'none',
-  },
+    display: 'none'
+  }
 });
 
 
@@ -33,7 +35,8 @@ const mapStateToProps = state => {
   return {
     isConnecting: state.controlState.connecting, 
     connectionSource: state.controlState.sourceId, 
-    selectedId: state.controlState.selected
+    selectedId: state.controlState.selected,
+    options: state.controlState.options 
   };
 };
 
@@ -171,10 +174,33 @@ class VisBlock extends React.Component {
     let className = `container-block ${this.props.selectedId === this.props.id ? 'container-selected' : ''}`
     return className
   }
+
+  renderHandle = () => {
+    const { classes } = this.props;
+    const blockOptions = this.props.options[this.props.id]
+    const blockName = (blockOptions && blockOptions.name) 
+      ? (blockOptions.name.selected !== undefined ? blockOptions.name.selected : blockOptions.name.default) 
+      : `Block ${this.props.id}`
+
+    return (
+    <div className="handle" >
+    <ButtonBase className={classes.button} aria-label="Close" onClick={this.handleClose}>
+      <CloseIcon style={{ fontSize: 15 }}/>
+    </ButtonBase>
+    <ButtonBase className={classes.button} aria-label="Arrow" onClick={this.handleConnectClick}>
+      <ArrowForwardIcon style={{ fontSize: 15 }}/>
+    </ButtonBase>
+    <div className="blockTitle">
+      <Typography variant="subheading" noWrap color="inherit">
+        {blockName}
+      </Typography>
+    </div>
+    </div>)
+  }
   
   render() {
     const { position, size } = this.state;
-    const { minWidth, minHeight, classes} = this.props;
+    const { minWidth, minHeight } = this.props;
     return (
     <Rnd 
       default={{
@@ -195,14 +221,7 @@ class VisBlock extends React.Component {
     >
       {/*<div className="port port-input"></div>*/}
       <div className={this.getClassNames()} onClick={this.handleBlockClick} onContextMenu={this.handleContextMenu} ref={node => this.node = node}>
-        <div className="handle" >
-        <ButtonBase className={classes.button} aria-label="Close" onClick={this.handleClose}>
-          <CloseIcon style={{ fontSize: 15 }}/>
-        </ButtonBase>
-        <ButtonBase className={classes.button} aria-label="Arrow" onClick={this.handleConnectClick}>
-          <ArrowForwardIcon style={{ fontSize: 15 }}/>
-        </ButtonBase>
-        </div>
+        {this.renderHandle()}
         <div className="block-content">
           {this.props.children ? this.renderChildrenWithProps() : this.renderNoData()}
         </div>

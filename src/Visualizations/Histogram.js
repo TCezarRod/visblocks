@@ -64,6 +64,10 @@ class Histogram extends React.Component {
 
   componentDidMount = () => {
     this.props.initOptions(this.props.blockid, {
+      name: {
+        type: 'string',
+        default: 'Histogram'
+      },
       dimension: {
         type: 'selection',
         values: []
@@ -114,9 +118,6 @@ class Histogram extends React.Component {
 
         let binData = getBinData(newProps.data, options)
 
-        newProps.updateAttrSelection(newProps.blockid, 'dimension', options.dimension.selected)
-        newProps.updateAttrSelection(newProps.blockid, 'color', options.color.selected)
-        newProps.updateAttrSelection(newProps.blockid, 'bins', options.bins.selected)
         return {...prevState, binData: binData, data: newProps.data}
       } else if (options && options.dimension.selected) {
         let binData = getBinData(newProps.data, options)
