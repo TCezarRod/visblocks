@@ -67,7 +67,7 @@ class ScatterPlot extends React.Component {
   }
 
   static getDerivedStateFromProps = (newProps, prevState) => {
-    let options = newProps.options[newProps.blockid]
+    const options = newProps.options[newProps.blockid]
 
     if (newProps.data && newProps.data !== prevState.data) {
       Object.values(newProps.data).forEach(element => {

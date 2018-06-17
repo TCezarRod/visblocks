@@ -1,19 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { initOptions, updateAttrValues } from 'actions'
 
 import { 
   Map, 
   Marker, 
-  TileLayer
+  TileLayer,
+  Popup
 } from 'react-leaflet'
 
 const OSM_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 const OSM_ATTRIBUTION = '&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors'
-
 const DEFAULT_LATLNG = {
   lat: 0,
   lng: 0
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    initOptions: (id, attributes) => dispatch(initOptions(id, attributes)),
+    updateAttrValues: (id, attribute, values) => dispatch(updateAttrValues(id, attribute, values))
+  };
+};
+  
+const mapStateToProps = state => {
+  return { options: state.controlState.options };
+};
 
 class MapVis extends React.Component {
   static propTypes = {
@@ -27,10 +40,43 @@ class MapVis extends React.Component {
     zoom: 2
   }
 
+  componentDidMount = () => {
+    this.props.initOptions(this.props.blockid, {
+      name: {
+        type: 'string',
+        default: 'Map'
+      },
+      popup: {
+        type: 'selection',
+        values: [],
+        default: 0
+      },
+    })
+  }
+
   componentDidUpdate = () => {
     if (this.refs.map) {
       var map = this.refs.map.leafletElement;
       map.invalidateSize();
+    }
+  }
+
+  static getDerivedStateFromProps = (newProps, prevState) => {
+    const options = newProps.options[newProps.blockid]
+
+    if (newProps.data && newProps.data !== prevState.data) {
+      Object.values(newProps.data).forEach(element => {
+        Object.keys(element).forEach(key => {
+          if (!options.popup.values.includes(key)) {
+            options.popup.values.push(key)
+          }
+        })
+      })
+      newProps.updateAttrValues(newProps.blockid, 'popup', options.popup.values)
+
+      return {...prevState, data: newProps.data}
+    } else {
+      return {...prevState}
     }
   }
 
@@ -48,23 +94,32 @@ class MapVis extends React.Component {
     }    
   }
 
+  renderPopup = (data) => {
+    const options = this.props.options[this.props.blockid]
+    if (options) {
+      const popupIndex = options.popup.selected || options.popup.default
+      const popupAttribute = options.popup.values[popupIndex]
+      const value = data[popupAttribute]
+      return (<Popup><span><strong>{popupAttribute}</strong>: {value ? JSON.stringify(value) : '--'}</span></Popup>)
+    }
+  }
+
   renderMarker = (data) => {
     let latLng = this.searchForLatLng(data);
     if (latLng) {
       return (
         <Marker position={latLng} key={data.id}>
-          {/*this.props.popup && this.renderPopup(place)*/}
+          {this.renderPopup(data)}
         </Marker>
       )
-    }
-    
+    }    
   }
 
   renderContent = () => {
     const { width, height } = this.props
     if (this.props.data) {  
-      const markers = this.props.data.map(data => this.renderMarker(data)).filter(marker => marker !== undefined)
-      let mapBounds = this.props.data.map(data => this.searchForLatLng(data)).filter(latlng => latlng !== undefined)
+      const markers = this.state.data.map(data => this.renderMarker(data)).filter(marker => marker !== undefined)
+      let mapBounds = this.state.data.map(data => this.searchForLatLng(data)).filter(latlng => latlng !== undefined)
       return (
       <Map 
         ref="map" 
@@ -91,4 +146,4 @@ class MapVis extends React.Component {
   }
 }
 
-export default MapVis;
+export default connect(mapStateToProps, mapDispatchToProps)(MapVis);
