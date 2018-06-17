@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" x="0px" y="0px">
+  <defs>
+    <style>
+      .cls-1 {
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <g data-name="Artboard 1">
+    <g data-name="6" fill="#668">
+      <path data-name="6.2" class="cls-1" d="M12,10H38V34H12V10Zm1,1H37V33H13V11Zm1,1H36v6H14V12Zm3,2h2v2H17V14Zm4,0h2v2H21V14Zm4,0h8v2H25V14ZM14,19H36v6H14V19Zm3,2h2v2H17V21Zm4,0h2v2H21V21Zm4,0h8v2H25V21ZM14,26H36v6H14V26Zm3,2h2v2H17V28Zm4,0h2v2H21V28Zm4,0h8v2H25V28Z"/>
+    </g>
+  </g>
+  <!-- TODO: credit author <text x="0" y="63" fill="#000000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">Created by Lero Keller</text><text x="0" y="68" fill="#000000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">from the Noun Project</text>-->
+</svg>
