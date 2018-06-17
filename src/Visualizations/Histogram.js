@@ -106,7 +106,7 @@ class Histogram extends React.Component {
         let dimensionValues = []
         Object.values(newProps.data).forEach(element => {
           Object.keys(element).forEach(key => {
-            if (!dimensionValues.includes(key)) {
+            if (!dimensionValues.includes(key) && !isNaN(element[key])) {
               dimensionValues.push(key)
             }
           })

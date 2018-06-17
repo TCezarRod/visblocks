@@ -72,10 +72,10 @@ class ScatterPlot extends React.Component {
       let rangeValues = []
       Object.values(newProps.data).forEach(element => {
         Object.keys(element).forEach(key => {
-          if (!domainValues.includes(key)) {
+          if (!domainValues.includes(key) && !isNaN(element[key])) {
             domainValues.push(key)
           }
-          if (!rangeValues.includes(key)) {
+          if (!rangeValues.includes(key) && !isNaN(element[key])) {
             rangeValues.push(key)
           }
         })
