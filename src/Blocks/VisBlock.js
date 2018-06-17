@@ -48,12 +48,14 @@ class VisBlock extends React.Component {
     width: PropTypes.number,
     height: PropTypes.number,
     minWidth: PropTypes.number,
-    minHeight: PropTypes.number
+    minHeight: PropTypes.number,
+    headerVisible: PropTypes.bool
   }
 
   static defaultProps = {
     minWidth: 150,
-    minHeight: 150
+    minHeight: 150,
+    headerVisible: true
   }
 
   state = {
@@ -192,7 +194,7 @@ class VisBlock extends React.Component {
     </ButtonBase>
     <div className="blockTitle">
       <Typography variant="subheading" noWrap color="inherit">
-        {blockName}
+        {this.props.headerVisible ? blockName : ''}
       </Typography>
     </div>
     </div>)

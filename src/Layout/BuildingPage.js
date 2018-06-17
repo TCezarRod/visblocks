@@ -7,13 +7,14 @@ import {
   updateBlockData, 
   updateBlockSelection, 
   updateAttrSelection,
-  deleteBlock 
+  deleteBlock
 } from "actions";
 
 import ScatterPlot from 'Visualizations/ScatterPlot';
 import LineChart from 'Visualizations/LineChart';
 import Histogram from 'Visualizations/Histogram';
 import Map from 'Visualizations/MapVis';
+import Data from 'Visualizations/Data';
 import VisBlock from 'Blocks/VisBlock';
 import EdgesCanvas from 'Edges/EdgesCanvas';
 import BlocksDrawer from 'Layout/BlocksDrawer';
@@ -52,7 +53,7 @@ const mapDispatchToProps = dispatch => {
     updateBlockInput: (id, inputId) => dispatch(updateBlockInput(id, inputId)),
     updateBlockData: (id, data) => dispatch(updateBlockData(id, data)),
     updateBlockSelection: (id, data) => dispatch(updateBlockSelection(id, data)),
-    updateAttrSelection: (id, attribute, value) => dispatch(updateAttrSelection(id, attribute, value))
+    updateAttrSelection: (id, attribute, value) => dispatch(updateAttrSelection(id, attribute, value)),
   };
 };
 
@@ -187,7 +188,10 @@ class BuildingPage extends React.Component {
   renderVisualization = (id, type, data, props) => {
     switch(type) {
       case 'Data':
-        return(<span>Data</span>)
+        
+        return(<Data 
+          id = {id}
+          data = {data}/>)
       case 'ScatterPlot':
         return <ScatterPlot 
           id = {id}
@@ -237,6 +241,7 @@ class BuildingPage extends React.Component {
       height={block.props.size.height}
       minWidth={block.type==='Data'?50:undefined}
       minHeight={block.type==='Data'?50:undefined}
+      headerVisible={block.type!=='Data'}
       onUpdate={this.addInput}
       controlRef={this.refs.controls}>
       {this.renderVisualization(block.id, block.type, block.data || getData(block.input, this.props.dataMap), block.props)}

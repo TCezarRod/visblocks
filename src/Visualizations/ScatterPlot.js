@@ -1,7 +1,7 @@
 import React  from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { initOptions, updateAttrValues, updateAttrSelection } from 'actions'
+import { initOptions, updateAttrValues } from 'actions'
 
 import {
   VictoryChart,
@@ -16,8 +16,7 @@ import {
 const mapDispatchToProps = dispatch => {
   return {
     initOptions: (id, attributes) => dispatch(initOptions(id, attributes)),
-    updateAttrValues: (id, attribute, values) => dispatch(updateAttrValues(id, attribute, values)),
-    updateAttrSelection: (id, attribute, value) => dispatch(updateAttrSelection(id, attribute, value))
+    updateAttrValues: (id, attribute, values) => dispatch(updateAttrValues(id, attribute, values))
   };
 };
 
