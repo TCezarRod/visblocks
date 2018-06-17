@@ -60,21 +60,21 @@ class LineChart extends React.Component {
   }
 
   static getDerivedStateFromProps = (newProps, prevState) => {
-    const options = newProps.options[newProps.blockid]
-
     if (newProps.data && newProps.data !== prevState.data) {
+      let domainValues = []
+      let rangeValues = []
       Object.values(newProps.data).forEach(element => {
         Object.keys(element).forEach(key => {
-          if (!options.domain.values.includes(key)) {
-            options.domain.values.push(key)
+          if (!domainValues.includes(key)) {
+            domainValues.push(key)
           }
-          if (!options.range.values.includes(key)) {
-            options.range.values.push(key)
+          if (!rangeValues.includes(key)) {
+            rangeValues.push(key)
           }
         })
       })
-      newProps.updateAttrValues(newProps.blockid, 'domain', options.domain.values)
-      newProps.updateAttrValues(newProps.blockid, 'range', options.range.values)
+      newProps.updateAttrValues(newProps.blockid, 'domain', domainValues)
+      newProps.updateAttrValues(newProps.blockid, 'range', rangeValues)
 
       return {...prevState, data: newProps.data}      
     } else {

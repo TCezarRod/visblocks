@@ -62,17 +62,16 @@ class MapVis extends React.Component {
   }
 
   static getDerivedStateFromProps = (newProps, prevState) => {
-    const options = newProps.options[newProps.blockid]
-
     if (newProps.data && newProps.data !== prevState.data) {
+      let popupValues = []
       Object.values(newProps.data).forEach(element => {
         Object.keys(element).forEach(key => {
-          if (!options.popup.values.includes(key)) {
-            options.popup.values.push(key)
+          if (!popupValues.includes(key)) {
+            popupValues.push(key)
           }
         })
       })
-      newProps.updateAttrValues(newProps.blockid, 'popup', options.popup.values)
+      newProps.updateAttrValues(newProps.blockid, 'popup', popupValues)
 
       return {...prevState, data: newProps.data}
     } else {

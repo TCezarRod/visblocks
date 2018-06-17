@@ -103,19 +103,20 @@ class Histogram extends React.Component {
 
     if (newProps.data) {
       if (newProps.data !== prevState.data) {
+        let dimensionValues = []
         Object.values(newProps.data).forEach(element => {
           Object.keys(element).forEach(key => {
-            if (!options.dimension.values.includes(key)) {
-              options.dimension.values.push(key)
+            if (!dimensionValues.includes(key)) {
+              dimensionValues.push(key)
             }
           })
         })
-        newProps.updateAttrValues(newProps.blockid, 'dimension', options.dimension.values)
+        newProps.updateAttrValues(newProps.blockid, 'dimension', dimensionValues)
 
         let binData = getBinData(newProps.data, options)
 
         return {...prevState, binData: binData, data: newProps.data}
-      } else if (options && options.bins.selected) {
+      } else if (options && (options.bins.selected || options.dimension.selected)) {
         let binData = getBinData(newProps.data, options)
         return {...prevState, binData: binData, data: newProps.data}
       } else {
