@@ -104,13 +104,13 @@ class BuildingPage extends React.Component {
   }
 
   componentDidMount = () => {
-    document.addEventListener("keydown", this.handleKeyPress, false)
+    //document.addEventListener("keydown", this.handleKeyPress, false)
   }
 
   handleKeyPress = (event) => {
-    if (event.keyCode === 46 && this.props.selectedId >= 0) {
+    /*if (event.keyCode === 46 && this.props.selectedId >= 0) {
       this.props.deleteBlock(this.props.selectedId)
-    }
+    }*/
   }
 
   createBlock = (type) => {
