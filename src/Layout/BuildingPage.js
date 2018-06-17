@@ -1,6 +1,14 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { addArrow, createBlock, updateBlockInput, updateBlockData, updateBlockSelection, updateAttrSelection } from "actions";
+import { 
+  addArrow, 
+  createBlock, 
+  updateBlockInput, 
+  updateBlockData, 
+  updateBlockSelection, 
+  updateAttrSelection,
+  deleteBlock 
+} from "actions";
 
 import ScatterPlot from 'Visualizations/ScatterPlot';
 import LineChart from 'Visualizations/LineChart';
@@ -40,6 +48,7 @@ const mapDispatchToProps = dispatch => {
   return {
     addArrow: arrow => dispatch(addArrow(arrow)),
     createBlock: (block, data) => dispatch(createBlock(block, data)),
+    deleteBlock: (id) => dispatch(deleteBlock(id)),
     updateBlockInput: (id, inputId) => dispatch(updateBlockInput(id, inputId)),
     updateBlockData: (id, data) => dispatch(updateBlockData(id, data)),
     updateBlockSelection: (id, data) => dispatch(updateBlockSelection(id, data)),
@@ -94,13 +103,14 @@ class BuildingPage extends React.Component {
 
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     document.addEventListener("keydown", this.handleKeyPress, false)
   }
 
   handleKeyPress = (event) => {
-    if (event.keyCode === 46)
-      console.log("Delete")
+    if (event.keyCode === 46 && this.props.selectedId >= 0) {
+      this.props.deleteBlock(this.props.selectedId)
+    }
   }
 
   createBlock = (type) => {
