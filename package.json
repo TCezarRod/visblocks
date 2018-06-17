@@ -23,6 +23,8 @@
     "victory": "^0.27.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "npm-run-all -p sass:watch js:start",
     "build": "npm-run-all sass:build js:build",
     "test": "react-scripts test --env=jsdom",
@@ -31,5 +33,9 @@
     "js:build": "react-scripts build",
     "sass:watch": "npm run sass:build && node-sass-chokidar --watch --recursive --skip-initial ./src/assets/styles/scss -o ./src/assets/styles/css --include-path ./node_modules --include-path ./src",
     "sass:build": "node-sass-chokidar ./src/assets/styles/scss -o ./src/assets/styles/css --include-path ./node_modules --include-path ./src"
-  }
+  },
+  "devDependencies": {
+    "gh-pages": "^1.2.0"
+  },
+  "homepage": "https://tcezarrod.github.io/visblocks"
 }
