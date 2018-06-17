@@ -67,8 +67,8 @@ class ControlDrawer extends React.Component {
                 shrink: true,
               }}
             >
-              {options[attribute].values.map(option => (
-                <option key={option} value={option}>
+              {options[attribute].values.map((option, index) => (
+                <option key={option} value={index}>
                   {option}
                 </option>
               ))}

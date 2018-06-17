@@ -44,11 +44,13 @@ class LineChart extends React.Component {
       },
       domain: {
         type: 'selection',
-        values: []
+        values: [],
+        default: 0
       },
       range: {
         type: 'selection',
-        values: []
+        values: [],
+        default: 1
       },
       color: {
         type: 'color',
@@ -58,7 +60,7 @@ class LineChart extends React.Component {
   }
 
   static getDerivedStateFromProps = (newProps, prevState) => {
-    let options = newProps.options[newProps.blockid]
+    const options = newProps.options[newProps.blockid]
 
     if (newProps.data && newProps.data !== prevState.data) {
       Object.values(newProps.data).forEach(element => {
@@ -73,15 +75,6 @@ class LineChart extends React.Component {
       })
       newProps.updateAttrValues(newProps.blockid, 'domain', options.domain.values)
       newProps.updateAttrValues(newProps.blockid, 'range', options.range.values)
-      if (!options.domain.selected || !options.domain.values.includes(options.domain.selected)) {
-        options.domain.selected = options.domain.values[0]
-      }
-      if (!options.range.selected || !options.range.values.includes(options.range.selected)) {
-        options.range.selected = options.range.values[1]
-      }
-      if (!options.color.selected) {
-        options.color.selected = options.color.default
-      }
 
       return {...prevState, data: newProps.data}      
     } else {
@@ -90,11 +83,16 @@ class LineChart extends React.Component {
   }
 
   getDomainRange = () => {
-    let minX = Math.min.apply(Math, this.state.data.map((obj) => obj[this.props.options[this.props.blockid].domain.selected]))
-    let maxX = Math.max.apply(Math, this.state.data.map((obj) => obj[this.props.options[this.props.blockid].domain.selected]))
+    const options = this.props.options[this.props.blockid]
+    const domainIndex = options.domain.selected || options.domain.default
+    const domain = options.domain.values[domainIndex]
+    let minX = Math.min.apply(Math, this.state.data.map((obj) => obj[domain]))
+    let maxX = Math.max.apply(Math, this.state.data.map((obj) => obj[domain]))
 
-    let minY = Math.min.apply(Math, this.state.data.map((obj) => obj[this.props.options[this.props.blockid].range.selected]))
-    let maxY = Math.max.apply(Math, this.state.data.map((obj) => obj[this.props.options[this.props.blockid].range.selected]))
+    const rangeIndex = options.range.selected || options.range.default
+    const range = options.range.values[rangeIndex]
+    let minY = Math.min.apply(Math, this.state.data.map((obj) => obj[range]))
+    let maxY = Math.max.apply(Math, this.state.data.map((obj) => obj[range]))
 
     return {x:[minX, maxX], y:[minY, maxY]}
   }
@@ -102,6 +100,8 @@ class LineChart extends React.Component {
   render() {
     const options = this.props.options[this.props.blockid]
     if (this.props.data) {
+      const domainIndex = options.domain.selected || options.domain.default
+      const rangeIndex = options.range.selected || options.range.default
       return (
         <VictoryChart 
           theme={VictoryTheme.material}
@@ -112,17 +112,17 @@ class LineChart extends React.Component {
           domainPadding={5}>
           <VictoryLine
             
-            style={{ data: { stroke: (d, active) => active ? "rgb(139,195,74)" : options.color.selected } }}
-            x={options.domain.selected}
-            y={options.range.selected}
+            style={{ data: { stroke: (d, active) => active ? "rgb(139,195,74)" : (options.color.selected || options.color.default) } }}
+            x={options.domain.values[domainIndex]}
+            y={options.range.values[rangeIndex]}
             data={this.props.data}       
           />
           <VictoryAxis 
-            label={options.domain.selected} 
+            label={options.domain.values[domainIndex]} 
             gridComponent={<Line style={{display: 'none'}}/>}
             axisLabelComponent={<VictoryLabel dy={15} style={this.labelStyle}/>}/>
           <VictoryAxis dependentAxis 
-            label={options.range.selected} 
+            label={options.range.values[rangeIndex]} 
             axisLabelComponent={<VictoryLabel dy={-10} angle="90" style={this.labelStyle}/>} 
             gridComponent={<Line style={{display: 'none'}}/>} />
         </VictoryChart>

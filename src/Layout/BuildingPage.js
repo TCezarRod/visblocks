@@ -187,8 +187,7 @@ class BuildingPage extends React.Component {
 
   renderVisualization = (id, type, data, props) => {
     switch(type) {
-      case 'Data':
-        
+      case 'Data':        
         return(<Data 
           id = {id}
           data = {data}/>)

@@ -26,8 +26,9 @@ const mapStateToProps = state => {
 
 const getBinData = (data, options) => {
   let binData = [];
-  let selectedDimension = options.dimension.selected  
-  let bins = options.bins.selected;
+  const dimensionIndex = options.dimension.selected || options.dimension.default
+  const selectedDimension = options.dimension.values[dimensionIndex]
+  let bins = options.bins.selected || options.bins.default;
 
   let minX = Math.min.apply(Math, data.map((obj) => obj[selectedDimension]))
   let maxX = Math.max.apply(Math, data.map((obj) => obj[selectedDimension]))
@@ -69,7 +70,8 @@ class Histogram extends React.Component {
       },
       dimension: {
         type: 'selection',
-        values: []
+        values: [],
+        default: 0
       },
       bins: {
         type: 'number',
@@ -83,9 +85,13 @@ class Histogram extends React.Component {
   }
 
   getDomain = () => {
-    let minX = Math.min.apply(Math, this.state.binData.map((obj) => obj[this.props.options[this.props.blockid].dimension.selected]))
-    let maxX = Math.max.apply(Math, this.state.binData.map((obj) => obj[this.props.options[this.props.blockid].dimension.selected]))
-    let truMaxX = maxX + (maxX-minX)/this.props.options[this.props.blockid].bins.selected
+    const options = this.props.options[this.props.blockid]
+    const dimensionIndex = options.dimension.selected || options.dimension.default
+    const dimension = options.dimension.values[dimensionIndex]
+    const bins = options.bins.selected || options.bins.default
+    let minX = Math.min.apply(Math, this.state.binData.map((obj) => obj[dimension]))
+    let maxX = Math.max.apply(Math, this.state.binData.map((obj) => obj[dimension]))
+    let truMaxX = maxX + (maxX-minX)/bins
 
     let maxY = Math.max.apply(Math, this.state.binData.map((obj) => obj.frequency))
 
@@ -93,7 +99,7 @@ class Histogram extends React.Component {
   }
 
   static getDerivedStateFromProps = (newProps, prevState) => {
-    let options = newProps.options[newProps.blockid]
+    const options = newProps.options[newProps.blockid]
 
     if (newProps.data) {
       if (newProps.data !== prevState.data) {
@@ -105,22 +111,15 @@ class Histogram extends React.Component {
           })
         })
         newProps.updateAttrValues(newProps.blockid, 'dimension', options.dimension.values)
-        if (!options.dimension.selected || !options.dimension.values.includes(options.dimension.selected)) {
-          options.dimension.selected = options.dimension.values[0]
-        }
-        if (!options.bins.selected) {
-          options.bins.selected = options.bins.default
-        }
-        if (!options.color.selected) {
-          options.color.selected = options.color.default
-        }
 
         let binData = getBinData(newProps.data, options)
 
         return {...prevState, binData: binData, data: newProps.data}
-      } else if (options && options.dimension.selected) {
+      } else if (options && options.bins.selected) {
         let binData = getBinData(newProps.data, options)
         return {...prevState, binData: binData, data: newProps.data}
+      } else {
+        return {...prevState}
       }       
     } else {
       return {...prevState}
@@ -131,6 +130,7 @@ class Histogram extends React.Component {
     const { width, height } = this.props
     const options = this.props.options[this.props.blockid]
     if (this.props.data) {
+      const dimensionIndex = options.dimension.selected || options.dimension.default
       return (<VictoryChart 
         theme={VictoryTheme.material}
         domain={this.getDomain()}
@@ -138,14 +138,14 @@ class Histogram extends React.Component {
         height={height}
         containerComponent={<VictorySelectionContainer selectionDimension="x"/>}
         domainPadding={5}>
-            <VictoryLabel text={options.dimension.selected} dy={50} dx={width-100} style={{fontSize: 12, fill: 'rgb(69, 90, 100)', fontWeight:'bold'}}/>
+            <VictoryLabel text={options.dimension.values[dimensionIndex]} dy={50} dx={width-100} style={{fontSize: 12, fill: 'rgb(69, 90, 100)', fontWeight:'bold'}}/>
             <VictoryBar 
               barRatio={1.1}
               alignment="start"
-              x={options.dimension.selected}
+              x={options.dimension.values[dimensionIndex]}
               y={'frequency'}
               data={this.state.binData}
-              style={{data: {fill: options.color.selected}}}/>
+              style={{data: {fill: options.color.selected || options.color.default}}}/>
             <VictoryAxis  
               gridComponent={<Line style={{display: 'none'}}/>}/>
             <VictoryAxis dependentAxis 
