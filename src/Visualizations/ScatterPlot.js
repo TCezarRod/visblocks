@@ -50,7 +50,7 @@ class ScatterPlot extends React.Component {
         type: 'color',
         default: 'rgba(100, 0, 40, 0.7)'
       },
-      'selected color': {
+      'selection color': {
         type: 'color',
         default: 'rgba(100, 200, 0, 0.7)'
       },
@@ -86,14 +86,14 @@ class ScatterPlot extends React.Component {
       if (!options.color.selected) {
         options.color.selected = options.color.default
       }
-      if (!options['selected color'].selected) {
-        options['selected color'].selected = options['selected color'].default
+      if (!options['selection color'].selected) {
+        options['selection color'].selected = options['selection color'].default
       }
       if (!options.size.selected) {
         options.size.selected = options.size.default
       }
 
-      return {...prevState, data: newProps.data, color: options.color.selected, selColor: options['selected color'].selected}
+      return {...prevState, data: newProps.data, color: options.color.selected, selColor: options['selection color'].selected}
     } else {
       return {...prevState}
     }
@@ -135,7 +135,7 @@ class ScatterPlot extends React.Component {
 
   render() {
     const options = this.props.options[this.props.blockid]
-    const fillStyle = (data, active) => active ? options['selected color'].selected : options.color.selected
+    const fillStyle = (data, active) => active ? options['selection color'].selected : options.color.selected
     if (this.props.data) {
       return (
         <VictoryChart 

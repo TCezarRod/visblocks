@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { addArrow, createBlock, updateBlockInput, updateBlockData, updateBlockSelection } from "actions";
+import { addArrow, createBlock, updateBlockInput, updateBlockData, updateBlockSelection, updateAttrSelection } from "actions";
 
 import ScatterPlot from 'Visualizations/ScatterPlot';
 import LineChart from 'Visualizations/LineChart';
@@ -9,14 +9,12 @@ import Map from 'Visualizations/MapVis';
 import VisBlock from 'Blocks/VisBlock';
 import EdgesCanvas from 'Edges/EdgesCanvas';
 import BlocksDrawer from 'Layout/BlocksDrawer';
+import ControlDrawer from 'Layout/ControlDrawer';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Drawer from '@material-ui/core/Drawer';
 import { withStyles } from '@material-ui/core/styles';
-
-const drawerWidth = 50;
 
 const styles = theme => ({
   root: {
@@ -29,20 +27,13 @@ const styles = theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
-  drawerPaper: {
-    position: 'relative',
-    width: drawerWidth,
-  },
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit,
     minWidth: 0, // So the Typography noWrap works
   },
-  toolbar: theme.mixins.toolbar,
-  listIcons: {
-    margin: '0'
-  }
+  toolbar: theme.mixins.toolbar
 });
 
 const mapDispatchToProps = dispatch => {
@@ -51,15 +42,58 @@ const mapDispatchToProps = dispatch => {
     createBlock: (block, data) => dispatch(createBlock(block, data)),
     updateBlockInput: (id, inputId) => dispatch(updateBlockInput(id, inputId)),
     updateBlockData: (id, data) => dispatch(updateBlockData(id, data)),
-    updateBlockSelection: (id, data) => dispatch(updateBlockSelection(id, data))
+    updateBlockSelection: (id, data) => dispatch(updateBlockSelection(id, data)),
+    updateAttrSelection: (id, attribute, value) => dispatch(updateAttrSelection(id, attribute, value))
   };
 };
 
 const mapStateToProps = state => {
-  return {blocks: state.blocksState.blocks, nextId: state.blocksState.lastId, dataMap: state.dataState.data};
+  return {
+    blocks: state.blocksState.blocks, 
+    dataMap: state.dataState.data,
+    options: state.controlState.options, 
+    selectedId: state.controlState.selected
+  };
 };
 
+const getData = (originId, dataMap) => {
+  const originData = dataMap[originId]
+
+  if (originData) {
+    let data
+    switch (originData.type) {
+      case 'data':
+        data = originData.data
+        break
+      case 'input':
+        data = getData(originData.data, dataMap)
+        break
+      default:
+        data = []
+        break
+    }
+    if (data && data.length && originData.selection && originData.selection.length > 0) {
+      data = originData.selection 
+    }
+    return data
+  }
+}
+
 class BuildingPage extends React.Component {
+  state = {
+    controlDrawerOpen: false
+  }
+
+  static getDerivedStateFromProps = (newProps, oldState) => {
+    const selectedId = newProps.selectedId
+    if (newProps.blocks[selectedId] && getData(selectedId, newProps.dataMap)) {
+      return {...oldState, controlDrawerOpen : true}
+    } else {
+      return {...oldState, controlDrawerOpen : false}
+    }
+
+  }
+
   componentWillMount = () => {
     document.addEventListener("keydown", this.handleKeyPress, false)
   }
@@ -138,30 +172,7 @@ class BuildingPage extends React.Component {
       default:
         return
     }
-  }
-
-  getData = (originId) => {
-    const originData = this.props.dataMap[originId]
-
-    if (originData) {
-      let data
-      switch (originData.type) {
-        case 'data':
-          data = originData.data
-          break
-        case 'input':
-          data = this.getData(originData.data)
-          break
-        default:
-          data = []
-          break
-      }
-      if (data && data.length && originData.selection && originData.selection.length > 0) {
-        data = originData.selection 
-      }
-      return data
-    }
-  }
+  }  
 
   renderVisualization = (id, type, data, props) => {
     switch(type) {
@@ -171,20 +182,14 @@ class BuildingPage extends React.Component {
         return <ScatterPlot 
           id = {id}
           data={data} 
-          xDimension={props.xDimension}
-          yDimension={props.yDimension} 
           onSelection={this.updateData}/> 
       case 'LineChart':
         return <LineChart 
           id = {id}
-          data={data} 
-          xDimension={props.xDimension}
-          yDimension={props.yDimension}/>        
+          data={data} />        
       case 'Histogram':
         return <Histogram 
-          id = {id}
-          data={data}
-          bins={props.bins}/>         
+          data={data}/>         
       case 'Map':
         return <Map 
           id = {id}
@@ -222,30 +227,14 @@ class BuildingPage extends React.Component {
       height={block.props.size.height}
       minWidth={block.type==='Data'?50:undefined}
       minHeight={block.type==='Data'?50:undefined}
-      onUpdate={this.addInput}>
-      {this.renderVisualization(block.id, block.type, block.data || this.getData(block.input), block.props)}
+      onUpdate={this.addInput}
+      controlRef={this.refs.controls}>
+      {this.renderVisualization(block.id, block.type, block.data || getData(block.input, this.props.dataMap), block.props)}
       </VisBlock>)    
   }
 
   renderComponents = () => {
-    let blocks = []  
-    for (let id in this.props.blocks) {
-      blocks.push(this.renderBlock(this.props.blocks[id]));
-    }
-    return blocks
-  }
-
-  handleFiles = (files) => {
-    console.log('read');
-    let fileReader = new FileReader();
-    fileReader.onload = this.handleLoad
-    fileReader.readAsText(files.fileList.item(0), 'UTF-8')
-  }
-
-  handleLoad = (event) => {
-    let content = event.target.result;
-    let data = JSON.parse(content);
-    this.addBlock("Data", 75, 50, data);
+    return Object.values(this.props.blocks).map(block => this.renderBlock(block))
   }
 
   renderAppBar() {
@@ -258,6 +247,10 @@ class BuildingPage extends React.Component {
         </Typography>
       </Toolbar>
     </AppBar>)
+  }
+
+  handleOptionChange = (attribute, value) => {
+    this.props.updateAttrSelection(this.props.selectedId, attribute, value)
   }
 
   render() {
@@ -273,15 +266,12 @@ class BuildingPage extends React.Component {
             <EdgesCanvas/>
           </div>
         </main>
-        <Drawer
-          anchor="right"
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-          >
-          <div className={classes.toolbar} />
-        </Drawer> 
+        <div ref="controls">
+          <ControlDrawer
+            open={this.state.controlDrawerOpen}
+            options={this.props.options[this.props.selectedId]}
+            onFieldChange={this.handleOptionChange} />
+        </div>
       </div>      
     );
   }

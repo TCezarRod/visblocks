@@ -30,7 +30,11 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = state => {
-  return {isConnecting: state.controlState.connecting, connectionSource: state.controlState.sourceId, selectedId: state.controlState.selected};
+  return {
+    isConnecting: state.controlState.connecting, 
+    connectionSource: state.controlState.sourceId, 
+    selectedId: state.controlState.selected
+  };
 };
 
 class VisBlock extends React.Component {
@@ -73,7 +77,11 @@ class VisBlock extends React.Component {
   }
 
   handleClick = (e) => {
-    if (this.node && !this.node.contains(e.target)) {
+    if (this.node && this.node.contains(e.target) && !this.props.isConnecting) {
+      this.props.selectBlock(this.props.id)
+    }
+
+    if ((this.node && !(this.node.contains(e.target))) && (this.props.controlRef && !this.props.controlRef.contains(e.target))) {
       this.handleClickOutside()
     }
   }
