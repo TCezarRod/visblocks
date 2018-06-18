@@ -37,6 +37,13 @@ class ControlDrawer extends React.Component {
     this.props.onFieldChange(attribute, color)
   }
 
+  handleColorArrayChange = (array, index, attribute) => color => {
+    let newArray = array ? array.slice() : []
+    newArray[index] = color
+    this.props.onFieldChange(attribute, newArray)
+
+  }
+
   handleSelectChange = (attribute, values) => event => {
     const value = event.target.value
     if (values.includes(value)) {
@@ -65,27 +72,30 @@ class ControlDrawer extends React.Component {
               margin="normal"
             />)
           case 'selection':
-            return (<TextField
-              key={attribute}
-              select
-              fullWidth
-              label={capitalize(attribute)}
-              value={options[attribute].selected || options[attribute].default}
-              onChange={this.handleFieldChange(attribute)}
-              SelectProps={{
-                native: true
-              }}
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            >
-              {options[attribute].values.map((option, index) => (
-                <option key={option} value={index}>
-                  {option}
-                </option>
-              ))}
-            </TextField>)
+            if(options[attribute].values.length) {
+              return (<TextField
+                key={attribute}
+                select
+                fullWidth
+                label={capitalize(attribute)}
+                value={options[attribute].selected || options[attribute].default}
+                onChange={this.handleFieldChange(attribute)}
+                SelectProps={{
+                  native: true
+                }}
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              >
+                {options[attribute].values.map((option, index) => (
+                  <option key={option} value={index}>
+                    {option}
+                  </option>
+                ))}
+              </TextField>)
+            }
+            break
           case 'color':
             return (
             <FormControl key = {attribute} fullWidth margin="normal">
@@ -126,6 +136,21 @@ class ControlDrawer extends React.Component {
                     />)}
               </FormGroup>
             </FormControl>)
+          case 'colorArray': 
+            return (
+              <FormControl component="fieldset" margin="normal">
+                <FormLabel component="legend" style={{transform: 'scale(0.75)',  transformOrigin: 'top left'}}>{capitalize(attribute)}</FormLabel>
+                <FormGroup>
+                  {options[attribute].values.map((value, index) => {
+                    return (
+                      <FormControl key = {value} fullWidth style={{marginTop: '3px'}}>
+                          <FormLabel component="legend" style={{transform: 'scale(0.75)',  transformOrigin: 'top left'}}>{value}</FormLabel>
+                          <ColorPicker
+                            color ={ (options[attribute].selected && options[attribute].selected[index]) || options[attribute].default }
+                            onSelect = { this.handleColorArrayChange(options[attribute].selected, index, attribute) }/>
+                      </FormControl>)})}
+                </FormGroup>
+              </FormControl>)
           default:
               return null
         }

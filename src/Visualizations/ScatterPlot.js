@@ -1,7 +1,7 @@
 import React  from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { initOptions, updateAttrValues } from 'actions'
+import { initOptions, updateAttrValues, updateAttrSelection } from 'actions'
 
 import {
   VictoryChart,
@@ -16,13 +16,18 @@ import {
 const mapDispatchToProps = dispatch => {
   return {
     initOptions: (id, attributes) => dispatch(initOptions(id, attributes)),
-    updateAttrValues: (id, attribute, values) => dispatch(updateAttrValues(id, attribute, values))
+    updateAttrValues: (id, attribute, values) => dispatch(updateAttrValues(id, attribute, values)),
+    updateAttrSelection: (id, attribute, value) => dispatch(updateAttrSelection(id, attribute, value))
   };
 };
 
 const mapStateToProps = state => {
   return { options: state.controlState.options };
 };
+
+const countUnique = (iterable) => {
+  return new Set(iterable).size
+}
 
 class ScatterPlot extends React.Component {
   static propTypes = {
@@ -33,7 +38,8 @@ class ScatterPlot extends React.Component {
   }
 
   state = {
-    data: []
+    data: [],
+    groupBy: 0
   }
 
   componentDidMount = () => {
@@ -63,28 +69,61 @@ class ScatterPlot extends React.Component {
       size: {
         type: 'number',
         default: 6
+      },
+      'group by': {
+        type: 'selection',
+        values: [],
+        default: 0
+      },
+      'group color': {
+        type: 'colorArray',
+        default: 'rgba(100, 0, 40, 0.7)',
+        values: []
       }
     })
   }
 
   static getDerivedStateFromProps = (newProps, prevState) => {
+    const options = newProps.options[newProps.blockid]
     if (newProps.data && newProps.data !== prevState.data) {
       let domainValues = []
       let rangeValues = []
+      let NaNFields = []
       Object.values(newProps.data).forEach(element => {
         Object.keys(element).forEach(key => {
-          if (!domainValues.includes(key) && !isNaN(element[key])) {
-            domainValues.push(key)
-          }
-          if (!rangeValues.includes(key) && !isNaN(element[key])) {
-            rangeValues.push(key)
+          if (isNaN(element[key])) {
+            if (!NaNFields.includes(key)) {
+              NaNFields.push(key)
+            }
+          } else {
+            if (!domainValues.includes(key)) {
+              domainValues.push(key)
+            }
+            if (!rangeValues.includes(key)) {
+              rangeValues.push(key)
+            }
           }
         })
       })
+      for(let i=0; i<NaNFields.length; i++) {
+        if(countUnique(newProps.data.map(obj => obj[NaNFields[i]])) > 10) {
+          NaNFields.splice(i, 1)
+        }
+      }
       newProps.updateAttrValues(newProps.blockid, 'domain', domainValues)
       newProps.updateAttrValues(newProps.blockid, 'range', rangeValues)
+      newProps.updateAttrValues(newProps.blockid, 'group by', NaNFields)
 
       return {...prevState, data: newProps.data}
+    } else if (newProps.data && options && options['group by'] && options['group by'].selected !== prevState.groupBy) {
+      const values = new Set(newProps.data.map(obj => {
+        return obj[options['group by'].values[options['group by'].selected || options['group by'].default]]
+      }))
+      const colors = Array(values.size).fill(options['group color'].default)
+
+      newProps.updateAttrValues(newProps.blockid, 'group color', Array.from(values))
+      newProps.updateAttrSelection(newProps.blockid, 'group color', colors)
+      return {...prevState, data: newProps.data, groupBy: options['group by'].selected}
     } else {
       return {...prevState}
     }
@@ -131,9 +170,28 @@ class ScatterPlot extends React.Component {
 
   render() {
     const options = this.props.options[this.props.blockid]
-    const fillStyle = (data, active) => active 
-      ? (options['selection color'].selected || options['selection color'].default) 
-      : (options.color.selected || options.color.default)
+    const fillStyle = (data, active) => {
+      const selectionColor = (options['selection color'].selected || options['selection color'].default) 
+      const baseColor = (options.color.selected || options.color.default)
+      const groupByOptions = options['group by']
+      if (active) {
+        return selectionColor
+      } else if (groupByOptions) {
+        const attrIndex = groupByOptions.selected || groupByOptions.default
+        const value = data[groupByOptions.values[attrIndex]]
+        if (value) {
+          const index = options['group color'].values.indexOf(value)
+          if (index >= 0)
+            return options['group color'].selected[index]
+          else 
+            return options['group color'].default
+        } else {
+          return baseColor
+        }
+      } else {
+        return baseColor
+      }
+    }
     if (this.props.data) {
       const domainIndex = options.domain.selected || options.domain.default
       const rangeIndex = options.range.selected || options.range.default
