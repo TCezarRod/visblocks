@@ -80,7 +80,7 @@ class MapVis extends React.Component {
   }
 
   searchForLatLng = (data) => {
-    if ('lat' in data && 'lng' in data) {
+    if ('lat' in data && 'lng' in data && !isNaN(data.lat) && !isNaN(data.lng)) {
       return {lat: data.lat, lng: data.lng}
     } else {
       let latLng;

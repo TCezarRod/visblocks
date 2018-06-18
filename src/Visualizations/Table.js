@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { initOptions, updateAttrValues } from 'actions'
 
 import HotTable from 'react-handsontable';
-import Typography from '@material-ui/core/Typography';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -114,7 +113,7 @@ class Table extends React.Component {
         return newDatum
       })
       return (<HotTable ref= "table"  
-        root={`table-${this.props.blockid}`}        
+        root={`table-${this.props.blockid}`}  
         settings={{
           data: data,
           colHeaders: this.state.headers,

@@ -90,6 +90,23 @@ const getData = (originId, dataMap) => {
   }
 }
 
+const csvToJSON = (csv) => {
+  const lines=csv.split("\n");
+  const headers=lines[0].split(",").map(header => header.trim());
+
+  let result = [];
+  for(let i=1; i<lines.length; i++){
+	  let obj = {};
+    const currentline=lines[i].split(",");
+    headers.forEach((header, index) => {
+      if (currentline[index])
+        obj[header] = currentline[index].trim()
+    })
+	  result.push(obj);
+  }
+  return result;
+}
+
 class BuildingPage extends React.Component {
   state = {
     controlDrawerOpen: false
@@ -139,11 +156,22 @@ class BuildingPage extends React.Component {
 
   handleDataFiles = (event) => {
     let fileReader = new FileReader();
-    fileReader.onload = (this.handleLoad)
+    const file = event.target.files.item(0)
+    if (file.type === "application/json") {
+      fileReader.onload = (this.handleLoadJson)
+    } else if (file.type === "text/csv") {
+      fileReader.onload = (this.handleLoadCsv)
+    }      
     fileReader.readAsText(event.target.files.item(0), 'UTF-8')
   }
 
-  handleLoad = (event) => {
+  handleLoadCsv = (event) => {
+    let content = event.target.result;
+    let data = csvToJSON(content);
+    this.addBlock("Data", 75, 50, data);
+  }
+
+  handleLoadJson = (event) => {
     let content = event.target.result;
     let data = JSON.parse(content);
     this.addBlock("Data", 75, 50, data);
