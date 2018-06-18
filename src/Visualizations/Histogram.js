@@ -148,10 +148,12 @@ class Histogram extends React.Component {
               data={this.state.binData}
               style={{data: {fill: options.color.selected || options.color.default}}}/>
             <VictoryAxis  
-              gridComponent={<Line style={{display: 'none'}}/>}/>
+              gridComponent={<Line style={{display: 'none'}}/>}
+              />
             <VictoryAxis dependentAxis 
               axisLabelComponent={<VictoryLabel dy={20}/>} 
-              gridComponent={<Line style={{display: 'none'}}/>} />
+              gridComponent={<Line style={{display: 'none'}}/>} 
+              />
       </VictoryChart>)
     } else {
       return <div className="content-text"><span>No Data</span></div>

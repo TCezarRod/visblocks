@@ -28,7 +28,8 @@ class ScatterPlot extends React.Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     width: PropTypes.number,
-    height: PropTypes.number
+    height: PropTypes.number,
+    onSelection: PropTypes.func
   }
 
   state = {

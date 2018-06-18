@@ -13,6 +13,8 @@ import ScatterPlotIcon from 'assets/images/scatter_plot.svg'
 import LineChartIcon from 'assets/images/line_chart.svg'
 import PinIcon from 'assets/images/map_pin.svg'
 import DataIcon from 'assets/images/data.svg'
+import TableIcon from 'assets/images/table.svg'
+
 
 const drawerWidth = 50
 
@@ -51,6 +53,13 @@ class BlocksDrawer extends React.Component {
               <ListItem button disableGutters={true} onClick={() => this.props.onCreateBlock("Data")}>             
                 <ListItemIcon classes={{root: classes.listIcons}}>
                   <img src={DataIcon} width={45} alt="Data"/>
+                </ListItemIcon>
+              </ListItem>
+            </Tooltip>
+            <Tooltip title="Table" placement="right"  classes={{popper: classes.popper}}>
+              <ListItem button disableGutters={true} onClick={() => this.props.onCreateBlock("Table")}>
+                <ListItemIcon classes={{root: classes.listIcons}}>
+                  <img src={TableIcon} width={45} alt="Table"/>
                 </ListItemIcon>
               </ListItem>
             </Tooltip>

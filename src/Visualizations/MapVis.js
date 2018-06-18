@@ -103,11 +103,11 @@ class MapVis extends React.Component {
     }
   }
 
-  renderMarker = (data) => {
+  renderMarker = (data, key) => {
     let latLng = this.searchForLatLng(data);
     if (latLng) {
       return (
-        <Marker position={latLng} key={data.id}>
+        <Marker position={latLng} key={key}>
           {this.renderPopup(data)}
         </Marker>
       )
@@ -117,7 +117,7 @@ class MapVis extends React.Component {
   renderContent = () => {
     const { width, height } = this.props
     if (this.props.data) {  
-      const markers = this.state.data.map(data => this.renderMarker(data)).filter(marker => marker !== undefined)
+      const markers = this.state.data.map((data, index) => this.renderMarker(data, index)).filter(marker => marker !== undefined)
       let mapBounds = this.state.data.map(data => this.searchForLatLng(data)).filter(latlng => latlng !== undefined)
       return (
       <Map 

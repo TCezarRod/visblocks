@@ -15,6 +15,7 @@ import LineChart from 'Visualizations/LineChart';
 import Histogram from 'Visualizations/Histogram';
 import Map from 'Visualizations/MapVis';
 import Data from 'Visualizations/Data';
+import Table from 'Visualizations/Table';
 import VisBlock from 'Blocks/VisBlock';
 import EdgesCanvas from 'Edges/EdgesCanvas';
 import BlocksDrawer from 'Layout/BlocksDrawer';
@@ -119,13 +120,8 @@ class BuildingPage extends React.Component {
       case 'Data':
         this.openFileDialog(this.handleDataFiles)
       break
-      case 'LineChart':
-      case 'ScatterPlot':
-      case 'Histogram':
-      case 'Map':
-        this.addBlock(type)
-      break
       default:
+        this.addBlock(type)
       break
     }
   }
@@ -199,21 +195,25 @@ class BuildingPage extends React.Component {
       case 'LineChart':
         return <LineChart 
           id = {id}
-          data={data} />        
+          data={data} />
       case 'Histogram':
         return <Histogram 
           data={data}/>         
       case 'Map':
         return <Map 
           id = {id}
-          data={data}/>        
+          data={data}/>
+      case 'Table':
+        return <Table 
+          id = {id}
+          data={data}
+          onSelection={this.updateData}/>
       default:
         return <React.Fragment/>
     }
   }
 
   addInput = (id, idInput) => {
-    console.log(`${id} receives from ${idInput}`)
     let block = this.props.blocks[id]
     let inputBlock = this.props.blocks[idInput]
     this.props.updateBlockInput(id, idInput)

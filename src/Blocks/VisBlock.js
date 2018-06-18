@@ -159,7 +159,6 @@ class VisBlock extends React.Component {
   }
 
   handleConnectClick = () => {
-    console.log(`connect from ${this.props.id}`);
     this.props.startConnect(this.props.id);
   }
 
