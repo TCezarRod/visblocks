@@ -115,22 +115,20 @@ class Table extends React.Component {
       })
       return (<HotTable ref= "table"  
         root={`table-${this.props.blockid}`}        
-        data = {data}
-        colHeaders = {this.state.headers}
-        rowHeaders = {true}
-        stretchH = "all"
-        afterSelectionEnd = {this.handleSelection}
-        afterDeselect = {this.clearSelection}
-        readOnly = {true}
+        settings={{
+          data: data,
+          colHeaders: this.state.headers,
+          rowHeaders: true,
+          stretchH: 'all',
+          afterSelectionEnd: this.handleSelection,
+          afterDeselect: this.clearSelection,
+          readOnly: true
+        }}     
+        
         />)
+    } else {
+      return <div className="content-text"><span>No Data</span></div>
     }
-
-    const blockOptions = this.props.options[this.props.blockid]
-    const dataText = (blockOptions && blockOptions.name) 
-      ? (blockOptions.name.selected !== undefined ? blockOptions.name.selected : blockOptions.name.default) 
-      : `Data`
-
-    return <div className="content-text"><Typography variant="body2" >{dataText}</Typography></div>
   }
 
   render() {
