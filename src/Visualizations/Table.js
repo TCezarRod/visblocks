@@ -39,7 +39,8 @@ class Table extends React.Component {
   state = {
     tableData: [],
     data: [],
-    headers: []
+    headers: [],
+    updated: false
   }
 
   componentDidMount = () => {
@@ -56,6 +57,13 @@ class Table extends React.Component {
     })
   }
 
+  componentDidUpdate = () => {
+    // Workaround to rerender the table when columns have changed
+    if (this.state.updated) {
+      this.setState({updated: false})
+    }
+  }
+
   handleSelection = (startRow, startColumn, endRow, endColumn) => {
     this.props.onSelection(this.props.id, {type: 'selection', data: this.props.data.slice(startRow, endRow + 1)})
   }
@@ -66,25 +74,30 @@ class Table extends React.Component {
 
   static getDerivedStateFromProps = (newProps, prevState) => {
     const options = newProps.options[newProps.blockid]
+    let headers = newProps.data ? getHeadersFromData(newProps.data) : []
     if (newProps.data && newProps.data !== prevState.data) {
-      let headers = getHeadersFromData(newProps.data)
       newProps.updateAttrValues(newProps.blockid, 'hidden columns', headers.slice(0))
 
       return {...prevState, data: newProps.data, tableData: newProps.data, headers: headers}
-    } else if (options && options['hidden columns'].selected) {
-      let newHeaders = getHeadersFromData(newProps.data)
+    } else if (
+      // All of this to say there's been an update on selected columns
+      options 
+      && options['hidden columns'].selected 
+      && (options['hidden columns'].selected.some(col => prevState.headers.indexOf(col) >= 0)
+      || headers.some(col => prevState.headers.concat(options['hidden columns'].selected).indexOf(col) < 0))    
+    ) {
       let data = Object.values(newProps.data).map(datum => {
         let newDatum = Object.assign({}, datum)
         options['hidden columns'].selected.forEach(col => {
           delete newDatum[col]
-          newHeaders.forEach((header, index) => {
-            if(header === col) newHeaders.splice(index, 1)
-          })
+          const index = headers.indexOf(col)
+          if (index >= 0)
+            headers.splice(index, 1)
         })
         return newDatum
       })
 
-      return {...prevState, data: newProps.data, tableData: data, headers: newHeaders}
+      return {...prevState, data: newProps.data, tableData: data, headers: headers, updated: true}
     } else {
       return {...prevState}
     }

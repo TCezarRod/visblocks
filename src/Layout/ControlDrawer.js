@@ -5,7 +5,7 @@ import ColorPicker from 'Layout/ColorPicker'
 
 import Drawer from '@material-ui/core/Drawer'
 import TextField from '@material-ui/core/TextField'
-import { FormControl, FormLabel } from '@material-ui/core'
+import { FormControl, FormLabel, FormControlLabel, FormGroup, Checkbox } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
 const drawerWidth = 250
@@ -35,6 +35,19 @@ class ControlDrawer extends React.Component {
 
   handleColorChange = attribute => color => {
     this.props.onFieldChange(attribute, color)
+  }
+
+  handleSelectChange = (attribute, values) => event => {
+    const value = event.target.value
+    if (values.includes(value)) {
+      let newValues = values
+      Object.keys(values).forEach(key => {
+        if(values[key] === value) newValues.splice(key, 1)
+      })
+      this.props.onFieldChange(attribute, newValues)
+    } else {
+      this.props.onFieldChange(attribute, [...values, value])
+    }
   }
 
   renderControls = () => {
@@ -74,26 +87,45 @@ class ControlDrawer extends React.Component {
               ))}
             </TextField>)
           case 'color':
-              return (
-              <FormControl key = {attribute} fullWidth margin="normal">
-                  <FormLabel component="legend" style={{transform: 'scale(0.75)',  transformOrigin: 'top left'}}>{capitalize(attribute)}</FormLabel>
-                  <ColorPicker
-                    color ={ options[attribute].selected || options[attribute].default }
-                    onSelect = { this.handleColorChange(attribute) }/>
-              </FormControl>)
+            return (
+            <FormControl key = {attribute} fullWidth margin="normal">
+                <FormLabel component="legend" style={{transform: 'scale(0.75)',  transformOrigin: 'top left'}}>{capitalize(attribute)}</FormLabel>
+                <ColorPicker
+                  color ={ options[attribute].selected || options[attribute].default }
+                  onSelect = { this.handleColorChange(attribute) }/>
+            </FormControl>)
           case 'number':
-              return (<TextField
-                key={attribute}
-                fullWidth
-                label={capitalize(attribute)}
-                value={options[attribute].selected || options[attribute].default}
-                onChange={this.handleFieldChange(attribute)}
-                type="number"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                margin="normal"
-              />)
+            return (<TextField
+              key={attribute}
+              fullWidth
+              label={capitalize(attribute)}
+              value={options[attribute].selected || options[attribute].default}
+              onChange={this.handleFieldChange(attribute)}
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              margin="normal"
+            />)
+          case 'multiple':
+            return (
+            <FormControl key={attribute} component="fieldset" margin="normal">
+              <FormLabel component="legend" style={{transform: 'scale(0.75)',  transformOrigin: 'top left'}}>{capitalize(attribute)}</FormLabel>
+                <FormGroup>
+                  {options[attribute].values.map(value => 
+                    <FormControlLabel
+                      key={value}
+                      control={
+                        <Checkbox
+                          checked={(options[attribute].selected || options[attribute].default).includes(value)}
+                          onChange={this.handleSelectChange(attribute, options[attribute].selected || options[attribute].default)}
+                          value={value}
+                        />
+                      }
+                      label={value}
+                    />)}
+              </FormGroup>
+            </FormControl>)
           default:
               return null
         }

@@ -15,7 +15,6 @@ import PinIcon from 'assets/images/map_pin.svg'
 import DataIcon from 'assets/images/data.svg'
 import TableIcon from 'assets/images/table.svg'
 
-
 const drawerWidth = 50
 
 const styles = theme => ({
