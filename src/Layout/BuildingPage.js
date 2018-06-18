@@ -21,6 +21,8 @@ import EdgesCanvas from 'Edges/EdgesCanvas';
 import BlocksDrawer from 'Layout/BlocksDrawer';
 import ControlDrawer from 'Layout/ControlDrawer';
 
+import Papa from 'papaparse';
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -91,20 +93,8 @@ const getData = (originId, dataMap) => {
 }
 
 const csvToJSON = (csv) => {
-  const lines=csv.split("\n");
-  const headers=lines[0].split(",").map(header => header.trim());
-
-  let result = [];
-  for(let i=1; i<lines.length; i++){
-	  let obj = {};
-    const currentline=lines[i].split(",");
-    headers.forEach((header, index) => {
-      if (currentline[index])
-        obj[header] = currentline[index].trim()
-    })
-	  result.push(obj);
-  }
-  return result;
+  const parsedPapa = Papa.parse(csv, {header: true, trimHeaders: true})
+  return parsedPapa.data;
 }
 
 class BuildingPage extends React.Component {
