@@ -216,7 +216,8 @@ class BuildingPage extends React.Component {
           data={data} />
       case 'Histogram':
         return <Histogram 
-          data={data}/>         
+          data={data}
+          onSelection={this.updateData}/>         
       case 'Map':
         return <Map 
           id = {id}
