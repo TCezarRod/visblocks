@@ -29,23 +29,23 @@ const getBinData = (data, options) => {
   const dimensionIndex = options.dimension.selected || options.dimension.default
   const selectedDimension = options.dimension.values[dimensionIndex]
 
-    let bins = options.bins.selected || options.bins.default;
+  let bins = options.bins.selected || options.bins.default;
 
-    let minX = Math.min.apply(Math, data.map((obj) => obj[selectedDimension]))
-    let maxX = Math.max.apply(Math, data.map((obj) => obj[selectedDimension]))
-    let interval = (maxX - minX) / bins
+  let minX = Math.min.apply(Math, data.map((obj) => Number(obj[selectedDimension])).filter(n => !isNaN(n)))
+  let maxX = Math.max.apply(Math, data.map((obj) => Number(obj[selectedDimension])).filter(n => !isNaN(n)))
+  let interval = (maxX - minX) / bins
 
-    let last;
-    for (let i = minX; i < maxX; i += interval) {
-      binData.push({
-        [selectedDimension]: i,
-        frequency: data.filter((data) => data[selectedDimension]>=i && data[selectedDimension]<(i+interval)).length
-      })
-      last=i;
-    }
-    if (last + interval === maxX) {
-      binData.find((bin)=>bin[selectedDimension]===last).frequency += data.filter((data) => data[selectedDimension]===maxX).length
-    } 
+  let last;
+  for (let i = minX; i < maxX; i += interval) {
+    binData.push({
+      [selectedDimension]: i,
+      frequency: data.filter((data) => data[selectedDimension]>=i && data[selectedDimension]<(i+interval)).length
+    })
+    last=i;
+  }
+  if (last + interval === maxX) {
+    binData.find((bin)=>bin[selectedDimension]===last).frequency += data.filter((data) => data[selectedDimension]===maxX).length
+  } 
    /*else {
     let ticks = []
     let count = {}
