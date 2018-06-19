@@ -117,9 +117,8 @@ class ScatterPlot extends React.Component {
 
       return {...prevState, data: newProps.data}
     } else if (newProps.data && options && options['group by'] && options['group by'].selected !== prevState.groupBy) {
-      const values = new Set(newProps.data.map(obj => {
-        return obj[options['group by'].values[options['group by'].selected || options['group by'].default]]
-      }))
+      const values = new Set(newProps.data.map(obj => obj[options['group by'].values[options['group by'].selected || options['group by'].default]]))
+      values.delete(undefined)
       const colors = Array(values.size).fill(options['group color'].default)
 
       newProps.updateAttrValues(newProps.blockid, 'group color', Array.from(values))
