@@ -92,14 +92,14 @@ class ScatterPlot extends React.Component {
       Object.values(newProps.data).forEach(element => {
         Object.keys(element).forEach(key => {
           if (isNaN(element[key])) {
-            if (!NaNFields.includes(key)) {
+            if (!NaNFields.includes(key) && element[key]) {
               NaNFields.push(key)
             }
           } else {
-            if (!domainValues.includes(key)) {
+            if (!domainValues.includes(key) && element[key]) {
               domainValues.push(key)
             }
-            if (!rangeValues.includes(key)) {
+            if (!rangeValues.includes(key) && element[key]) {
               rangeValues.push(key)
             }
           }
@@ -108,6 +108,7 @@ class ScatterPlot extends React.Component {
       for(let i=0; i<NaNFields.length; i++) {
         if(countUnique(newProps.data.map(obj => obj[NaNFields[i]])) > 10) {
           NaNFields.splice(i, 1)
+          i--;
         }
       }
       newProps.updateAttrValues(newProps.blockid, 'domain', domainValues)
@@ -133,13 +134,13 @@ class ScatterPlot extends React.Component {
     const options = this.props.options[this.props.blockid]
     const domainIndex = options.domain.selected || options.domain.default
     const domain = options.domain.values[domainIndex]
-    let minX = Math.min.apply(Math, this.state.data.map((obj) => obj[domain]))
-    let maxX = Math.max.apply(Math, this.state.data.map((obj) => obj[domain]))
+    let minX = Math.min.apply(Math, this.state.data.map((obj) => Number(obj[domain])).filter(n => !isNaN(n)))
+    let maxX = Math.max.apply(Math, this.state.data.map((obj) => Number(obj[domain])).filter(n => !isNaN(n)))
 
     const rangeIndex = options.range.selected || options.range.default
     const range = options.range.values[rangeIndex]
-    let minY = Math.min.apply(Math, this.state.data.map((obj) => obj[range]))
-    let maxY = Math.max.apply(Math, this.state.data.map((obj) => obj[range]))
+    let minY = Math.min.apply(Math, this.state.data.map((obj) => Number(obj[range])).filter(n => !isNaN(n)))
+    let maxY = Math.max.apply(Math, this.state.data.map((obj) => Number(obj[range])).filter(n => !isNaN(n)))
 
     return {x:[minX, maxX], y:[minY, maxY]}
   }
@@ -213,9 +214,17 @@ class ScatterPlot extends React.Component {
             size={parseInt((options.size.selected || options.size.default), 10)}
             x={options.domain.values[domainIndex]}
             y={options.range.values[rangeIndex]}
-            data={this.state.data}
+            data={this.state.data.map(datum => {
+              let normalizedDatum = Object.assign({}, datum)
+              const xAttr = options.domain.values[domainIndex]
+              const yAttr = options.domain.values[rangeIndex]
+              normalizedDatum[xAttr] = Number(datum[xAttr])
+              normalizedDatum[yAttr] = Number(datum[yAttr])
+              return normalizedDatum
+            })}
           />
           <VictoryAxis 
+            tickCount={5}
             label={options.domain.values[domainIndex]} 
             gridComponent={<Line style={{display: 'none'}}/>}
             axisLabelComponent={<VictoryLabel dy={15} style={this.labelStyle}/>}/>

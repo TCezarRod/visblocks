@@ -65,11 +65,13 @@ class LineChart extends React.Component {
       let rangeValues = []
       Object.values(newProps.data).forEach(element => {
         Object.keys(element).forEach(key => {
-          if (!domainValues.includes(key)  && !isNaN(element[key])) {
-            domainValues.push(key)
-          }
-          if (!rangeValues.includes(key)  && !isNaN(element[key])) {
-            rangeValues.push(key)
+          if (!isNaN(element[key])) {
+            if (!domainValues.includes(key) && element[key]) {
+              domainValues.push(key)
+            }
+            if (!rangeValues.includes(key) && element[key]) {
+              rangeValues.push(key)
+            }
           }
         })
       })
@@ -86,13 +88,13 @@ class LineChart extends React.Component {
     const options = this.props.options[this.props.blockid]
     const domainIndex = options.domain.selected || options.domain.default
     const domain = options.domain.values[domainIndex]
-    let minX = Math.min.apply(Math, this.state.data.map((obj) => obj[domain]))
-    let maxX = Math.max.apply(Math, this.state.data.map((obj) => obj[domain]))
+    let minX = Math.min.apply(Math, this.state.data.map((obj) => Number(obj[domain])).filter(n => !isNaN(n)))
+    let maxX = Math.max.apply(Math, this.state.data.map((obj) => Number(obj[domain])).filter(n => !isNaN(n)))
 
     const rangeIndex = options.range.selected || options.range.default
     const range = options.range.values[rangeIndex]
-    let minY = Math.min.apply(Math, this.state.data.map((obj) => obj[range]))
-    let maxY = Math.max.apply(Math, this.state.data.map((obj) => obj[range]))
+    let minY = Math.min.apply(Math, this.state.data.map((obj) => Number(obj[range])).filter(n => !isNaN(n)))
+    let maxY = Math.max.apply(Math, this.state.data.map((obj) => Number(obj[range])).filter(n => !isNaN(n)))
 
     return {x:[minX, maxX], y:[minY, maxY]}
   }
@@ -115,7 +117,14 @@ class LineChart extends React.Component {
             style={{ data: { stroke: (d, active) => active ? "rgb(139,195,74)" : (options.color.selected || options.color.default) } }}
             x={options.domain.values[domainIndex]}
             y={options.range.values[rangeIndex]}
-            data={this.props.data}       
+            data={this.state.data.map(datum => {
+              let normalizedDatum = Object.assign({}, datum)
+              const xAttr = options.domain.values[domainIndex]
+              const yAttr = options.domain.values[rangeIndex]
+              normalizedDatum[xAttr] = Number(datum[xAttr])
+              normalizedDatum[yAttr] = Number(datum[yAttr])
+              return normalizedDatum
+            })}      
           />
           <VictoryAxis 
             label={options.domain.values[domainIndex]} 
