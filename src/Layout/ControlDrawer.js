@@ -5,7 +5,7 @@ import ColorPicker from 'Layout/ColorPicker'
 
 import Drawer from '@material-ui/core/Drawer'
 import TextField from '@material-ui/core/TextField'
-import { FormControl, FormLabel, FormControlLabel, FormGroup, Checkbox } from '@material-ui/core'
+import { FormControl, FormLabel, FormControlLabel, FormGroup, Checkbox, Switch } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
 const drawerWidth = 250
@@ -27,6 +27,10 @@ class ControlDrawer extends React.Component {
     open: PropTypes.bool,
     options: PropTypes.object,
     onFieldChange: PropTypes.func
+  }
+
+  handleToggleChange = attribute => event => {
+    this.props.onFieldChange(attribute, event.target.checked)     
   }
 
   handleFieldChange = attribute => event => {
@@ -147,15 +151,28 @@ class ControlDrawer extends React.Component {
                         <FormControl key = {value} fullWidth style={{marginTop: '3px'}}>
                             <FormLabel component="legend" style={{transform: 'scale(0.75)',  transformOrigin: 'top left'}}>{value}</FormLabel>
                             <ColorPicker
-                              color ={ (options[attribute].selected && options[attribute].selected[index]) || options[attribute].default }
+                              color ={ (options[attribute].selected && options[attribute].selected[index]) || options[attribute].default[index] }
                               onSelect = { this.handleColorArrayChange(options[attribute].selected, index, attribute) }/>
                         </FormControl>)})}
                   </FormGroup>
                 </FormControl>)
             }
             break
+          case 'toggle':
+          if (!options[attribute].hidden) {
+            return (
+              <FormControl margin="normal" fullWidth>
+                <FormLabel component="legend" style={{transform: 'scale(0.75)',  transformOrigin: 'top left'}}>{capitalize(attribute)}</FormLabel>
+                <Switch
+                  checked={options[attribute].selected !== undefined ? options[attribute].selected : options[attribute].default}
+                  onChange={this.handleToggleChange(attribute)}
+                  value={attribute}
+                />
+              </FormControl>)
+          }
+          break
           default:
-              return null
+            return null
         }
       })
       return controls

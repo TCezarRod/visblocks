@@ -58,6 +58,15 @@ class ScatterPlot extends React.Component {
         values: [],
         default: 1
       },
+      size: {
+        type: 'number',
+        default: 6
+      },
+      'use default color': {
+        type: 'toggle',
+        default: true,
+        hidden: false 
+      },
       color: {
         type: 'color',
         default: 'rgba(100, 0, 40, 0.7)'
@@ -66,10 +75,6 @@ class ScatterPlot extends React.Component {
         type: 'color',
         default: 'rgba(100, 200, 0, 0.7)'
       },
-      size: {
-        type: 'number',
-        default: 6
-      },
       'group by': {
         type: 'selection',
         values: [],
@@ -77,7 +82,7 @@ class ScatterPlot extends React.Component {
       },
       'group color': {
         type: 'colorArray',
-        default: 'rgba(100, 0, 40, 0.7)',
+        default: ['#ff0029AA','#377eb8AA', '#66a61eAA', '#984ea3AA', '#00d2d5AA', '#ff7f00AA', '#af8d00AA', '#7f80cdAA', '#b3e900AA', '#c42e60AA'],
         values: []
       }
     })
@@ -119,7 +124,8 @@ class ScatterPlot extends React.Component {
     } else if (newProps.data && options && options['group by'] && options['group by'].selected !== prevState.groupBy) {
       const values = new Set(newProps.data.map(obj => obj[options['group by'].values[options['group by'].selected || options['group by'].default]]))
       values.delete(undefined)
-      const colors = Array(values.size).fill(options['group color'].default)
+      if (!values) options['use default color'].hidden = true
+      const colors = options['group color'].default.slice()
 
       newProps.updateAttrValues(newProps.blockid, 'group color', Array.from(values))
       newProps.updateAttrSelection(newProps.blockid, 'group color', colors)
@@ -178,9 +184,12 @@ class ScatterPlot extends React.Component {
       const selectionColor = (options['selection color'].selected || options['selection color'].default) 
       const baseColor = (options.color.selected || options.color.default)
       const groupByOptions = options['group by']
+      const useDefault = options['use default color'].selected !== undefined 
+      ? options['use default color'].selected
+      : options['use default color'].default
       if (active) {
         return selectionColor
-      } else if (groupByOptions) {
+      } else if (groupByOptions && !useDefault) {
         const attrIndex = groupByOptions.selected || groupByOptions.default
         const value = data[groupByOptions.values[attrIndex]]
         if (value) {
