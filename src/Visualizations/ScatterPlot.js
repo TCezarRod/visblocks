@@ -152,11 +152,15 @@ class ScatterPlot extends React.Component {
       delete data.x;
       delete data.y;
     })
-    this.props.onSelection(this.props.id, {type: 'selection', data: points[0].data})
+    if (this.props.onSelection) {
+      this.props.onSelection(this.props.blockid, {type: 'selection', data: points[0].data})
+    }
   }
 
   resetOutput = () => {
-    this.props.onSelection(this.props.id, {type: 'selection', data: []})
+    if (this.props.onSelection) {
+      this.props.onSelection(this.props.blockid, {type: 'selection', data: []})
+    }
   }
 
   labelStyle = {

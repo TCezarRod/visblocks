@@ -39,7 +39,8 @@ const getBinData = (data, options) => {
   for (let i = minX; i < maxX; i += interval) {
     binData.push({
       [selectedDimension]: i,
-      frequency: data.filter((data) => data[selectedDimension]>=i && data[selectedDimension]<(i+interval)).length
+      frequency: data.filter((data) => data[selectedDimension]>=i && data[selectedDimension]<(i+interval)).length,
+      interval: interval
     })
     last=i;
   }
@@ -95,7 +96,11 @@ class Histogram extends React.Component {
       color: {
         type: 'color',
         default: 'rgb(100, 0, 40)'
-      }
+      },
+      'selection color': {
+        type: 'color',
+        default: 'rgba(100, 200, 0, 0.7)'
+      },
     })
   }
 
@@ -142,9 +147,43 @@ class Histogram extends React.Component {
     }
   }
 
+  updateOutput = (points, bounds, props) => {
+    const xValues = points[0].data.map((obj) => Number(obj['_x']))
+    const interval = points[0].data[0].interval
+    const min = Math.min.apply(Math, xValues)
+    const max = Math.max.apply(Math, xValues) + interval
+    const options = this.props.options[this.props.blockid]
+
+    if (this.props.onSelection && this.props.data) {
+      const dimensionIndex = options.dimension.selected || options.dimension.default
+      const dimension = options.dimension.values[dimensionIndex]
+      this.props.onSelection(
+        this.props.blockid, 
+        {
+          type: 'selection', 
+          data: this.props.data.filter(datum => datum[dimension] >= min && datum[dimension] < max)
+        })
+    }
+  }
+
+  resetOutput = () => {
+    if (this.props.onSelection) {
+      this.props.onSelection(this.props.blockid, {type: 'selection', data: []})
+    }
+  }
+  
   renderContent = () => {
     const { width, height } = this.props
     const options = this.props.options[this.props.blockid]
+    const fillStyle = (data, active) => {
+      const selectionColor = (options['selection color'].selected || options['selection color'].default) 
+      const baseColor = (options.color.selected || options.color.default)
+      if (active) {
+        return selectionColor
+      } else {
+        return baseColor
+      }
+    }
     if (this.props.data) {
       const dimensionIndex = options.dimension.selected || options.dimension.default
       return (<VictoryChart 
@@ -152,7 +191,10 @@ class Histogram extends React.Component {
         domain={this.getDomain()}
         width={width}
         height={height}
-        containerComponent={<VictorySelectionContainer selectionDimension="x"/>}
+        containerComponent={<VictorySelectionContainer 
+          selectionDimension="x" 
+          onSelection={this.updateOutput} 
+          onSelectionCleared={this.resetOutput}/>}
         domainPadding={5}>
             <VictoryLabel text={options.dimension.values[dimensionIndex]} dy={50} dx={width-100} style={{fontSize: 12, fill: 'rgb(69, 90, 100)', fontWeight:'bold'}}/>
             <VictoryBar 
@@ -161,7 +203,7 @@ class Histogram extends React.Component {
               x={options.dimension.values[dimensionIndex]}
               y={'frequency'}
               data={this.state.binData}
-              style={{data: {fill: options.color.selected || options.color.default}}}/>
+              style={{data: {fill: fillStyle}}}/>
             <VictoryAxis  
               gridComponent={<Line style={{display: 'none'}}/>}
               />
