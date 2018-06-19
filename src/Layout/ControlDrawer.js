@@ -137,20 +137,23 @@ class ControlDrawer extends React.Component {
               </FormGroup>
             </FormControl>)
           case 'colorArray': 
-            return (
-              <FormControl component="fieldset" margin="normal">
-                <FormLabel component="legend" style={{transform: 'scale(0.75)',  transformOrigin: 'top left'}}>{capitalize(attribute)}</FormLabel>
-                <FormGroup>
-                  {options[attribute].values.map((value, index) => {
-                    return (
-                      <FormControl key = {value} fullWidth style={{marginTop: '3px'}}>
-                          <FormLabel component="legend" style={{transform: 'scale(0.75)',  transformOrigin: 'top left'}}>{value}</FormLabel>
-                          <ColorPicker
-                            color ={ (options[attribute].selected && options[attribute].selected[index]) || options[attribute].default }
-                            onSelect = { this.handleColorArrayChange(options[attribute].selected, index, attribute) }/>
-                      </FormControl>)})}
-                </FormGroup>
-              </FormControl>)
+            if (options[attribute].values.length) {
+              return (
+                <FormControl component="fieldset" margin="normal">
+                  <FormLabel component="legend" style={{transform: 'scale(0.75)',  transformOrigin: 'top left'}}>{capitalize(attribute)}</FormLabel>
+                  <FormGroup>
+                    {options[attribute].values.map((value, index) => {
+                      return (
+                        <FormControl key = {value} fullWidth style={{marginTop: '3px'}}>
+                            <FormLabel component="legend" style={{transform: 'scale(0.75)',  transformOrigin: 'top left'}}>{value}</FormLabel>
+                            <ColorPicker
+                              color ={ (options[attribute].selected && options[attribute].selected[index]) || options[attribute].default }
+                              onSelect = { this.handleColorArrayChange(options[attribute].selected, index, attribute) }/>
+                        </FormControl>)})}
+                  </FormGroup>
+                </FormControl>)
+            }
+            break
           default:
               return null
         }
