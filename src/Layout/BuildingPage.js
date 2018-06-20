@@ -27,6 +27,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import PieChart from '../Visualizations/PieChart';
 
 const styles = theme => ({
   root: {
@@ -227,6 +228,9 @@ class BuildingPage extends React.Component {
           id = {id}
           data={data}
           onSelection={this.updateData}/>
+      case 'PieChart':
+        return <PieChart
+          data = {data}/>
       default:
         return <React.Fragment/>
     }
