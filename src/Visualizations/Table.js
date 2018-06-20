@@ -63,6 +63,12 @@ class Table extends React.Component {
     }
   }
 
+  handleHotBeforeOnCellMouseDown = (event, coords, element) => {
+    if (coords.row < 0 ) {
+      event.stopImmediatePropagation();
+    }
+  }
+
   handleSelection = (startRow, startColumn, endRow, endColumn) => {
     this.props.onSelection(this.props.id, {type: 'selection', data: this.props.data.slice(startRow, endRow + 1)})
   }
@@ -121,7 +127,9 @@ class Table extends React.Component {
           stretchH: 'all',
           afterSelectionEnd: this.handleSelection,
           afterDeselect: this.clearSelection,
-          readOnly: true
+          beforeOnCellMouseDown: this.handleHotBeforeOnCellMouseDown,
+          readOnly: true,
+          outsideClickDeselects: false
         }}     
         
         />)
