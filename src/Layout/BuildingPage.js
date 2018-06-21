@@ -15,7 +15,9 @@ import LineChart from 'Visualizations/LineChart';
 import Histogram from 'Visualizations/Histogram';
 import Map from 'Visualizations/MapVis';
 import Data from 'Visualizations/Data';
-import Table from 'Visualizations/Table';
+import Table from 'Visualizations/Table'
+import PieChart from 'Visualizations/PieChart';
+import Filter from 'Operations/Filter';
 import VisBlock from 'Blocks/VisBlock';
 import EdgesCanvas from 'Edges/EdgesCanvas';
 import BlocksDrawer from 'Layout/BlocksDrawer';
@@ -27,7 +29,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import PieChart from '../Visualizations/PieChart';
 
 const styles = theme => ({
   root: {
@@ -177,8 +178,8 @@ class BuildingPage extends React.Component {
           left: 25
         },
         size: {
-          height: height,
-          width: width
+          height: type==='Filter' ? 50 : height,
+          width: type==='Filter' ? 75 : width
         }
       }
     }, data)
@@ -231,6 +232,10 @@ class BuildingPage extends React.Component {
       case 'PieChart':
         return <PieChart
           data = {data}/>
+      case 'Filter':
+        return <Filter
+          data = {data}
+          onSelection={this.updateData}/>
       default:
         return <React.Fragment/>
     }
@@ -253,6 +258,13 @@ class BuildingPage extends React.Component {
 
   renderBlock = (block) => { 
     // TODO: render different if data 
+    let headerVisible = true
+    let minWidth
+    let minHeight
+    if (block.type === 'Data' || block.type === 'Filter') {
+      headerVisible = false
+      minWidth = minHeight = 50
+    }
     return (<VisBlock
       key={block.id}
       id={block.id}
@@ -261,9 +273,9 @@ class BuildingPage extends React.Component {
       left={block.props.position.left}
       width={block.props.size.width}
       height={block.props.size.height}
-      minWidth={block.type==='Data'?50:undefined}
-      minHeight={block.type==='Data'?50:undefined}
-      headerVisible={block.type!=='Data'}
+      minWidth={minWidth}
+      minHeight={minHeight}
+      headerVisible={headerVisible}
       onUpdate={this.addInput}
       controlRef={this.refs.controls}>
       {this.renderVisualization(block.id, block.type, block.data || getData(block.input, this.props.dataMap), block.props)}

@@ -6,7 +6,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Divider from '@material-ui/core/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
+
 
 import BarChartIcon from 'assets/images/bar_chart.svg'
 import ScatterPlotIcon from 'assets/images/scatter_plot.svg'
@@ -30,6 +33,13 @@ const styles = theme => ({
   },
   listIcons: {
     margin: '0'
+  },
+  listItemRoot: {
+    paddingLeft: '7px'
+  },
+  listItemText: {
+    fontSize: '15px',
+    color: '#668'
   }
 });
 
@@ -56,6 +66,7 @@ class BlocksDrawer extends React.Component {
                 </ListItemIcon>
               </ListItem>
             </Tooltip>
+            <Divider/>
             <Tooltip title="Table" placement="right"  classes={{popper: classes.popper}}>
               <ListItem button disableGutters={true} onClick={() => this.props.onCreateBlock("Table")}>
                 <ListItemIcon classes={{root: classes.listIcons}}>
@@ -98,6 +109,12 @@ class BlocksDrawer extends React.Component {
                 </ListItemIcon>
               </ListItem>
             </Tooltip>
+            <Divider/>
+            <ListItem button disableGutters={true} onClick={() => this.props.onCreateBlock("Filter")}>
+              <ListItem button classes={{root: classes.listItemRoot}}>
+                <ListItemText classes={{primary: classes.listItemText}} primary="Filter" />
+              </ListItem>
+            </ListItem>
           </List>
         </Drawer> 
     )
