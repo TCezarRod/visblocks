@@ -9,6 +9,11 @@ body {
   width: 100%;
 }
 
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}
+
 .container-block {
   display: flex;
   flex-flow: column;
