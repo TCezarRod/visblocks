@@ -37,9 +37,18 @@ class ScatterPlot extends React.Component {
     onSelection: PropTypes.func
   }
 
+  finishMutation = () => {
+    this.props.onSelection(this.props.blockid, {type: 'selection', data: this.props.data})
+    this.setState({externalMutations: undefined})
+  }
+
   state = {
     data: [],
-    groupBy: 0
+    groupBy: 0,
+    range: undefined,
+    domain: undefined,
+    externalMutations: undefined,
+    finishMutation: this.finishMutation
   }
 
   componentDidMount = () => {
@@ -88,8 +97,26 @@ class ScatterPlot extends React.Component {
     })
   }
 
+  removeMutation = () => {
+    this.setState({
+      externalMutations: undefined
+    });
+  }
+
   static getDerivedStateFromProps = (newProps, prevState) => {
     const options = newProps.options[newProps.blockid]
+
+    let mutations = [{
+      childName: "ScatterPlot",
+      target: ["data"],
+      eventKey: "all",
+      mutation: (a,b,c,d) => {
+        a.active = false
+        console.log("mutation")
+        return {active: false}
+      },
+      callback: prevState.finishMutation
+    }]
     if (newProps.data && newProps.data !== prevState.data) {
       let domainValues = []
       let rangeValues = []
@@ -120,7 +147,7 @@ class ScatterPlot extends React.Component {
       newProps.updateAttrValues(newProps.blockid, 'range', rangeValues)
       newProps.updateAttrValues(newProps.blockid, 'group by', NaNFields)
 
-      return {...prevState, data: newProps.data}
+      return {...prevState, data: newProps.data, externalMutations: mutations, range: options['range'].default, domain: options['domain'].default}
     } else if (newProps.data && options && options['group by'] && options['group by'].selected !== prevState.groupBy) {
       const values = new Set(newProps.data.map(obj => obj[options['group by'].values[options['group by'].selected || options['group by'].default]]))
       values.delete(undefined)
@@ -129,9 +156,23 @@ class ScatterPlot extends React.Component {
 
       newProps.updateAttrValues(newProps.blockid, 'group color', Array.from(values))
       newProps.updateAttrSelection(newProps.blockid, 'group color', colors)
-      return {...prevState, data: newProps.data, groupBy: options['group by'].selected}
+
+      return {...prevState, 
+        data: newProps.data, 
+        groupBy: options['group by'].selected, 
+        externalMutations: mutations, 
+        range: options['range'].selected || options['range'].default, 
+        domain: options['domain'].selected || options['domain'].default}
+    } else if (newProps.data && options 
+      && options['domain'] && options['range'] 
+      && ((options['domain'].selected && options['domain'].selected !== prevState.domain) || (options['range'].selected && options['range'].selected !== prevState.range))
+    ) {
+      return {...prevState, 
+        externalMutations: mutations, 
+        range: options['range'].selected || options['range'].default, 
+        domain: options['domain'].selected || options['domain'].default}
     } else {
-      return {...prevState}
+      return {...prevState, externalMutations: undefined}
     }
   }
 
@@ -210,6 +251,7 @@ class ScatterPlot extends React.Component {
       const rangeIndex = options.range.selected || options.range.default
       return (
         <VictoryChart 
+          externalEventMutations= {this.state.externalMutations}
           theme={VictoryTheme.material}
           domain={this.getDomain()}
           width={this.props.width}
@@ -221,6 +263,8 @@ class ScatterPlot extends React.Component {
             />}
           domainPadding={15}>
           <VictoryScatter
+            name="ScatterPlot"
+            externalEventMutations={this.externalMutations}
             padding={150}
             style={{ data: { fill: fillStyle, strokeDasharray: "5,5" } }}
             size={parseInt((options.size.selected || options.size.default), 10)}

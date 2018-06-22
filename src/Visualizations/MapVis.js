@@ -4,8 +4,6 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { initOptions, updateAttrValues, updateAttrSelection } from 'actions'
 
-import PinIcon from 'assets/images/map_pin.svg'
-
 import { 
   Map, 
   Marker, 
