@@ -147,11 +147,19 @@ class MapVis extends React.Component {
     }
   }
 
+  findProp = (obj, prop) => {
+    for(let key in obj) {
+      if (key.toLowerCase() === prop.toLowerCase()) {
+        return obj[key]
+      }
+    }
+  }
+
   searchForLatLng = (data) => {
-    if ('lat' in data && 'lng' in data && !isNaN(data.lat) && !isNaN(data.lng)) {
-      return {lat: data.lat, lng: data.lng}
-    } else if ('latitude' in data && 'longitude' in data && !isNaN(data.latitude) && !isNaN(data.longitude)) {
-      return {lat: data.latitude, lng: data.longitude}
+    let lat = this.findProp(data, 'lat') || this.findProp(data, 'latitude')
+    let lng = this.findProp(data, 'lng') || this.findProp(data, 'longitude')
+    if (lat && lng) {
+      return {lat: lat, lng: lng}
     } else {
       let latLng;
       Object.values(data).forEach(value => {
