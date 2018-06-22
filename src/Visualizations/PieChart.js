@@ -25,11 +25,14 @@ const getSliceData = (data, dimension) => {
 
   data.forEach(datum => {
     let elem = datum[dimension]
-    if (elem === undefined) slices.others++
+    if (!elem) {
+      slices.others++
+    } else {
     if (slices[elem] !== undefined) {
       slices[elem]++
     } else {
       slices[elem] = 1
+    }
     }
   })
   if (slices.others===0) delete slices.others
