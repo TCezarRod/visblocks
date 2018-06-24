@@ -37,7 +37,7 @@ const getSliceData = (data, dimension) => {
   })
   if (slices.others===0) delete slices.others
   Object.keys(slices).forEach(key => {
-    sliceData.push({'x': key, 'y': slices[key]})
+    sliceData.push({'x': key, 'y': slices[key], label: `${key} [${slices[key]}]`})
   })
 
   return sliceData
