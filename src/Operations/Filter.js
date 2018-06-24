@@ -80,7 +80,7 @@ class Filter extends React.Component {
       let filterValues = []
       let selection = options['filter by'].values[options['filter by'].selected || options['filter by'].default]
       Object.values(newProps.data).forEach(element => {
-        if (!filterValues.includes(element[selection])) {
+        if (element[selection] && !filterValues.includes(element[selection])) {
           filterValues.push(element[selection])
         }
       })
