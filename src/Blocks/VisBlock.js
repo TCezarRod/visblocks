@@ -8,8 +8,11 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import CloseIcon from '@material-ui/icons/Close';
+import SaveIcon from '@material-ui/icons/Save';
 
 import Rnd from 'react-rnd';
+
+import { CSVLink } from 'react-csv';
 
 const styles = theme => ({
   button: {
@@ -176,6 +179,20 @@ class VisBlock extends React.Component {
     return className
   }
 
+  csvLink = (data, name) => props => {
+   return <CSVLink filename={name + "_data.csv"} data={data} {...props}/>
+  }
+
+  renderDownloadButton = (classes, data) => {
+    let options = this.props.options[this.props.id];
+    if (data && options) {
+      return (
+        <ButtonBase className={classes.button} aria-label="Download" component={this.csvLink(data, options.name.selected || options.name.default)}>
+          <SaveIcon style={{ fontSize: 15 }}/>
+        </ButtonBase>)
+    }
+  }
+
   renderHandle = () => {
     const { classes } = this.props;
     const blockOptions = this.props.options[this.props.id]
@@ -191,6 +208,7 @@ class VisBlock extends React.Component {
     <ButtonBase className={classes.button} aria-label="Arrow" onClick={this.handleConnectClick}>
       <ArrowForwardIcon style={{ fontSize: 15 }}/>
     </ButtonBase>
+    {this.renderDownloadButton(classes, this.props.children.props.data)}
     <div className="blockTitle">
       <Typography variant="subheading" noWrap color="inherit">
         {this.props.headerVisible ? blockName : ''}
