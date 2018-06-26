@@ -151,7 +151,7 @@ class BuildingPage extends React.Component {
     const file = event.target.files.item(0)
     if (file.type === "application/json") {
       fileReader.onload = (this.handleLoadJson)
-    } else if (file.type === "text/csv") {
+    } else if (file.type === "text/csv" || file.type === "application/vnd.ms-excel") {
       fileReader.onload = (this.handleLoadCsv)
     }      
     fileReader.readAsText(event.target.files.item(0), 'UTF-8')
