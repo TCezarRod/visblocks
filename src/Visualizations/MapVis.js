@@ -150,7 +150,7 @@ class MapVis extends React.Component {
   findProp = (obj, prop) => {
     for(let key in obj) {
       if (key.toLowerCase() === prop.toLowerCase()) {
-        return obj[key]
+        return Number(obj[key].replace(/"/g,""))
       }
     }
   }
