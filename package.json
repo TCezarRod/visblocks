@@ -23,7 +23,7 @@
     "react-rnd": "^7.4.1",
     "react-scripts": "^2.1.1",
     "redux": "^4.0.0",
-    "victory": "^30.6.0"
+    "victory": "^36.6.8"
   },
   "scripts": {
     "predeploy": "npm run build",
