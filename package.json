@@ -21,7 +21,7 @@
     "react-leaflet": "^1.9.1",
     "react-redux": "^5.0.7",
     "react-rnd": "^7.4.1",
-    "react-scripts": "^2.1.1",
+    "react-scripts": "^5.0.1",
     "redux": "^4.0.0",
     "victory": "^30.6.0"
   },
